@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start:dev": "docker compose -f docker-compose.dev.yml up",
+    "stop:dev": "docker compose -f docker-compose.dev.yml down",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
