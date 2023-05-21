@@ -31,7 +31,7 @@ interface LoadingProps {
 
 type Props = StaticProps | LoadingProps
 
-export default function ChatMessage(props: Props) {
+export default function ChatMessageListItem(props: Props) {
 
     const usernames = useMemo(() => {
         if (props.loading) {
@@ -146,7 +146,6 @@ export default function ChatMessage(props: Props) {
                                     {props.loading ? (
                                         <Skeleton
                                             variant='circular'
-                                            animation='wave'
                                             width={56}
                                             height={56}
                                             sx={{ backgroundColor: '#202020' }} />
@@ -318,7 +317,6 @@ export default function ChatMessage(props: Props) {
                                         {props.loading ? (
                                             <Skeleton
                                                 variant='rounded'
-                                                animation='wave'
                                                 width={240}
                                                 height={17}
                                                 sx={{
@@ -387,7 +385,6 @@ export default function ChatMessage(props: Props) {
                                     {props.loading ? (
                                         <Skeleton
                                             variant='rounded'
-                                            animation='wave'
                                             width={180}
                                             height={16}
                                             sx={{
