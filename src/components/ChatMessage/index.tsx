@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
 
 
-interface ChatMessageProps {
+interface StaticProps {
+    loading?: never
     photoUrls: string[]
     usernames: string[]
     membersCount: number
@@ -14,14 +16,32 @@ interface ChatMessageProps {
     onClick(): void
 }
 
-export default function ChatMessage(props: ChatMessageProps) {
+interface LoadingProps {
+    loading: true
+    photoUrls?: never
+    usernames?: never
+    membersCount?: never
+    text?: never
+    timestamp?: never
+    seen?: never
+    selected?: never
+
+    onClick?: never
+}
+
+type Props = StaticProps | LoadingProps
+
+export default function ChatMessage(props: Props) {
 
     const usernames = useMemo(() => {
+        if (props.loading) {
+            return null
+        }
         if (props.membersCount > 2 && props.usernames.length > 1) {
             return `${props.usernames.slice(0, 2).join(', ')} and ${props.membersCount - 2} others`
         }
         return props.usernames.join(', ')
-    }, [props.usernames, props.membersCount])
+    }, [props.loading, props.usernames, props.membersCount])
 
     return (
         <Box
@@ -56,7 +76,7 @@ export default function ChatMessage(props: ChatMessageProps) {
                 minHeight: '0',
                 borderLeftColor: '#00000066',
                 borderLeftStyle: 'solid',
-                cursor: 'pointer',
+                cursor: props.loading ? 'default' : 'pointer',
                 outlineStyle: 'none',
                 borderBottomWidth: '0',
                 borderBottomStyle: 'solid',
@@ -67,7 +87,7 @@ export default function ChatMessage(props: ChatMessageProps) {
                 textDecoration: 'none',
                 outline: 'none',
                 '&:hover': {
-                    ...!props.selected && { backgroundColor: '#121212' },
+                    ...!props.loading && !props.selected && { backgroundColor: '#121212' },
                 },
             }}
             onClick={props.onClick}
@@ -123,80 +143,91 @@ export default function ChatMessage(props: ChatMessageProps) {
                                     position='relative'
                                     display='block'
                                 >
-                                    {props.photoUrls.length > 0 && (
-                                        <Box
-                                            component='span'
-                                            height={props.photoUrls.length > 1 ? '40px' : '56px'}
-                                            width={props.photoUrls.length > 1 ? '40px' : '56px'}
-                                            position='relative'
-                                            display='block'
+                                    {props.loading ? (
+                                        <Skeleton
+                                            variant='circular'
+                                            animation='wave'
+                                            width={56}
+                                            height={56}
+                                            sx={{ backgroundColor: '#202020' }} />
+                                    ) : (
+                                        <>
+                                            {props.photoUrls.length > 0 && (
+                                                <Box
+                                                    component='span'
+                                                    height={props.photoUrls.length > 1 ? '40px' : '56px'}
+                                                    width={props.photoUrls.length > 1 ? '40px' : '56px'}
+                                                    position='relative'
+                                                    display='block'
 
-                                            sx={{
-                                                borderBottomLeftRadius: '50%',
-                                                borderTopRightRadius: '50%',
-                                                overflowX: 'hidden',
-                                                borderBottomRightRadius: '50%',
-                                                borderTopLeftRadius: '50%',
-                                                overflowY: 'hidden',
-                                            }}
-                                        >
-                                            <img alt='User avatar'
-                                                 style={{
-                                                     height: '100%',
-                                                     width: '100%',
-                                                     border: '0',
-                                                 }}
-                                                 height={props.photoUrls.length > 1 ? '40' : '56'}
-                                                 src={props.photoUrls[0]}
-                                                 width={props.photoUrls.length > 1 ? '40' : '56'} />
-                                        </Box>
-                                    )}
-                                    {props.photoUrls.length > 1 && (
-                                        <Box
-                                            component='div'
-                                            bgcolor='#000000'
-                                            paddingRight='2px'
-                                            right='0'
-                                            paddingTop='2px'
-                                            paddingLeft='2px'
-                                            bottom='0'
-                                            paddingBottom='2px'
-                                            position='absolute'
-                                            display='block'
-                                            sx={{
-                                                borderBottomLeftRadius: '50%',
-                                                borderTopRightRadius: '50%',
-                                                borderBottomRightRadius: '50%',
-                                                borderTopLeftRadius: '50%',
-                                            }}
-                                        >
-                                            <Box
-                                                component='span'
-                                                height='40px'
-                                                width='40px'
-                                                position='relative'
-                                                display='block'
+                                                    sx={{
+                                                        borderBottomLeftRadius: '50%',
+                                                        borderTopRightRadius: '50%',
+                                                        overflowX: 'hidden',
+                                                        borderBottomRightRadius: '50%',
+                                                        borderTopLeftRadius: '50%',
+                                                        overflowY: 'hidden',
+                                                    }}
+                                                >
+                                                    <img alt='User avatar'
+                                                         style={{
+                                                             height: '100%',
+                                                             width: '100%',
+                                                             border: '0',
+                                                         }}
+                                                         height={props.photoUrls.length > 1 ? '40' : '56'}
+                                                         src={props.photoUrls[0]}
+                                                         width={props.photoUrls.length > 1 ? '40' : '56'} />
+                                                </Box>
+                                            )}
+                                            {props.photoUrls.length > 1 && (
+                                                <Box
+                                                    component='div'
+                                                    bgcolor='#000000'
+                                                    paddingRight='2px'
+                                                    right='0'
+                                                    paddingTop='2px'
+                                                    paddingLeft='2px'
+                                                    bottom='0'
+                                                    paddingBottom='2px'
+                                                    position='absolute'
+                                                    display='block'
+                                                    sx={{
+                                                        borderBottomLeftRadius: '50%',
+                                                        borderTopRightRadius: '50%',
+                                                        borderBottomRightRadius: '50%',
+                                                        borderTopLeftRadius: '50%',
+                                                    }}
+                                                >
+                                                    <Box
+                                                        component='span'
+                                                        height='40px'
+                                                        width='40px'
+                                                        position='relative'
+                                                        display='block'
 
-                                                sx={{
-                                                    borderBottomLeftRadius: '50%',
-                                                    borderTopRightRadius: '50%',
-                                                    overflowX: 'hidden',
-                                                    borderBottomRightRadius: '50%',
-                                                    borderTopLeftRadius: '50%',
-                                                    overflowY: 'hidden',
-                                                }}
-                                            >
-                                                <img alt='User avatar'
-                                                     style={{
-                                                         height: '100%',
-                                                         width: '100%',
-                                                         border: '0',
-                                                     }}
-                                                     height='40'
-                                                     src={props.photoUrls[1]}
-                                                     width='40' />
-                                            </Box>
-                                        </Box>
+                                                        sx={{
+                                                            borderBottomLeftRadius: '50%',
+                                                            borderTopRightRadius: '50%',
+                                                            overflowX: 'hidden',
+                                                            borderBottomRightRadius: '50%',
+                                                            borderTopLeftRadius: '50%',
+                                                            overflowY: 'hidden',
+                                                        }}
+                                                    >
+                                                        <img alt='User avatar'
+                                                             style={{
+                                                                 height: '100%',
+                                                                 width: '100%',
+                                                                 border: '0',
+                                                             }}
+                                                             height='40'
+                                                             src={props.photoUrls[1]}
+                                                             width='40' />
+                                                    </Box>
+                                                </Box>
+                                            )}
+                                        </>
                                     )}
                                 </Box>
                             </Box>
@@ -284,7 +315,17 @@ export default function ChatMessage(props: ChatMessageProps) {
                                             overflowY: 'hidden',
                                         }}
                                     >
-                                        {usernames}
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='rounded'
+                                                animation='wave'
+                                                width={240}
+                                                height={17}
+                                                sx={{
+                                                    backgroundColor: '#202020',
+                                                    borderRadius: '8px',
+                                                }} />
+                                        ) : usernames}
                                     </Box>
                                 </Box>
                                 <Box
@@ -343,121 +384,135 @@ export default function ChatMessage(props: ChatMessageProps) {
                                         borderTopRightRadius: '0',
                                     }}
                                 >
-                                    <Box
-                                        component='span'
-                                        lineHeight='16px'
-                                        fontWeight={props.seen ? '400' : '700'}
-                                        minWidth='0'
-                                        marginBottom='0!important'
-                                        marginRight='0!important'
-                                        color={props.seen ? '#A8A8A8' : '#F5F5F5'}
-                                        position='relative'
-                                        display='block'
-                                        fontSize='12px'
-                                        maxWidth='100%'
-                                        marginLeft='0!important'
-                                        marginTop='0!important'
-                                        sx={{
-                                            overflowY: 'visible',
-                                            wordWrap: 'break-word',
-                                            overflowX: 'visible',
-                                            whiteSpace: 'pre-line',
-                                            wordBreak: 'break-word',
-                                        }}
-                                    >
-                                        <Box
-                                            component='span'
-                                            display='block'
-                                            maxWidth='100%'
+                                    {props.loading ? (
+                                        <Skeleton
+                                            variant='rounded'
+                                            animation='wave'
+                                            width={180}
+                                            height={16}
                                             sx={{
-                                                whiteSpace: 'nowrap',
-                                                textOverflow: 'ellipsis',
-                                                overflowX: 'hidden',
-                                                overflowY: 'hidden',
-                                            }}
-                                        >
-                                            {props.text}
-                                        </Box>
-                                    </Box>
-                                    <Box
-                                        component='span'
-                                        marginRight='4px'
-                                        marginLeft='4px'
-                                        marginTop='0'
-                                        marginBottom='0'
-                                        flexShrink='0'
-                                        color='#A8A8A8'
-                                    >
-                                        <Box
-                                            component='span'
-                                        >
+                                                backgroundColor: '#202020',
+                                                borderRadius: '8px',
+                                            }} />
+                                    ) : (
+                                        <>
                                             <Box
                                                 component='span'
-                                                height='1px'
-                                                width='1px'
-                                                position='absolute'
-                                                sx={{
-                                                    clip: 'rect(0,0,0,0)',
-                                                    overflowX: 'hidden',
-                                                    overflowY: 'hidden',
-                                                }}
-                                            >
-                                                &nbsp;
-                                            </Box>
-                                            <Box
-                                                component='span'
-                                            > · </Box>
-                                        </Box>
-                                    </Box>
-                                    <Box
-                                        component='div'
-                                        minWidth='0'
-                                        flexShrink='0'
-                                        display='block'
-                                    >
-                                        <Box
-                                            component='span'
-                                            lineHeight='16px'
-                                            fontWeight='400'
-                                            minWidth='0'
-                                            marginBottom='0!important'
-                                            marginRight='0!important'
-                                            color='#A8A8A8'
-                                            position='relative'
-                                            display='block'
-                                            fontSize='12px'
-                                            maxWidth='100%'
-                                            marginLeft='0!important'
-                                            marginTop='0!important'
-                                            sx={{
-                                                overflowY: 'visible',
-                                                wordWrap: 'break-word',
-                                                overflowX: 'visible',
-                                                whiteSpace: 'pre-line',
-                                                wordBreak: 'break-word',
-                                            }}
-                                        >
-                                            <Box
-                                                component='span'
+                                                lineHeight='16px'
+                                                fontWeight={props.seen ? '400' : '700'}
+                                                minWidth='0'
+                                                marginBottom='0!important'
+                                                marginRight='0!important'
+                                                color={props.seen ? '#A8A8A8' : '#F5F5F5'}
+                                                position='relative'
                                                 display='block'
+                                                fontSize='12px'
                                                 maxWidth='100%'
+                                                marginLeft='0!important'
+                                                marginTop='0!important'
                                                 sx={{
-                                                    whiteSpace: 'nowrap',
-                                                    textOverflow: 'ellipsis',
-                                                    overflowX: 'hidden',
-                                                    overflowY: 'hidden',
+                                                    overflowY: 'visible',
+                                                    wordWrap: 'break-word',
+                                                    overflowX: 'visible',
+                                                    whiteSpace: 'pre-line',
+                                                    wordBreak: 'break-word',
                                                 }}
                                             >
                                                 <Box
-                                                    component='div'
-                                                    whiteSpace='nowrap'
+                                                    component='span'
                                                     display='block'
+                                                    maxWidth='100%'
+                                                    sx={{
+                                                        whiteSpace: 'nowrap',
+                                                        textOverflow: 'ellipsis',
+                                                        overflowX: 'hidden',
+                                                        overflowY: 'hidden',
+                                                    }}
                                                 >
-                                                    {props.timestamp}
+                                                    {props.text}
                                                 </Box>
                                             </Box>
-                                        </Box>
-                                    </Box>
+                                            <Box
+                                                component='span'
+                                                marginRight='4px'
+                                                marginLeft='4px'
+                                                marginTop='0'
+                                                marginBottom='0'
+                                                flexShrink='0'
+                                                color='#A8A8A8'
+                                            >
+                                                <Box
+                                                    component='span'
+                                                >
+                                                    <Box
+                                                        component='span'
+                                                        height='1px'
+                                                        width='1px'
+                                                        position='absolute'
+                                                        sx={{
+                                                            clip: 'rect(0,0,0,0)',
+                                                            overflowX: 'hidden',
+                                                            overflowY: 'hidden',
+                                                        }}
+                                                    >
+                                                        &nbsp;
+                                                    </Box>
+                                                    <Box
+                                                        component='span'
+                                                    > · </Box>
+                                                </Box>
+                                            </Box>
+                                            <Box
+                                                component='div'
+                                                minWidth='0'
+                                                flexShrink='0'
+                                                display='block'
+                                            >
+                                                <Box
+                                                    component='span'
+                                                    lineHeight='16px'
+                                                    fontWeight='400'
+                                                    minWidth='0'
+                                                    marginBottom='0!important'
+                                                    marginRight='0!important'
+                                                    color='#A8A8A8'
+                                                    position='relative'
+                                                    display='block'
+                                                    fontSize='12px'
+                                                    maxWidth='100%'
+                                                    marginLeft='0!important'
+                                                    marginTop='0!important'
+                                                    sx={{
+                                                        overflowY: 'visible',
+                                                        wordWrap: 'break-word',
+                                                        overflowX: 'visible',
+                                                        whiteSpace: 'pre-line',
+                                                        wordBreak: 'break-word',
+                                                    }}
+                                                >
+                                                    <Box
+                                                        component='span'
+                                                        display='block'
+                                                        maxWidth='100%'
+                                                        sx={{
+                                                            whiteSpace: 'nowrap',
+                                                            textOverflow: 'ellipsis',
+                                                            overflowX: 'hidden',
+                                                            overflowY: 'hidden',
+                                                        }}
+                                                    >
+                                                        <Box
+                                                            component='div'
+                                                            whiteSpace='nowrap'
+                                                            display='block'
+                                                        >
+                                                            {props.timestamp}
+                                                        </Box>
+                                                    </Box>
+                                                </Box>
+                                            </Box>
+                                        </>
+                                    )}
                                 </Box>
                             </Box>
                         </Box>
@@ -473,7 +528,7 @@ export default function ChatMessage(props: ChatMessageProps) {
                         zIndex='0'
                         maxWidth='100%'
                     >
-                        {!props.seen && (
+                        {!props.loading && !props.seen && (
                             <Box
                                 component='div'
                                 display='flex'
