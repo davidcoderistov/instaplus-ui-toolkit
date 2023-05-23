@@ -38,7 +38,6 @@ const ChatFooterEmojiPicker = React.memo(({ onPickEmoji }: Props) => {
                 display={emojiPickerOpen ? 'inline-block' : 'none'}
                 position='absolute'
                 zIndex='1'
-                marginLeft='5px'
                 bottom='70px'
             >
                 <EmojiPicker
