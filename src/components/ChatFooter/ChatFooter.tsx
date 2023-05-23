@@ -30,23 +30,52 @@ export default function ChatFooter({ isReplying, onSendMessage, onSendLike, onUp
     return (
         <Box
             component='div'
-            paddingLeft='11px'
+            marginTop='16px'
+            marginRight='16px'
+            flexDirection='column'
             display='flex'
-            alignItems='center'
-            paddingRight='16px'
-            minHeight='44px'
+            marginBottom='16px'
+            alignItems='stretch'
+            marginLeft='16px'
+            sx={{
+                borderLeftWidth: '1px',
+                borderRightStyle: 'solid',
+                borderBottomWidth: '1px',
+                borderRightWidth: '1px',
+                borderLeftColor: '#363636',
+                borderBottomLeftRadius: '22px',
+                borderTopRightRadius: '22px',
+                borderLeftStyle: 'solid',
+                borderTopColor: '#363636',
+                borderBottomStyle: 'solid',
+                borderTopLeftRadius: '22px',
+                borderBottomColor: '#363636',
+                borderBottomRightRadius: '22px',
+                borderRightColor: '#363636',
+                borderTopWidth: '1px',
+                borderTopStyle: 'solid',
+            }}
         >
-            <ChatFooterEmojiPicker
-                onPickEmoji={handlePickEmoji} />
-            <ChatFooterTextInput
-                message={message}
-                onChange={setMessage} />
-            <ChatFooterActions
-                isTyping={message.length > 0}
-                isReplying={isReplying}
-                onSendMessage={handleSendMessage}
-                onSendLike={onSendLike}
-                onUploadFile={onUploadFile} />
+            <Box
+                component='div'
+                paddingLeft='11px'
+                display='flex'
+                alignItems='center'
+                paddingRight='16px'
+                minHeight='44px'
+            >
+                <ChatFooterEmojiPicker
+                    onPickEmoji={handlePickEmoji} />
+                <ChatFooterTextInput
+                    message={message}
+                    onChange={setMessage} />
+                <ChatFooterActions
+                    isTyping={message.length > 0}
+                    isReplying={isReplying}
+                    onSendMessage={handleSendMessage}
+                    onSendLike={onSendLike}
+                    onUploadFile={onUploadFile} />
+            </Box>
         </Box>
     )
 }
