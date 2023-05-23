@@ -23,7 +23,6 @@ export default function ChatFooter(props: Props) {
             component='div'
             display='block'
         >
-            {/*Chat reply here */}
             {props.isReplying && (
                 <Box
                     component='div'
