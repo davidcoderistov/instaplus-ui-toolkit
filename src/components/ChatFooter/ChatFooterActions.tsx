@@ -6,6 +6,8 @@ interface Props {
     isTyping: boolean
     isReplying: boolean
 
+    onSendMessage(): void
+
     onSendLike(): void
 
     onUploadFile(file: File): void
@@ -18,9 +20,7 @@ export default function ChatFooterAction(props: Props) {
             variant='primary'
             text='Send'
             contained={false}
-            onClick={() => {
-                console.log('click')
-            }}
+            onClick={props.onSendMessage}
         />
     ) : (
         <Box
@@ -121,6 +121,7 @@ export default function ChatFooterAction(props: Props) {
                     borderBottom: '0',
                     borderTop: '0',
                 }}
+                onClick={props.onSendLike}
             >
                 <Box
                     component='div'
