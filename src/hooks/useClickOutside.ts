@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 
 
-export function useClickOutside(ref: React.MutableRefObject<Node | null>, cb: () => void) {
+export function useClickOutside(ref: React.MutableRefObject<Node | null>, cb: (target: Node) => void) {
     useEffect(() => {
         function handleClickOutside(event: DocumentEventMap['mousedown']) {
             if (ref.current && !ref.current?.contains(event.target as Node)) {
-                cb()
+                cb(event.target as Node)
             }
         }
 
