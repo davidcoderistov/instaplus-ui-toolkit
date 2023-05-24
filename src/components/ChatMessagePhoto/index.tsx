@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
+import { PlayArrow } from '@mui/icons-material'
 
 
 interface LoadingProps {
@@ -7,6 +8,8 @@ interface LoadingProps {
     photoUrl?: never
     orientation?: never
     reply?: never
+    isVideo?: never
+    onClick?: never
 }
 
 interface StaticProps {
@@ -14,11 +17,14 @@ interface StaticProps {
     photoUrl: string
     orientation: 'portrait' | 'landscape'
     reply?: boolean
+    isVideo?: boolean
+
+    onClick(): void
 }
 
 type Props = LoadingProps | StaticProps
 
-export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading }: Props) {
+export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading, isVideo, onClick }: Props) {
 
     const maxWidth = reply ? 141 : 236
     const maxHeight = reply ? 204 : 225
@@ -80,6 +86,7 @@ export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading
                     borderTopStyle: 'solid',
                     overflowY: 'hidden',
                 }}
+                onClick={onClick}
             >
                 <Box
                     component='div'
@@ -166,6 +173,17 @@ export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading
                                                 }}
                                                 src={photoUrl}
                                             />
+                                        )}
+                                        {isVideo && (
+                                            <Box
+                                                component='div'
+                                                position='absolute'
+                                                top='calc(50% - 18.5px)'
+                                                left='calc(50% - 22.9px)'
+                                                color='red'
+                                            >
+                                                <PlayArrow sx={{ color: '#FFFFFF', fontSize: 50 }} />
+                                            </Box>
                                         )}
                                     </Box>
                                 </Box>
