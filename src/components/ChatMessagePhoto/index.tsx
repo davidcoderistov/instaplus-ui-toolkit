@@ -1,13 +1,24 @@
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 
-interface Props {
+interface LoadingProps {
+    loading: true
+    photoUrl?: never
+    orientation?: never
+    reply?: never
+}
+
+interface StaticProps {
+    loading?: never
     photoUrl: string
     orientation: 'portrait' | 'landscape'
     reply?: boolean
 }
 
-export default function ChatMessagePhoto({ photoUrl, orientation, reply }: Props) {
+type Props = LoadingProps | StaticProps
+
+export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading }: Props) {
 
     const maxWidth = reply ? 141 : 236
     const maxHeight = reply ? 204 : 225
@@ -125,20 +136,37 @@ export default function ChatMessagePhoto({ photoUrl, orientation, reply }: Props
                                         position='absolute'
                                         display='block'
                                     >
-                                        <img
-                                            alt='Open photo'
-                                            style={{
-                                                display: 'block',
-                                                maxHeight: `${maxHeight}px`,
-                                                maxWidth: '100%',
-                                                width: '100%',
-                                                height: '100%',
-                                                border: 0,
-                                                overflowClipMargin: 'content-box',
-                                                overflow: 'clip',
-                                            }}
-                                            src={photoUrl}
-                                        />
+                                        {loading ? (
+                                            <Box
+                                                component='div'
+                                                display='flex'
+                                                maxHeight={`${maxHeight}px`}
+                                                maxWidth='100%'
+                                                width='100%'
+                                                height='100%'
+                                                border='0'
+                                                bgcolor='#202020'
+                                                justifyContent='center'
+                                                alignItems='center'
+                                            >
+                                                <CircularProgress sx={{ color: '#FFFFFF' }} size={30} />
+                                            </Box>
+                                        ) : (
+                                            <img
+                                                alt='Open photo'
+                                                style={{
+                                                    display: 'block',
+                                                    maxHeight: `${maxHeight}px`,
+                                                    maxWidth: '100%',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    border: 0,
+                                                    overflowClipMargin: 'content-box',
+                                                    overflow: 'clip',
+                                                }}
+                                                src={photoUrl}
+                                            />
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
