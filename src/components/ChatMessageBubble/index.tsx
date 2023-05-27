@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessagePhoto from '../ChatMessagePhoto'
 
@@ -49,6 +49,8 @@ interface Props {
     photoUrl?: string
     photoOrientation?: string
     text?: string
+    reactions?: string[]
+    reactionsCount?: number
 
     onClickPhoto(): void
 }
@@ -56,6 +58,10 @@ interface Props {
 export default function ChatMessageBubble(props: Props) {
 
     const [hovered, setHovered] = useState(false)
+
+    const hasReactions = useMemo(() =>
+            Boolean(props.reactionsCount && props.reactionsCount > 0) && Array.isArray(props.reactions) && props.reactions.length > 0,
+        [props.reactionsCount, props.reactions])
 
     const borderBottomLeftRadius = props.rhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
     const borderTopLeftRadius = props.rhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
@@ -202,6 +208,15 @@ export default function ChatMessageBubble(props: Props) {
                                 />
                             )}
                         </Box>
+                        {hasReactions && (
+                            <Box
+                                component='div'
+                                height='18px'
+                                width='100%'
+                                bgcolor='#000000'
+                                display='block'
+                            />
+                        )}
                     </Box>
                 )}
                 <Box
@@ -367,7 +382,153 @@ export default function ChatMessageBubble(props: Props) {
                                         flexGrow='1' />
                                 )}
                             </Box>
-                            <Wrapper flexGrow='0' />
+                            {hasReactions ? (
+                                <Box
+                                    component='div'
+                                    alignSelf='stretch'
+                                    flexDirection='column'
+                                    bgcolor='#000000'
+                                    display='flex'
+                                    alignItems='inherit'
+                                    flexGrow='0'
+                                    maxWidth='100%'
+                                    justifyContent='flex-end'
+                                >
+                                    <Box
+                                        component='div'
+                                        height='18px'
+                                        width='100%'
+                                        bgcolor='#000000'
+                                        display='flex'
+                                        textAlign={props.lhs ? 'left' : 'right'}
+                                        zIndex='1'
+                                        justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
+                                        position='relative'
+                                    >
+                                        <Box
+                                            component='div'
+                                            display='flex'
+                                            sx={{
+                                                transform: 'translateY(-6px)',
+                                            }}
+                                        >
+                                            <Box
+                                                component='div'
+                                                paddingLeft='0'
+                                                bgcolor='transparent'
+                                                paddingTop='0'
+                                                minWidth='0'
+                                                flexBasis='auto'
+                                                marginTop='0'
+                                                marginBottom='0'
+                                                boxSizing='border-box'
+                                                paddingRight='0'
+                                                display='inline-flex'
+                                                minHeight='0'
+                                                flexShrink='0'
+                                                alignItems='stretch'
+                                                flexDirection='row'
+                                                position='relative'
+                                                marginLeft='0'
+                                                zIndex='0'
+                                                paddingBottom='0'
+                                                textAlign='inherit'
+                                                marginRight='0'
+                                                sx={{
+                                                    borderRightStyle: 'solid',
+                                                    borderBottomColor: '#00000066',
+                                                    borderLeftWidth: '0',
+                                                    borderTopColor: '#00000066',
+                                                    touchAction: 'manipulation',
+                                                    borderRightWidth: '0',
+                                                    borderRightColor: '#00000066',
+                                                    borderTopWidth: '0',
+                                                    userSelect: 'none',
+                                                    borderTopRightRadius: 'inherit',
+                                                    borderLeftColor: '#00000066',
+                                                    borderLeftStyle: 'solid',
+                                                    cursor: 'pointer',
+                                                    outlineStyle: 'none',
+                                                    borderBottomWidth: '0',
+                                                    borderBottomStyle: 'solid',
+                                                    borderTopLeftRadius: 'inherit',
+                                                    borderBottomRightRadius: 'inherit',
+                                                    borderBottomLeftRadius: 'inherit',
+                                                    borderTopStyle: 'solid',
+                                                }}
+                                            >
+                                                <Box
+                                                    component='div'
+                                                    border='2px solid #000000'
+                                                    paddingRight='6px'
+                                                    lineHeight='1'
+                                                    justifyContent='center'
+                                                    boxSizing='border-box'
+                                                    display='flex'
+                                                    alignItems='center'
+                                                    flexDirection='row'
+                                                    bgcolor='#262626'
+                                                    height='22px'
+                                                    paddingLeft='6px'
+                                                    sx={{
+                                                        borderBottomRightRadius: '11px',
+                                                        borderBottomLeftRadius: '11px',
+                                                        borderTopRightRadius: '11px',
+                                                        boxShadow: 'none',
+                                                        borderTopLeftRadius: '11px',
+                                                    }}
+                                                >
+                                                    {props.reactions?.map(reaction => (
+                                                        <Box
+                                                            component='span'
+                                                            justifyContent='center'
+                                                            marginRight='2px'
+                                                            display='flex'
+                                                            alignItems='center'
+                                                            width='14px'
+                                                            textAlign='center'
+                                                            height='14px'
+                                                            fontSize='0.75rem'
+                                                            marginLeft='2px'
+                                                        >
+                                                            <Box
+                                                                component='span'
+                                                                textAlign='center'
+                                                                fontSize='0.75rem'
+                                                            >
+                                                                {reaction}
+                                                            </Box>
+                                                        </Box>
+                                                    ))}
+                                                    {props.reactionsCount > 1 && (
+                                                        <Box
+                                                            component='div'
+                                                            marginRight='2px'
+                                                            color='#F5F5F5'
+                                                            fontSize='0.875rem'
+                                                            marginLeft='2px'
+                                                            display='block'
+                                                        >
+                                                            {props.reactionsCount}
+                                                        </Box>
+                                                    )}
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                        {props.lhs && (
+                                            <Box
+                                                component='div'
+                                                flexShrink='1'
+                                                flexBasis='8px'
+                                                flexGrow='0'
+                                                display='block'
+                                            />
+                                        )}
+                                    </Box>
+                                </Box>
+                            ) : (
+                                <Wrapper flexGrow='0' />
+                            )}
                         </Box>
                     </Box>
                     <Box
@@ -394,6 +555,7 @@ export default function ChatMessageBubble(props: Props) {
                             sx={{
                                 ...props.lhs && { paddingLeft: '5px' },
                                 ...props.rhs && { paddingRight: '5px' },
+                                ...hasReactions && { paddingBottom: '18px' },
                             }}
                         >
                             <Box
