@@ -57,6 +57,11 @@ export default function ChatMessageBubble(props: Props) {
 
     const [hovered, setHovered] = useState(true)
 
+    const borderBottomLeftRadius = props.rhs || props.position === 'end' ? '18px' : '4px'
+    const borderTopLeftRadius = props.rhs || props.position === 'start' ? '18px' : '4px'
+    const borderBottomRightRadius = props.lhs || props.position === 'end' ? '18px' : '4px'
+    const borderTopRightRadius = props.lhs || props.position === 'start' ? '18px' : '4px'
+
     return (
         <Box
             component='div'
@@ -300,12 +305,12 @@ export default function ChatMessageBubble(props: Props) {
                                                 color='#FFFFFF'
                                                 display='block'
                                                 sx={{
-                                                    borderBottomRightRadius: '4px',
+                                                    borderBottomRightRadius: borderBottomRightRadius,
                                                     overflowX: 'hidden',
-                                                    borderBottomLeftRadius: '18px',
-                                                    borderTopLeftRadius: '18px',
+                                                    borderBottomLeftRadius: borderBottomLeftRadius,
+                                                    borderTopLeftRadius: borderTopLeftRadius,
                                                     overflowWrap: 'break-word',
-                                                    borderTopRightRadius: '18px',
+                                                    borderTopRightRadius: borderTopRightRadius,
                                                     wordBreak: 'break-word',
                                                     overflowY: 'hidden',
                                                 }}
