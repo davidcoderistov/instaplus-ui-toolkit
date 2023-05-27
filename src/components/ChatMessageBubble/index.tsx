@@ -39,7 +39,7 @@ const Wrapper = (props: { type?: 'wrap' | 'contain', flexGrow: string }) => {
 }
 
 interface Props {
-    position: 'start' | 'between' | 'end'
+    position: 'start' | 'between' | 'end' | 'solo'
     type: 'text' | 'photo'
     lhs?: true
     rhs?: true
@@ -57,10 +57,10 @@ export default function ChatMessageBubble(props: Props) {
 
     const [hovered, setHovered] = useState(false)
 
-    const borderBottomLeftRadius = props.rhs || props.position === 'end' ? '18px' : '4px'
-    const borderTopLeftRadius = props.rhs || props.position === 'start' ? '18px' : '4px'
-    const borderBottomRightRadius = props.lhs || props.position === 'end' ? '18px' : '4px'
-    const borderTopRightRadius = props.lhs || props.position === 'start' ? '18px' : '4px'
+    const borderBottomLeftRadius = props.rhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
+    const borderTopLeftRadius = props.rhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
+    const borderBottomRightRadius = props.lhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
+    const borderTopRightRadius = props.lhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
 
     const handleMouseEnter = useCallback(() => {
         setHovered(true)
