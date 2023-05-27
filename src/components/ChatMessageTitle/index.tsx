@@ -91,7 +91,9 @@ export default function ChatMessageTitle(props: Props) {
                                     wordBreak: 'break-word',
                                 }}
                             >
-                                {props.username}
+                                {props.reply ?
+                                    props.lhs ? `${props.username} replied to you` : props.rhs ? `You replied to ${props.username}` : null :
+                                    props.username}
                             </Box>
                         </Box>
                     </Box>
