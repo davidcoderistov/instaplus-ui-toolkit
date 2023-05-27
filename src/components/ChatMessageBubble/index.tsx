@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessagePhoto from '../ChatMessagePhoto'
 
@@ -55,17 +55,27 @@ interface Props {
 
 export default function ChatMessageBubble(props: Props) {
 
-    const [hovered, setHovered] = useState(true)
+    const [hovered, setHovered] = useState(false)
 
     const borderBottomLeftRadius = props.rhs || props.position === 'end' ? '18px' : '4px'
     const borderTopLeftRadius = props.rhs || props.position === 'start' ? '18px' : '4px'
     const borderBottomRightRadius = props.lhs || props.position === 'end' ? '18px' : '4px'
     const borderTopRightRadius = props.lhs || props.position === 'start' ? '18px' : '4px'
 
+    const handleMouseEnter = useCallback(() => {
+        setHovered(true)
+    }, [])
+
+    const handleMouseLeave = useCallback(() => {
+        setHovered(false)
+    }, [])
+
     return (
         <Box
             component='div'
             display='block'
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <Box
                 component='div'
