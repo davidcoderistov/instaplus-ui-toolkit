@@ -2,13 +2,14 @@ import Box from '@mui/material/Box'
 
 
 interface Props {
-    reply: string
+    empty?: true
     lhs?: true
     rhs?: true
-    empty?: true
+    username?: string
+    reply?: boolean
 }
 
-export default function ChatMessageReplyTo(props: Props) {
+export default function ChatMessageTitle(props: Props) {
 
     return (
         <Box
@@ -35,7 +36,7 @@ export default function ChatMessageReplyTo(props: Props) {
                         overflowY: 'hidden',
                     }}
                 >
-                    Reply
+                    Message title
                 </Box>
             ) : (
                 <Box
@@ -64,7 +65,8 @@ export default function ChatMessageReplyTo(props: Props) {
                             alignItems='center'
                             sx={{
                                 ...props.rhs && { paddingRight: '8px' },
-                                ...props.lhs && { paddingLeft: '8px' },
+                                ...props.lhs && { paddingLeft: props.reply ? '8px' : '12px' },
+                                ...props.lhs && !props.reply && { paddingBottom: '6px' },
                             }}
                         >
                             <Box
@@ -89,7 +91,7 @@ export default function ChatMessageReplyTo(props: Props) {
                                     wordBreak: 'break-word',
                                 }}
                             >
-                                {props.reply}
+                                {props.username}
                             </Box>
                         </Box>
                     </Box>
