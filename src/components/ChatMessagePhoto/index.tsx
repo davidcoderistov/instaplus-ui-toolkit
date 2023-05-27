@@ -9,6 +9,7 @@ interface LoadingProps {
     orientation?: never
     reply?: never
     isVideo?: never
+    borderRadius?: never
     onClick?: never
 }
 
@@ -18,19 +19,38 @@ interface StaticProps {
     orientation: 'portrait' | 'landscape'
     reply?: boolean
     isVideo?: boolean
+    borderRadius?: {
+        topLeft: string
+        bottomLeft: string
+        topRight: string
+        bottomRight: string
+    }
 
     onClick(): void
 }
 
 type Props = LoadingProps | StaticProps
 
-export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading, isVideo, onClick }: Props) {
+export default function ChatMessagePhoto({
+                                             photoUrl,
+                                             orientation,
+                                             reply,
+                                             loading,
+                                             isVideo,
+                                             borderRadius,
+                                             onClick,
+                                         }: Props) {
 
     const maxWidth = reply ? 141 : 236
     const maxHeight = reply ? 204 : 225
     const paddingBottom = orientation === 'portrait' ? 150 : 66.6667
     const aspectRatio = orientation === 'portrait' ? 320 / 480 : 600 / 400
     const width = aspectRatio * maxHeight
+
+    const borderBottomLeftRadius = reply || !borderRadius ? '18px' : borderRadius.bottomLeft
+    const borderTopLeftRadius = reply || !borderRadius ? '18px' : borderRadius.topLeft
+    const borderBottomRightRadius = reply || !borderRadius ? '18px' : borderRadius.bottomRight
+    const borderTopRightRadius = reply || !borderRadius ? '18px' : borderRadius.topRight
 
     return (
         <Box
@@ -62,10 +82,11 @@ export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading
                 textAlign='inherit'
                 marginRight='0'
                 sx={{
-                    borderBottomLeftRadius: '18px',
-                    borderTopLeftRadius: '18px',
+                    borderBottomLeftRadius: borderBottomLeftRadius,
+                    borderTopLeftRadius: borderTopLeftRadius,
+                    borderBottomRightRadius: borderBottomRightRadius,
+                    borderTopRightRadius: borderTopRightRadius,
                     borderRightStyle: 'solid',
-                    borderBottomRightRadius: '18px',
                     borderBottomColor: '#0000000d',
                     borderLeftWidth: '0',
                     paddingLeft: '0',
@@ -82,7 +103,6 @@ export default function ChatMessagePhoto({ photoUrl, orientation, reply, loading
                     outlineStyle: 'none',
                     borderBottomWidth: '0',
                     borderBottomStyle: 'solid',
-                    borderTopRightRadius: '18px',
                     borderTopStyle: 'solid',
                     overflowY: 'hidden',
                 }}

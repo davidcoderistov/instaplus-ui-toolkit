@@ -291,6 +291,12 @@ export default function ChatMessageBubble(props: Props) {
                                             <ChatMessagePhoto
                                                 photoUrl={props.photoUrl}
                                                 orientation={props.photoOrientation}
+                                                borderRadius={{
+                                                    topLeft: borderTopLeftRadius,
+                                                    bottomLeft: borderBottomLeftRadius,
+                                                    topRight: borderTopRightRadius,
+                                                    bottomRight: borderBottomRightRadius,
+                                                }}
                                                 onClick={props.onClickPhoto}
                                             />
                                         </Box>
