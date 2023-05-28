@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, MutableRefObject } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessagePhoto from '../ChatMessagePhoto'
 
@@ -57,6 +57,11 @@ interface Props {
         count: number
     }
     onClickPhoto: (message: Message) => void | null
+    emojiRef: MutableRefObject<Node | null>
+
+    onReact(): void
+
+    onReply(message: Message): void
 }
 
 export default function ChatMessageBubble(props: Props) {
@@ -89,6 +94,10 @@ export default function ChatMessageBubble(props: Props) {
     const handleMouseLeave = useCallback(() => {
         setHovered(false)
     }, [])
+
+    const handleClickReply = useCallback(() => {
+        props.onReply(props.message)
+    }, [props.onReply])
 
     return (
         <Box
@@ -593,6 +602,7 @@ export default function ChatMessageBubble(props: Props) {
                                             component='div'
                                         >
                                             <Box
+                                                ref={props.emojiRef}
                                                 component='div'
                                                 paddingBottom='8px'
                                                 paddingLeft='8px'
@@ -618,6 +628,7 @@ export default function ChatMessageBubble(props: Props) {
                                                     opacity: '0.568',
                                                     '&:hover': { opacity: 1 },
                                                 }}
+                                                onClick={props.onReact}
                                             >
                                                 <Box
                                                     display='flex'
@@ -670,6 +681,7 @@ export default function ChatMessageBubble(props: Props) {
                                                     opacity: '0.568',
                                                     '&:hover': { opacity: 1 },
                                                 }}
+                                                onClick={handleClickReply}
                                             >
                                                 <Box
                                                     display='flex'

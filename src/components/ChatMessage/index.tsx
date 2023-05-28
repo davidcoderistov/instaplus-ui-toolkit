@@ -1,8 +1,10 @@
-import { useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessageTitle from '../ChatMessageTitle'
 import ChatMessageReply from '../ChatMessageReply'
 import ChatMessageBubble from '../ChatMessageBubble'
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
+import { useClickOutside } from '../../hooks'
 
 
 interface Message {
@@ -27,6 +29,10 @@ interface Props {
     }
     onClickPhoto: (message: Message) => void | null
     onClickReplyPhoto: (message: Message) => void | null
+
+    onReact(emoji: string): void
+
+    onReply(message: Message): void
 }
 
 export default function ChatMessage(props: Props) {
@@ -40,6 +46,30 @@ export default function ChatMessage(props: Props) {
             props.onClickReplyPhoto(props.replyMessage)
         }
     }, [props.onClickReplyPhoto, props.replyMessage])
+
+    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
+
+    const emojiRef = useRef<Node | null>(null)
+    const emojiBtnRef = useRef<Node | null>(null)
+
+    useClickOutside(emojiRef, (target) => {
+        if (!emojiPickerOpen || (emojiPickerOpen && !emojiBtnRef.current?.contains(target))) {
+            setEmojiPickerOpen(false)
+        }
+    })
+
+    const handleOpenEmojiPicker = (event: React.MouseEvent) => {
+        setEmojiPickerOpen(emojiPickerOpen => !emojiPickerOpen)
+        event.stopPropagation()
+    }
+
+    const handlePickEmoji = useCallback(({ emoji }: EmojiClickData) => {
+        props.onReact(emoji)
+    }, [props.onReact])
+
+    const ForwardedChatMessageBubble = forwardRef((props, ref) => (
+        <ChatMessageBubble {...props} emojiRef={ref} />
+    ))
 
     return (
         <Box
@@ -92,12 +122,15 @@ export default function ChatMessage(props: Props) {
                             ) : null}
                         </>
                     )}
-                    <ChatMessageBubble
+                    <ForwardedChatMessageBubble
+                        ref={emojiBtnRef}
                         position={props.position}
                         lhs={props.lhs}
                         message={props.message}
                         reactions={props.reactions}
                         onClickPhoto={props.onClickPhoto}
+                        onReact={handleOpenEmojiPicker}
+                        onReply={props.onReply}
                     />
                     {(props.position === 'end' || props.position === 'solo') && (
                         <Box
@@ -108,6 +141,35 @@ export default function ChatMessage(props: Props) {
                             display='block'
                         />
                     )}
+                </Box>
+            </Box>
+            <Box
+                component='div'
+                position='absolute'
+                zIndex='100'
+                display={emojiPickerOpen ? 'flex' : 'none'}
+                justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
+                width='100%'
+                marginTop='2px'
+            >
+                <Box
+                    component='div'
+                    ref={emojiRef}
+                    sx={{
+                        ...props.lhs && { marginLeft: '50px' },
+                        ...!props.lhs && { marginRight: '16px' },
+                    }}
+                >
+                    <EmojiPicker
+                        theme='dark'
+                        emojiStyle='google'
+                        skinTonesDisabled
+                        searchDisabled
+                        previewConfig={{ showPreview: false }}
+                        height='340px'
+                        width='340px'
+                        onEmojiClick={handlePickEmoji}
+                    />
                 </Box>
             </Box>
         </Box>
