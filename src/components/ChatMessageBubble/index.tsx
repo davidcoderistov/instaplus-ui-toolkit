@@ -38,35 +38,43 @@ const Wrapper = (props: { type?: 'wrap' | 'contain', flexGrow: string }) => {
     )
 }
 
+interface Message {
+    id: string | number
+    creatorUsername: string
+    creatorPhotoUrl: string
+    text: string | null
+    photoUrl: string | null
+    photoOrientation: 'portrait' | 'landscape' | null
+    isVideo: boolean
+}
+
 interface Props {
     position: 'start' | 'between' | 'end' | 'solo'
-    type: 'text' | 'photo'
-    lhs?: true
-    rhs?: true
-    hasAvatar?: boolean
-    avatarUrl?: string
-    avatarMeta?: string
-    photoUrl?: string
-    photoOrientation?: string
-    text?: string
-    reactions?: string[]
-    reactionsCount?: number
-
-    onClickPhoto(): void
+    lhs: boolean
+    message: Message
+    reactions?: {
+        items: string[]
+        count: number
+    }
+    onClickPhoto: (message: Message) => void | null
 }
 
 export default function ChatMessageBubble(props: Props) {
 
     const [hovered, setHovered] = useState(false)
 
-    const hasReactions = useMemo(() =>
-            Boolean(props.reactionsCount && props.reactionsCount > 0) && Array.isArray(props.reactions) && props.reactions.length > 0,
-        [props.reactionsCount, props.reactions])
+    const lhs = useMemo(() => props.lhs, [props.lhs])
+    const rhs = useMemo(() => !props.lhs, [props.lhs])
 
-    const borderBottomLeftRadius = props.rhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
-    const borderTopLeftRadius = props.rhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
-    const borderBottomRightRadius = props.lhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
-    const borderTopRightRadius = props.lhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
+    const hasAvatar = useMemo(() =>
+        props.lhs && (props.position === 'end' || props.position === 'solo'), [props.lhs, props.position])
+    const hasReactions = useMemo(() =>
+        props.reactions ? (props.reactions.items.length > 0 && props.reactions.count > 0) : false, [props.reactions])
+
+    const borderBottomLeftRadius = rhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
+    const borderTopLeftRadius = rhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
+    const borderBottomRightRadius = lhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
+    const borderTopRightRadius = lhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
 
     const handleMouseEnter = useCallback(() => {
         setHovered(true)
@@ -87,7 +95,7 @@ export default function ChatMessageBubble(props: Props) {
                 component='div'
                 display='flex'
             >
-                {props.rhs && (
+                {rhs && (
                     <Box
                         component='div'
                         alignSelf='stretch'
@@ -102,7 +110,7 @@ export default function ChatMessageBubble(props: Props) {
                         justifyContent='flex-end'
                     />
                 )}
-                {props.lhs && (
+                {lhs && (
                     <Box
                         component='div'
                         alignSelf='stretch'
@@ -161,7 +169,7 @@ export default function ChatMessageBubble(props: Props) {
                                 borderTopStyle: 'solid',
                             }}
                         >
-                            {props.hasAvatar ? (
+                            {hasAvatar ? (
                                 <Box
                                     component='div'
                                     alignItems='flex-end'
@@ -196,8 +204,8 @@ export default function ChatMessageBubble(props: Props) {
                                             overflowClipMargin: 'content-box',
                                             overflow: 'clip',
                                         }}
-                                             src={props.avatarUrl}
-                                             alt={props.avatarMeta} />
+                                             src={props.message.creatorPhotoUrl}
+                                             alt={props.message.creatorUsername} />
                                     </Box>
                                 </Box>
                             ) : (
@@ -226,7 +234,7 @@ export default function ChatMessageBubble(props: Props) {
                     display='flex'
                     flexGrow='1'
                     sx={{
-                        ...props.rhs && { flexDirection: 'row-reverse' },
+                        ...rhs && { flexDirection: 'row-reverse' },
                     }}
                 >
                     <Box
@@ -269,7 +277,7 @@ export default function ChatMessageBubble(props: Props) {
                                 width='100%'
                                 display='flex'
                             >
-                                {props.rhs && (
+                                {rhs && (
                                     <Wrapper
                                         type='wrap'
                                         flexGrow='1' />
@@ -279,7 +287,7 @@ export default function ChatMessageBubble(props: Props) {
                                     flexDirection='column'
                                     display='flex'
                                     position='relative'
-                                    alignItems={props.lhs ? 'flex-start' : 'flex-end'}
+                                    alignItems={lhs ? 'flex-start' : 'flex-end'}
                                     maxWidth='100%'
                                 >
                                     {props.position !== 'start' && (
@@ -291,7 +299,7 @@ export default function ChatMessageBubble(props: Props) {
                                             display='block'
                                         />
                                     )}
-                                    {props.type === 'photo' ? (
+                                    {props.message.photoUrl && props.message.photoOrientation ? (
                                         <Box
                                             component='div'
                                             alignSelf='stretch'
@@ -304,8 +312,9 @@ export default function ChatMessageBubble(props: Props) {
                                             justifyContent='flex-end'
                                         >
                                             <ChatMessagePhoto
-                                                photoUrl={props.photoUrl}
-                                                orientation={props.photoOrientation}
+                                                photoUrl={props.message.photoUrl}
+                                                orientation={props.message.photoOrientation}
+                                                isVideo={props.message.isVideo}
                                                 borderRadius={{
                                                     topLeft: borderTopLeftRadius,
                                                     bottomLeft: borderBottomLeftRadius,
@@ -315,20 +324,20 @@ export default function ChatMessageBubble(props: Props) {
                                                 onClick={props.onClickPhoto}
                                             />
                                         </Box>
-                                    ) : (
+                                    ) : props.message.text ? (
                                         <Box
                                             component='div'
                                             width='100%'
                                             display='flex'
                                         >
-                                            {props.rhs && (
+                                            {rhs && (
                                                 <Wrapper
                                                     type='wrap'
                                                     flexGrow='1' />
                                             )}
                                             <Box
                                                 component='div'
-                                                bgcolor={props.rhs ? '#3797F0' : '#262626'}
+                                                bgcolor={rhs ? '#3797F0' : '#262626'}
                                                 padding='7px 12px'
                                                 zIndex='1'
                                                 maxWidth='564px'
@@ -358,25 +367,25 @@ export default function ChatMessageBubble(props: Props) {
                                                         fontSize='0.9375rem'
                                                         textAlign='left'
                                                         lineHeight='20px'
-                                                        color={props.rhs ? '#FFFFFF' : '#F5F5F5'}
+                                                        color={rhs ? '#FFFFFF' : '#F5F5F5'}
                                                         display='block'
                                                         sx={{
                                                             whiteSpace: 'pre-wrap',
                                                         }}
                                                     >
-                                                        {props.text}
+                                                        {props.message.text}
                                                     </Box>
                                                 </Box>
                                             </Box>
-                                            {props.lhs && (
+                                            {lhs && (
                                                 <Wrapper
                                                     type='wrap'
                                                     flexGrow='1' />
                                             )}
                                         </Box>
-                                    )}
+                                    ) : null}
                                 </Box>
-                                {props.lhs && (
+                                {lhs && (
                                     <Wrapper
                                         type='wrap'
                                         flexGrow='1' />
@@ -400,9 +409,9 @@ export default function ChatMessageBubble(props: Props) {
                                         width='100%'
                                         bgcolor='#000000'
                                         display='flex'
-                                        textAlign={props.lhs ? 'left' : 'right'}
+                                        textAlign={lhs ? 'left' : 'right'}
                                         zIndex='1'
-                                        justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
+                                        justifyContent={lhs ? 'flex-start' : 'flex-end'}
                                         position='relative'
                                     >
                                         <Box
@@ -478,8 +487,9 @@ export default function ChatMessageBubble(props: Props) {
                                                         borderTopLeftRadius: '11px',
                                                     }}
                                                 >
-                                                    {props.reactions?.map(reaction => (
+                                                    {props.reactions?.items.map((reaction, index) => (
                                                         <Box
+                                                            key={index}
                                                             component='span'
                                                             justifyContent='center'
                                                             marginRight='2px'
@@ -500,7 +510,7 @@ export default function ChatMessageBubble(props: Props) {
                                                             </Box>
                                                         </Box>
                                                     ))}
-                                                    {props.reactionsCount > 1 && (
+                                                    {props.reactions?.count > 1 && (
                                                         <Box
                                                             component='div'
                                                             marginRight='2px'
@@ -509,13 +519,13 @@ export default function ChatMessageBubble(props: Props) {
                                                             marginLeft='2px'
                                                             display='block'
                                                         >
-                                                            {props.reactionsCount}
+                                                            {props.reactions?.count}
                                                         </Box>
                                                     )}
                                                 </Box>
                                             </Box>
                                         </Box>
-                                        {props.lhs && (
+                                        {lhs && (
                                             <Box
                                                 component='div'
                                                 flexShrink='1'
@@ -553,8 +563,8 @@ export default function ChatMessageBubble(props: Props) {
                             width='96px'
                             flexGrow='1'
                             sx={{
-                                ...props.lhs && { paddingLeft: '5px' },
-                                ...props.rhs && { paddingRight: '5px' },
+                                ...lhs && { paddingLeft: '5px' },
+                                ...rhs && { paddingRight: '5px' },
                                 ...hasReactions && { paddingBottom: '18px' },
                             }}
                         >
@@ -562,7 +572,7 @@ export default function ChatMessageBubble(props: Props) {
                                 component='div'
                                 display='flex'
                                 alignItems='center'
-                                flexDirection={props.lhs ? 'row' : 'row-reverse'}
+                                flexDirection={lhs ? 'row' : 'row-reverse'}
                                 width='96px'
                             >
                                 {hovered && (
@@ -570,7 +580,7 @@ export default function ChatMessageBubble(props: Props) {
                                         component='div'
                                         display='flex'
                                         alignItems='center'
-                                        flexDirection={props.lhs ? 'row' : 'row-reverse'}
+                                        flexDirection={lhs ? 'row' : 'row-reverse'}
                                         width='96px'
                                     >
                                         <Box

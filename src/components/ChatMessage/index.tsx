@@ -6,13 +6,13 @@ import ChatMessageBubble from '../ChatMessageBubble'
 
 
 interface Message {
+    id: string | number
     creatorUsername: string
     creatorPhotoUrl: string
     text: string | null
     photoUrl: string | null
     photoOrientation: 'portrait' | 'landscape' | null
     isVideo: boolean
-    onClickPhoto: () => void | null
 }
 
 interface Props {
@@ -21,8 +21,12 @@ interface Props {
     lhs: boolean
     message: Message
     replyMessage: Message | null
-    reactions?: string[]
-    reactionsCount?: number
+    reactions?: {
+        items: string[]
+        count: number
+    }
+    onClickPhoto: (message: Message) => void | null
+    onClickReplyPhoto: (message: Message) => void | null
 }
 
 export default function ChatMessage(props: Props) {
@@ -70,32 +74,24 @@ export default function ChatMessage(props: Props) {
                                     lhs={props.lhs}
                                     rhs={!props.lhs}
                                     message={props.replyMessage.text} />
-                            ) : props.replyMessage.photoUrl ? (
+                            ) : props.replyMessage.photoUrl && props.replyMessage.photoOrientation ? (
                                 <ChatMessageReply
                                     lhs={props.lhs}
                                     rhs={!props.lhs}
                                     photoUrl={props.replyMessage.photoUrl}
                                     orientation={props.replyMessage.photoOrientation}
                                     isVideo={props.replyMessage.isVideo}
-                                    onClick={props.replyMessage.onClickPhoto}
+                                    onClick={props.onClickReplyPhoto}
                                 />
                             ) : null}
                         </>
                     )}
                     <ChatMessageBubble
                         position={props.position}
-                        type={props.message.text ? 'text' : 'photo'}
                         lhs={props.lhs}
-                        rhs={!props.lhs}
-                        hasAvatar={props.lhs && (props.position === 'end' || props.position === 'solo')}
-                        avatarUsername={props.message.creatorUsername}
-                        avatarUrl={props.message.creatorPhotoUrl}
-                        text={props.message.text || undefined}
-                        photoUrl={props.message.photoUrl || undefined}
-                        photoOrientation={props.message.photoOrientation || undefined}
-                        onClickPhoto={props.message.onClickPhoto || undefined}
+                        message={props.message}
                         reactions={props.reactions}
-                        reactionsCount={props.reactionsCount}
+                        onClickPhoto={props.onClickPhoto}
                     />
                     {(props.position === 'end' || props.position === 'solo') && (
                         <Box
