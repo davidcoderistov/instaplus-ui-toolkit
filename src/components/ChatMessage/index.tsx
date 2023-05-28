@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessageTitle from '../ChatMessageTitle'
 import ChatMessageReply from '../ChatMessageReply'
@@ -34,6 +34,12 @@ export default function ChatMessage(props: Props) {
     const showMessageTitle = useMemo(() =>
             !((props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.replyMessage),
         [props.type, props.position, props.replyMessage])
+
+    const handleClickReplyPhoto = useCallback(() => {
+        if (props.onClickReplyPhoto && props.replyMessage) {
+            props.onClickReplyPhoto(props.replyMessage)
+        }
+    }, [props.onClickReplyPhoto, props.replyMessage])
 
     return (
         <Box
@@ -81,7 +87,7 @@ export default function ChatMessage(props: Props) {
                                     photoUrl={props.replyMessage.photoUrl}
                                     orientation={props.replyMessage.photoOrientation}
                                     isVideo={props.replyMessage.isVideo}
-                                    onClick={props.onClickReplyPhoto}
+                                    onClick={handleClickReplyPhoto}
                                 />
                             ) : null}
                         </>

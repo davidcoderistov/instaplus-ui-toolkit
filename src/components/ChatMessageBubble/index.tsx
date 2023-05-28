@@ -76,6 +76,12 @@ export default function ChatMessageBubble(props: Props) {
     const borderBottomRightRadius = lhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
     const borderTopRightRadius = lhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
 
+    const handleClickPhoto = useCallback(() => {
+        if (props.onClickPhoto) {
+            props.onClickPhoto(props.message)
+        }
+    }, [props.message, props.onClickPhoto])
+
     const handleMouseEnter = useCallback(() => {
         setHovered(true)
     }, [])
@@ -321,7 +327,7 @@ export default function ChatMessageBubble(props: Props) {
                                                     topRight: borderTopRightRadius,
                                                     bottomRight: borderBottomRightRadius,
                                                 }}
-                                                onClick={props.onClickPhoto}
+                                                onClick={handleClickPhoto}
                                             />
                                         </Box>
                                     ) : props.message.text ? (
