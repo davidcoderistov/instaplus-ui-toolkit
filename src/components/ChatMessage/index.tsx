@@ -65,6 +65,7 @@ export default function ChatMessage(props: Props) {
 
     const handlePickEmoji = useCallback(({ emoji }: EmojiClickData) => {
         props.onReact(emoji)
+        setEmojiPickerOpen(false)
     }, [props.onReact])
 
     const ForwardedChatMessageBubble = forwardRef((props, ref) => (
