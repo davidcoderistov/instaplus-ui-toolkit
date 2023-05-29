@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
+import ChatAvatar from '../ChatAvatar'
 
 
 interface Props {
@@ -117,114 +118,11 @@ export default function ChatHeader(props: Props) {
                             }}
                             onClick={props.onClickChatMembers}
                         >
-                            <Box
-                                component='div'
-                                height='44px'
-                                width='44px'
-                                position='relative'
-                                display='block'
-                            >
-                                {props.photoUrls.length > 1 ? (
-                                    <>
-                                        <Box
-                                            component='span'
-                                            height='32px'
-                                            width='32px'
-                                            position='relative'
-                                            display='block'
-                                            sx={{
-                                                borderBottomLeftRadius: '50%',
-                                                borderTopRightRadius: '50%',
-                                                overflowX: 'hidden',
-                                                borderBottomRightRadius: '50%',
-                                                borderTopLeftRadius: '50%',
-                                                overflowY: 'hidden',
-                                            }}
-                                        >
-                                            <img
-                                                style={{
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    border: '0',
-                                                }}
-                                                alt='User avatar'
-                                                height='32'
-                                                src={props.photoUrls[0]}
-                                                width='32' />
-                                        </Box>
-                                        <Box
-                                            component='div'
-                                            bgcolor='#000000'
-                                            right='0'
-                                            paddingTop='1px'
-                                            paddingLeft='1px'
-                                            paddingBottom='1px'
-                                            bottom='0'
-                                            paddingRight='1px'
-                                            position='absolute'
-                                            display='block'
-                                            sx={{
-                                                borderBottomLeftRadius: '50%',
-                                                borderTopRightRadius: '50%',
-                                                borderBottomRightRadius: '50%',
-                                                borderTopLeftRadius: '50%',
-                                            }}
-                                        >
-                                            <Box
-                                                component='span'
-                                                height='32px'
-                                                width='32px'
-                                                position='relative'
-                                                display='block'
-                                                sx={{
-                                                    borderBottomLeftRadius: '50%',
-                                                    borderTopRightRadius: '50%',
-                                                    overflowX: 'hidden',
-                                                    borderBottomRightRadius: '50%',
-                                                    borderTopLeftRadius: '50%',
-                                                    overflowY: 'hidden',
-                                                }}
-                                            >
-                                                <img
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
-                                                        border: '0',
-                                                    }}
-                                                    alt='User avatar'
-                                                    className='x5yr21d xh8yej3'
-                                                    height='32'
-                                                    src={props.photoUrls[1]}
-                                                    width='32' />
-                                            </Box>
-                                        </Box>
-                                    </>
-                                ) : props.photoUrls.length > 0 ? (
-                                    <Box
-                                        component='span'
-                                        height='44px'
-                                        width='44px'
-                                        position='relative'
-                                        display='block'
-                                        sx={{
-                                            borderBottomLeftRadius: '50%',
-                                            borderTopRightRadius: '50%',
-                                            overflowX: 'hidden',
-                                            borderBottomRightRadius: '50%',
-                                            borderTopLeftRadius: '50%',
-                                            overflowY: 'hidden',
-                                        }}
-                                    >
-                                        <img
-                                            alt='User avatar'
-                                            style={{ width: '100%', height: '100%' }}
-                                            height='44'
-                                            src={props.photoUrls[0]}
-                                            width='44' />
-                                    </Box>
-                                ) : null}
-
-                            </Box>
+                            <ChatAvatar
+                                photoUrls={props.photoUrls}
+                                containerSize={44}
+                                avatarSize={props.photoUrls.length > 1 ? 32 : 44}
+                                dense />
                         </Box>
                     </Box>
                     <Box
