@@ -61,7 +61,6 @@ export default function ChatMessageList(props: Props) {
                 component='div'
                 bgcolor='#000000'
                 borderRight='1px solid #262626'
-                width='max-content'
                 flexDirection='column'
                 boxSizing='border-box'
                 display='flex'
