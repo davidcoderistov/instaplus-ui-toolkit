@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
+import ChatAvatar from '../ChatAvatar'
 
 
 interface StaticProps {
@@ -70,99 +71,17 @@ export default function ChatMessageListItem(props: Props) {
                 component='div'
                 flex='0 0 68px'
             >
-                <Box
-                    component='div'
-                    height='56px'
-                    width='56px'
-                    position='relative'
-                    display='block'
-                >
-                    {props.loading ? (
-                        <Skeleton
-                            variant='circular'
-                            width={56}
-                            height={56}
-                            sx={{ backgroundColor: '#202020' }} />
-                    ) : (
-                        <>
-                            {props.photoUrls.length > 0 && (
-                                <Box
-                                    component='span'
-                                    height={props.photoUrls.length > 1 ? '40px' : '56px'}
-                                    width={props.photoUrls.length > 1 ? '40px' : '56px'}
-                                    position='relative'
-                                    display='block'
-
-                                    sx={{
-                                        borderBottomLeftRadius: '50%',
-                                        borderTopRightRadius: '50%',
-                                        overflowX: 'hidden',
-                                        borderBottomRightRadius: '50%',
-                                        borderTopLeftRadius: '50%',
-                                        overflowY: 'hidden',
-                                    }}
-                                >
-                                    <img alt='User avatar'
-                                         style={{
-                                             height: '100%',
-                                             width: '100%',
-                                             border: '0',
-                                         }}
-                                         height={props.photoUrls.length > 1 ? '40' : '56'}
-                                         src={props.photoUrls[0]}
-                                         width={props.photoUrls.length > 1 ? '40' : '56'} />
-                                </Box>
-                            )}
-                            {props.photoUrls.length > 1 && (
-                                <Box
-                                    component='div'
-                                    bgcolor='#000000'
-                                    paddingRight='2px'
-                                    right='0'
-                                    paddingTop='2px'
-                                    paddingLeft='2px'
-                                    bottom='0'
-                                    paddingBottom='2px'
-                                    position='absolute'
-                                    display='block'
-                                    sx={{
-                                        borderBottomLeftRadius: '50%',
-                                        borderTopRightRadius: '50%',
-                                        borderBottomRightRadius: '50%',
-                                        borderTopLeftRadius: '50%',
-                                    }}
-                                >
-                                    <Box
-                                        component='span'
-                                        height='40px'
-                                        width='40px'
-                                        position='relative'
-                                        display='block'
-
-                                        sx={{
-                                            borderBottomLeftRadius: '50%',
-                                            borderTopRightRadius: '50%',
-                                            overflowX: 'hidden',
-                                            borderBottomRightRadius: '50%',
-                                            borderTopLeftRadius: '50%',
-                                            overflowY: 'hidden',
-                                        }}
-                                    >
-                                        <img alt='User avatar'
-                                             style={{
-                                                 height: '100%',
-                                                 width: '100%',
-                                                 border: '0',
-                                             }}
-                                             height='40'
-                                             src={props.photoUrls[1]}
-                                             width='40' />
-                                    </Box>
-                                </Box>
-                            )}
-                        </>
-                    )}
-                </Box>
+                {props.loading ? (
+                    <ChatAvatar
+                        containerSize={56}
+                        loading />
+                ) : (
+                    <ChatAvatar
+                        photoUrls={props.photoUrls}
+                        containerSize={56}
+                        avatarSize={props.photoUrls.length > 1 ? 40 : 56}
+                    />
+                )}
             </Box>
             <Box
                 component='div'
