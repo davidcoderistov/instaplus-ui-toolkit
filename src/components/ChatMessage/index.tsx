@@ -144,35 +144,37 @@ export default function ChatMessage(props: Props) {
                     )}
                 </Box>
             </Box>
-            <Box
-                component='div'
-                position='absolute'
-                zIndex='100'
-                display={emojiPickerOpen ? 'flex' : 'none'}
-                justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
-                width='100%'
-                marginTop='2px'
-            >
+            {emojiPickerOpen && (
                 <Box
                     component='div'
-                    ref={emojiRef}
-                    sx={{
-                        ...props.lhs && { marginLeft: '50px' },
-                        ...!props.lhs && { marginRight: '16px' },
-                    }}
+                    position='absolute'
+                    zIndex='100'
+                    display='flex'
+                    justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
+                    width='100%'
+                    marginTop='2px'
                 >
-                    <EmojiPicker
-                        theme='dark'
-                        emojiStyle='google'
-                        skinTonesDisabled
-                        searchDisabled
-                        previewConfig={{ showPreview: false }}
-                        height='340px'
-                        width='340px'
-                        onEmojiClick={handlePickEmoji}
-                    />
+                    <Box
+                        component='div'
+                        ref={emojiRef}
+                        sx={{
+                            ...props.lhs && { marginLeft: '50px' },
+                            ...!props.lhs && { marginRight: '16px' },
+                        }}
+                    >
+                        <EmojiPicker
+                            theme='dark'
+                            emojiStyle='google'
+                            skinTonesDisabled
+                            searchDisabled
+                            previewConfig={{ showPreview: false }}
+                            height='340px'
+                            width='340px'
+                            onEmojiClick={handlePickEmoji}
+                        />
+                    </Box>
                 </Box>
-            </Box>
+            )}
         </Box>
     )
 }
