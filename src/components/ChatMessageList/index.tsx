@@ -66,7 +66,7 @@ export default function ChatMessageList(props: Props) {
                 boxSizing='border-box'
                 display='flex'
                 top='0'
-                maxWidth='398px'
+                width='398px'
                 sx={{
                     ...mw900 && {
                         minHeight: '100%',
