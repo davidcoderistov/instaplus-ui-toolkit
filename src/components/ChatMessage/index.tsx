@@ -35,6 +35,10 @@ interface Props {
     onReply(message: Message): void
 }
 
+const ForwardedChatMessageBubble = forwardRef((props, ref) => (
+    <ChatMessageBubble {...props} emojiRef={ref} />
+))
+
 export default function ChatMessage(props: Props) {
 
     const showMessageTitle = useMemo(() =>
@@ -67,10 +71,6 @@ export default function ChatMessage(props: Props) {
         props.onReact(emoji)
         setEmojiPickerOpen(false)
     }, [props.onReact])
-
-    const ForwardedChatMessageBubble = forwardRef((props, ref) => (
-        <ChatMessageBubble {...props} emojiRef={ref} />
-    ))
 
     return (
         <Box
