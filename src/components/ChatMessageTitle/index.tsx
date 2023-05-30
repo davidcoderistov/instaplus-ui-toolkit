@@ -65,10 +65,10 @@ export default function ChatMessageTitle(props: Props) {
                             paddingTop='10px'
                             display='flex'
                             alignItems='center'
+                            paddingBottom='6px'
                             sx={{
                                 ...props.rhs && { paddingRight: '8px' },
                                 ...props.lhs && { paddingLeft: props.reply ? '8px' : '12px' },
-                                ...props.lhs && !props.reply && { paddingBottom: '6px' },
                             }}
                         >
                             <Box
