@@ -1,5 +1,7 @@
+import { useRef, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Button from '../Button'
+import { useSnackbar } from 'notistack'
 
 
 interface Props {
@@ -14,6 +16,26 @@ interface Props {
 }
 
 export default function ChatFooterAction(props: Props) {
+
+    const { enqueueSnackbar } = useSnackbar()
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+    const handleChangeFile = useCallback((event) => {
+        const file: File | null = event.target.files[0]
+        if (file && (file.type.startsWith('image/') || file.type.startsWith('video/'))) {
+            props.onUploadFile(file)
+        } else {
+            enqueueSnackbar('You can upload photos and videos only', {
+                variant: 'error', anchorOrigin: { horizontal: 'right', vertical: 'bottom' }, autoHideDuration: 3000,
+            })
+        }
+        event.target.value = null
+    }, [props.onUploadFile, enqueueSnackbar])
+
+    const handleClickUploadFile = () => {
+        fileInputRef.current?.click()
+    }
 
     return props.isTyping ? (
         <Button
@@ -55,6 +77,7 @@ export default function ChatFooterAction(props: Props) {
                         borderBottom: '0',
                         borderTop: '0',
                     }}
+                    onClick={handleClickUploadFile}
                 >
                     <Box
                         component='div'
@@ -63,6 +86,13 @@ export default function ChatFooterAction(props: Props) {
                         display='flex'
                         alignItems='center'
                     >
+                        <input
+                            ref={fileInputRef}
+                            type='file'
+                            accept='image/*,video/*'
+                            onChange={handleChangeFile}
+                            style={{ display: 'none' }}
+                        />
                         <svg
                             aria-label='Add Photo or Video'
                             style={{
