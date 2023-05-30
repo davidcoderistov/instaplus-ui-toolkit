@@ -364,7 +364,7 @@ export default function ChatMessageList(props: Props) {
                                     sx={{
                                         overflowX: 'hidden',
                                         overflowAnchor: 'none',
-                                        overflowY: props.loading ? 'hidden' : 'auto',
+                                        overflowY: props.loading ? 'hidden' : 'scroll',
                                     }}
                                 >
                                     {props.loading ? (
