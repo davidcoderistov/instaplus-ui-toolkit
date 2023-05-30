@@ -25,6 +25,7 @@ export default function ChatFooter({ isReplying, onSendMessage, onSendLike, onUp
 
     const handleSendMessage = useCallback(() => {
         onSendMessage(message)
+        setMessage('')
     }, [message, onSendMessage])
 
     return (
@@ -68,7 +69,8 @@ export default function ChatFooter({ isReplying, onSendMessage, onSendLike, onUp
                     onPickEmoji={handlePickEmoji} />
                 <ChatFooterTextInput
                     message={message}
-                    onChange={setMessage} />
+                    onChange={setMessage}
+                    onSendMessage={handleSendMessage} />
                 <ChatFooterActions
                     isTyping={message.length > 0}
                     isReplying={isReplying}

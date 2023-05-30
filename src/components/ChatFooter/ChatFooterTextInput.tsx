@@ -7,13 +7,21 @@ interface Props {
     message: string
 
     onChange(message: string): void
+
+    onSendMessage(): void
 }
 
-export default function ChatFooterTextInput({ message, onChange }: Props) {
+export default function ChatFooterTextInput({ message, onChange, onSendMessage }: Props) {
 
     const handleChangeMessage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value)
     }, [onChange])
+
+    const handleKeyPress = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.code === 'Enter') {
+            onSendMessage()
+        }
+    }, [onSendMessage])
 
     return (
         <Box
@@ -48,6 +56,7 @@ export default function ChatFooterTextInput({ message, onChange }: Props) {
                 <InputBase
                     value={message}
                     onChange={handleChangeMessage}
+                    onKeyPress={handleKeyPress}
                     sx={{
                         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
                             display: 'none',
