@@ -143,7 +143,7 @@ export default function ChatMessageListItem(props: Props) {
                     </Box>
                     <Box
                         component='div'
-                        height='8px'
+                        height='5px'
                         display='block' />
                     <Box
                         component='div'
