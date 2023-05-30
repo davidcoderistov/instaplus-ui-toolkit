@@ -32,25 +32,27 @@ const ChatFooterEmojiPicker = React.memo(({ onPickEmoji }: Props) => {
 
     return (
         <>
-            <Box
-                ref={emojiRef}
-                component='div'
-                display={emojiPickerOpen ? 'inline-block' : 'none'}
-                position='absolute'
-                zIndex='1'
-                bottom='70px'
-            >
-                <EmojiPicker
-                    theme='dark'
-                    emojiStyle='google'
-                    skinTonesDisabled
-                    searchDisabled
-                    previewConfig={{ showPreview: false }}
-                    height='340px'
-                    width='340px'
-                    onEmojiClick={handlePickEmoji}
-                />
-            </Box>
+            {emojiPickerOpen && (
+                <Box
+                    ref={emojiRef}
+                    component='div'
+                    display='inline-block'
+                    position='absolute'
+                    zIndex='1'
+                    bottom='70px'
+                >
+                    <EmojiPicker
+                        theme='dark'
+                        emojiStyle='google'
+                        skinTonesDisabled
+                        searchDisabled
+                        previewConfig={{ showPreview: false }}
+                        height='340px'
+                        width='340px'
+                        onEmojiClick={handlePickEmoji}
+                    />
+                </Box>
+            )}
             <Box
                 ref={emojiBtnRef}
                 component='div'
