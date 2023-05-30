@@ -8,7 +8,7 @@ export default function ChatLoadingSkeleton() {
         <Box
             component='div'
             flexShrink='1'
-            minWidth='0'
+            minWidth='425px'
             flexDirection='column'
             boxSizing='border-box'
             display='flex'

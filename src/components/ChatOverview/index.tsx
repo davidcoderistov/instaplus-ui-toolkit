@@ -12,7 +12,7 @@ export default function ChatOverview(props: Props) {
         <Box
             component='div'
             flexShrink='1'
-            minWidth='0'
+            minWidth='317px'
             flexDirection='column'
             boxSizing='border-box'
             display='flex'
