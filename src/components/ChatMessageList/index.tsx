@@ -65,14 +65,10 @@ export default function ChatMessageList(props: Props) {
                 boxSizing='border-box'
                 display='flex'
                 top='0'
-                width='398px'
-                sx={{
-                    ...mw900 && {
-                        minHeight: '100%',
-                        maxHeight: '0',
-                        position: 'relative',
-                    },
-                }}
+                width={mw900 ? '398px' : '116px'}
+                minHeight='100%'
+                maxHeight='0'
+                position='relative'
             >
                 <Box
                     component='div'
@@ -91,86 +87,88 @@ export default function ChatMessageList(props: Props) {
                     flexDirection='row'
                     borderBottom='0'
                 >
-                    <Box
-                        component='div'
-                        flexShrink='1'
-                        paddingLeft='0'
-                        bgcolor='transparent'
-                        paddingTop='0'
-                        minWidth='0'
-                        marginTop='0'
-                        borderLeft='0'
-                        marginBottom='0'
-                        boxSizing='border-box'
-                        display='flex'
-                        alignItems='center'
-                        paddingRight='0'
-                        marginLeft='0'
-                        borderRight='0'
-                        paddingBottom='0'
-                        textAlign='inherit'
-                        marginRight='0'
-                        borderBottom='0'
-                        borderTop='0'
-                        sx={{
-                            touchAction: 'manipulation',
-                            cursor: props.loading ? 'default' : 'pointer',
-                            listStyle: 'none',
-                            textDecoration: 'none',
-                            outline: 'none',
-                        }}
-                    >
+                    {mw900 && (
                         <Box
                             component='div'
+                            flexShrink='1'
+                            paddingLeft='0'
+                            bgcolor='transparent'
+                            paddingTop='0'
+                            minWidth='0'
+                            marginTop='0'
+                            borderLeft='0'
+                            marginBottom='0'
+                            boxSizing='border-box'
                             display='flex'
                             alignItems='center'
-                            flexDirection='row'
-                            height='30px'
+                            paddingRight='0'
+                            marginLeft='0'
+                            borderRight='0'
+                            paddingBottom='0'
+                            textAlign='inherit'
+                            marginRight='0'
+                            borderBottom='0'
+                            borderTop='0'
                             sx={{
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                overflowX: 'hidden',
-                                overflowY: 'hidden',
+                                touchAction: 'manipulation',
+                                cursor: props.loading ? 'default' : 'pointer',
+                                listStyle: 'none',
+                                textDecoration: 'none',
+                                outline: 'none',
                             }}
                         >
                             <Box
-                                component='span'
-                                minWidth='0'
-                                marginBottom='0!important'
-                                color='#F5F5F5'
-                                fontWeight='700'
-                                marginRight='0!important'
-                                position='relative'
-                                fontSize='20px'
-                                display='block'
-                                maxWidth='100%'
-                                marginLeft='0!important'
-                                marginTop='0!important'
+                                component='div'
+                                display='flex'
+                                alignItems='center'
+                                flexDirection='row'
+                                height='30px'
                                 sx={{
-                                    lineHeight: '25px',
-                                    overflowY: 'visible',
-                                    wordWrap: 'break-word',
-                                    overflowX: 'visible',
-                                    whiteSpace: 'pre-line',
-                                    wordBreak: 'break-word',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                    overflowX: 'hidden',
+                                    overflowY: 'hidden',
                                 }}
                             >
                                 <Box
                                     component='span'
+                                    minWidth='0'
+                                    marginBottom='0!important'
+                                    color='#F5F5F5'
+                                    fontWeight='700'
+                                    marginRight='0!important'
+                                    position='relative'
+                                    fontSize='20px'
                                     display='block'
                                     maxWidth='100%'
+                                    marginLeft='0!important'
+                                    marginTop='0!important'
                                     sx={{
-                                        whiteSpace: 'nowrap',
-                                        textOverflow: 'ellipsis',
-                                        overflowX: 'hidden',
-                                        overflowY: 'hidden',
+                                        lineHeight: '25px',
+                                        overflowY: 'visible',
+                                        wordWrap: 'break-word',
+                                        overflowX: 'visible',
+                                        whiteSpace: 'pre-line',
+                                        wordBreak: 'break-word',
                                     }}
                                 >
-                                    {!props.loading && props.chatName}
+                                    <Box
+                                        component='span'
+                                        display='block'
+                                        maxWidth='100%'
+                                        sx={{
+                                            whiteSpace: 'nowrap',
+                                            textOverflow: 'ellipsis',
+                                            overflowX: 'hidden',
+                                            overflowY: 'hidden',
+                                        }}
+                                    >
+                                        {!props.loading && props.chatName}
+                                    </Box>
                                 </Box>
                             </Box>
                         </Box>
-                    </Box>
+                    )}
                     <Box
                         component='div'
                         display='flex'
@@ -300,7 +298,7 @@ export default function ChatMessageList(props: Props) {
                                 wordBreak: 'break-word',
                             }}
                         >
-                            {!props.loading && 'Messages'}
+                            {!props.loading && mw900 && 'Messages'}
                         </Box>
                     </Box>
                 </Box>
