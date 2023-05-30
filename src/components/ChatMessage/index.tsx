@@ -84,10 +84,12 @@ export default function ChatMessage(props: Props) {
                         />
                     )}
                     <ChatMessageTitle
+                        type={props.type}
                         empty={showMessageTitle}
                         lhs={props.lhs}
                         rhs={!props.lhs}
-                        username={props.message.reply ? props.message.reply.creatorUsername : props.message.creatorUsername}
+                        username={props.message.creatorUsername}
+                        replyUsername={props.message.reply?.creatorUsername}
                         reply={!!props.message.reply}
                     />
                     {props.message.reply && (

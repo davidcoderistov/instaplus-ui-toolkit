@@ -2,10 +2,12 @@ import Box from '@mui/material/Box'
 
 
 interface Props {
+    type: 'single' | 'group'
     empty?: true
     lhs?: true
     rhs?: true
     username?: string
+    replyUsername?: string
     reply?: boolean
 }
 
@@ -92,7 +94,7 @@ export default function ChatMessageTitle(props: Props) {
                                 }}
                             >
                                 {props.reply ?
-                                    props.lhs ? `${props.username} replied to you` : props.rhs ? `You replied to ${props.username}` : null :
+                                    props.lhs ? `${props.username} replied to ${props.type === 'group' ? props.replyUsername : 'you'}` : props.rhs ? `You replied to ${props.username}` : null :
                                     props.username}
                             </Box>
                         </Box>
