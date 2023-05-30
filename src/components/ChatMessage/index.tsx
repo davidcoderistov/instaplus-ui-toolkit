@@ -88,8 +88,8 @@ export default function ChatMessage(props: Props) {
                         empty={showMessageTitle}
                         lhs={props.lhs}
                         rhs={!props.lhs}
-                        username={props.message.creatorUsername}
-                        replyUsername={props.message.reply?.creatorUsername}
+                        username={props.message.creator.username}
+                        replyUsername={props.message.reply?.creator.username}
                         reply={!!props.message.reply}
                     />
                     {props.message.reply && (

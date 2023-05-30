@@ -208,8 +208,8 @@ export default function ChatMessageBubble(props: Props) {
                                             overflowClipMargin: 'content-box',
                                             overflow: 'clip',
                                         }}
-                                             src={props.message.creatorPhotoUrl}
-                                             alt={props.message.creatorUsername} />
+                                             src={props.message.creator.photoUrl}
+                                             alt={props.message.creator.username} />
                                     </Box>
                                 </Box>
                             ) : (
