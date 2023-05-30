@@ -12,6 +12,7 @@ interface Props {
     type: 'single' | 'group'
     position: 'start' | 'between' | 'end' | 'solo'
     lhs: boolean
+    authUserId: string | number
     message: Message
     onClickPhoto: (message: Message) => void | null
     onClickReplyPhoto: (message: ReplyMessage) => void | null
@@ -88,8 +89,9 @@ export default function ChatMessage(props: Props) {
                         empty={showMessageTitle}
                         lhs={props.lhs}
                         rhs={!props.lhs}
-                        username={props.message.creator.username}
-                        replyUsername={props.message.reply?.creator.username}
+                        authUserId={props.authUserId}
+                        creator={props.message.creator}
+                        replyCreator={props.message.reply?.creator}
                         reply={!!props.message.reply}
                     />
                     {props.message.reply && (

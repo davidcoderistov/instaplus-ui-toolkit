@@ -6,8 +6,15 @@ interface Props {
     empty?: true
     lhs?: true
     rhs?: true
-    username?: string
-    replyUsername?: string
+    creator?: {
+        id: string | number
+        username: string | number
+    }
+    replyCreator?: {
+        id: string | number
+        username: string | number
+    }
+    authUserId: string | number
     reply?: boolean
 }
 
@@ -94,8 +101,8 @@ export default function ChatMessageTitle(props: Props) {
                                 }}
                             >
                                 {props.reply ?
-                                    props.lhs ? `${props.username} replied to ${props.type === 'group' ? props.replyUsername : 'you'}` : props.rhs ? `You replied to ${props.username}` : null :
-                                    props.username}
+                                    props.lhs ? `${props.creator?.username} replied to ${props.replyCreator?.id === props.authUserId ? 'you' : props.type === 'group' ? props.replyCreator?.username : 'you'}` : props.rhs ? `You replied to ${props.creator?.username}` : null :
+                                    props.creator?.username}
                             </Box>
                         </Box>
                     </Box>
