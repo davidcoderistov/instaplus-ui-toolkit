@@ -3,36 +3,22 @@ import Box from '@mui/material/Box'
 import ChatMessageTitle from '../ChatMessageTitle'
 import ChatMessageReply from '../ChatMessageReply'
 import ChatMessageBubble from '../ChatMessageBubble'
+import { Message, ReplyMessage } from '../../types/Message'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 import { useClickOutside } from '../../hooks'
 
-
-interface Message {
-    id: string | number
-    creatorUsername: string
-    creatorPhotoUrl: string
-    text: string | null
-    photoUrl: string | null
-    photoOrientation: 'portrait' | 'landscape' | null
-    isVideo: boolean
-}
 
 interface Props {
     type: 'single' | 'group'
     position: 'start' | 'between' | 'end' | 'solo'
     lhs: boolean
     message: Message
-    replyMessage: Message | null
-    reactions?: {
-        items: string[]
-        count: number
-    }
     onClickPhoto: (message: Message) => void | null
-    onClickReplyPhoto: (message: Message) => void | null
+    onClickReplyPhoto: (message: ReplyMessage) => void | null
 
     onReact(emoji: string): void
 
-    onReply(message: Message): void
+    onReply(message: ReplyMessage): void
 }
 
 const ForwardedChatMessageBubble = forwardRef((props, ref) => (
@@ -42,14 +28,14 @@ const ForwardedChatMessageBubble = forwardRef((props, ref) => (
 export default function ChatMessage(props: Props) {
 
     const showMessageTitle = useMemo(() =>
-            !((props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.replyMessage),
-        [props.type, props.position, props.replyMessage])
+            !((props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.message.reply),
+        [props.type, props.position, props.message.reply])
 
     const handleClickReplyPhoto = useCallback(() => {
-        if (props.onClickReplyPhoto && props.replyMessage) {
-            props.onClickReplyPhoto(props.replyMessage)
+        if (props.onClickReplyPhoto && props.message.reply) {
+            props.onClickReplyPhoto(props.message.reply)
         }
-    }, [props.onClickReplyPhoto, props.replyMessage])
+    }, [props.onClickReplyPhoto, props.message.reply])
 
     const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
@@ -88,7 +74,7 @@ export default function ChatMessage(props: Props) {
                     display='flex'
                     position='relative'
                 >
-                    {(props.position === 'start' || props.position === 'solo' || Boolean(props.replyMessage)) && (
+                    {(props.position === 'start' || props.position === 'solo' || Boolean(props.message.reply)) && (
                         <Box
                             component='div'
                             height='10px'
@@ -101,23 +87,23 @@ export default function ChatMessage(props: Props) {
                         empty={showMessageTitle}
                         lhs={props.lhs}
                         rhs={!props.lhs}
-                        username={props.replyMessage ? props.replyMessage.creatorUsername : props.message.creatorUsername}
-                        reply={!!props.replyMessage}
+                        username={props.message.reply ? props.message.reply.creatorUsername : props.message.creatorUsername}
+                        reply={!!props.message.reply}
                     />
-                    {props.replyMessage && (
+                    {props.message.reply && (
                         <>
-                            {props.replyMessage.text ? (
+                            {props.message.reply.text ? (
                                 <ChatMessageReply
                                     lhs={props.lhs}
                                     rhs={!props.lhs}
-                                    message={props.replyMessage.text} />
-                            ) : props.replyMessage.photoUrl && props.replyMessage.photoOrientation ? (
+                                    message={props.message.reply.text} />
+                            ) : props.message.reply.photoUrl && props.message.reply.photoOrientation ? (
                                 <ChatMessageReply
                                     lhs={props.lhs}
                                     rhs={!props.lhs}
-                                    photoUrl={props.replyMessage.photoUrl}
-                                    orientation={props.replyMessage.photoOrientation}
-                                    isVideo={props.replyMessage.isVideo}
+                                    photoUrl={props.message.reply.photoUrl}
+                                    orientation={props.message.reply.photoOrientation}
+                                    isVideo={Boolean(props.message.reply.videoUrl)}
                                     onClick={handleClickReplyPhoto}
                                 />
                             ) : null}
@@ -128,7 +114,6 @@ export default function ChatMessage(props: Props) {
                         position={props.position}
                         lhs={props.lhs}
                         message={props.message}
-                        reactions={props.reactions}
                         onClickPhoto={props.onClickPhoto}
                         onReact={handleOpenEmojiPicker}
                         onReply={props.onReply}

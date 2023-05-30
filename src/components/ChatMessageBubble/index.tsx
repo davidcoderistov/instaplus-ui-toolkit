@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, MutableRefObject } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessagePhoto from '../ChatMessagePhoto'
+import { Message } from '../../types/Message'
 
 
 const Wrapper = (props: { type?: 'wrap' | 'contain', flexGrow: string }) => {
@@ -38,24 +39,10 @@ const Wrapper = (props: { type?: 'wrap' | 'contain', flexGrow: string }) => {
     )
 }
 
-interface Message {
-    id: string | number
-    creatorUsername: string
-    creatorPhotoUrl: string
-    text: string | null
-    photoUrl: string | null
-    photoOrientation: 'portrait' | 'landscape' | null
-    isVideo: boolean
-}
-
 interface Props {
     position: 'start' | 'between' | 'end' | 'solo'
     lhs: boolean
     message: Message
-    reactions?: {
-        items: string[]
-        count: number
-    }
     onClickPhoto: (message: Message) => void | null
     emojiRef: MutableRefObject<Node | null>
 
@@ -74,7 +61,9 @@ export default function ChatMessageBubble(props: Props) {
     const hasAvatar = useMemo(() =>
         props.lhs && (props.position === 'end' || props.position === 'solo'), [props.lhs, props.position])
     const hasReactions = useMemo(() =>
-        props.reactions ? (props.reactions.items.length > 0 && props.reactions.count > 0) : false, [props.reactions])
+            props.message.reactions ?
+                (props.message.reactions.items.length > 0 && props.message.reactions.count > 0) : false,
+        [props.message.reactions])
 
     const borderBottomLeftRadius = rhs || props.position === 'end' || props.position === 'solo' ? '18px' : '4px'
     const borderTopLeftRadius = rhs || props.position === 'start' || props.position === 'solo' ? '18px' : '4px'
@@ -329,7 +318,7 @@ export default function ChatMessageBubble(props: Props) {
                                             <ChatMessagePhoto
                                                 photoUrl={props.message.photoUrl}
                                                 orientation={props.message.photoOrientation}
-                                                isVideo={props.message.isVideo}
+                                                isVideo={Boolean(props.message.videoUrl)}
                                                 borderRadius={{
                                                     topLeft: borderTopLeftRadius,
                                                     bottomLeft: borderBottomLeftRadius,
@@ -502,7 +491,7 @@ export default function ChatMessageBubble(props: Props) {
                                                         borderTopLeftRadius: '11px',
                                                     }}
                                                 >
-                                                    {props.reactions?.items.map((reaction, index) => (
+                                                    {props.message.reactions?.items.map((reaction, index) => (
                                                         <Box
                                                             key={index}
                                                             component='span'
@@ -525,7 +514,7 @@ export default function ChatMessageBubble(props: Props) {
                                                             </Box>
                                                         </Box>
                                                     ))}
-                                                    {props.reactions?.count > 1 && (
+                                                    {props.message.reactions?.count > 1 && (
                                                         <Box
                                                             component='div'
                                                             marginRight='2px'
@@ -534,7 +523,7 @@ export default function ChatMessageBubble(props: Props) {
                                                             marginLeft='2px'
                                                             display='block'
                                                         >
-                                                            {props.reactions?.count}
+                                                            {props.message.reactions?.count}
                                                         </Box>
                                                     )}
                                                 </Box>
