@@ -28,8 +28,8 @@ const ForwardedChatMessageBubble = forwardRef((props, ref) => (
 export default function ChatMessage(props: Props) {
 
     const showMessageTitle = useMemo(() =>
-            !((props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.message.reply),
-        [props.type, props.position, props.message.reply])
+            !((props.lhs && props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.message.reply),
+        [props.lhs, props.type, props.position, props.message.reply])
 
     const handleClickReplyPhoto = useCallback(() => {
         if (props.onClickReplyPhoto && props.message.reply) {
