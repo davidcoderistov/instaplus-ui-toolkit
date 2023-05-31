@@ -24,6 +24,10 @@ interface Props {
     onClickChatDetails(): void
 
     onSendMessage(message: string, replyingMessage: Message | null): void
+
+    onSendLike(): void
+
+    onUploadFile(file: File): void
 }
 
 export default function Chat(props: Props) {
@@ -361,10 +365,8 @@ export default function Chat(props: Props) {
                                                 authUserId={props.authUserId}
                                                 replyingMessage={replyingMessage}
                                                 onSendMessage={handleSendMessage}
-                                                onSendLike={() => {
-                                                    console.log('onSendLike()')
-                                                }}
-                                                onUploadFile={console.log}
+                                                onSendLike={props.onSendLike}
+                                                onUploadFile={props.onUploadFile}
                                                 onCancelReply={handleCancelReplyMessage}
                                             />
                                         </Box>
