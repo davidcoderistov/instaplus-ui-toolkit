@@ -19,9 +19,11 @@ export default function ChatFooterTextInput({ message, onChange, onSendMessage }
 
     const handleKeyPress = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.code === 'Enter') {
-            onSendMessage()
+            if (message.trim().length > 0) {
+                onSendMessage()
+            }
         }
-    }, [onSendMessage])
+    }, [onSendMessage, message])
 
     return (
         <Box
