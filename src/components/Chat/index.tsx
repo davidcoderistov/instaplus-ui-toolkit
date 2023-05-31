@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import ChatHeader from '../ChatHeader'
 import ChatFooter from '../ChatFooter'
@@ -14,6 +14,8 @@ interface Props {
     messages: Message[]
     messagesCount: number
     authUserId: number | string
+
+    onSendMessage(message: string, replyingMessage: Message | null): void
 }
 
 export default function Chat(props: Props) {
@@ -46,6 +48,21 @@ export default function Chat(props: Props) {
         }
         return messagesCopy
     }, [])
+
+    const [replyingMessage, setReplyingMessage] = useState<Message | null>(null)
+
+    const handleReplyMessage = useCallback((replyingMessage: Message) => {
+        setReplyingMessage(replyingMessage)
+    }, [])
+
+    const handleCancelReplyMessage = useCallback(() => {
+        setReplyingMessage(null)
+    }, [])
+
+    const handleSendMessage = useCallback((message: string) => {
+        props.onSendMessage(message, replyingMessage)
+        setReplyingMessage(null)
+    }, [props.onSendMessage, replyingMessage])
 
     const messages = useMemo(() => {
         return timestampMessages(Array.from(props.messages).reverse(), props.messagesCount).map(
@@ -83,10 +100,11 @@ export default function Chat(props: Props) {
                         lhs={message.creator.id !== props.authUserId}
                         authUserId={props.authUserId}
                         message={message}
+                        onReply={handleReplyMessage}
                     />
                 )
             })
-    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages])
+    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages, handleReplyMessage])
 
     return (
         <Box
@@ -345,14 +363,14 @@ export default function Chat(props: Props) {
                                                 </Box>
                                             </Box>
                                             <ChatFooter
-                                                isReplying
-                                                replyUsername='Anita'
-                                                replyText='asd'
-                                                onSendMessage={console.log}
+                                                authUserId={props.authUserId}
+                                                replyingMessage={replyingMessage}
+                                                onSendMessage={handleSendMessage}
                                                 onSendLike={() => {
                                                     console.log('onSendLike()')
                                                 }}
                                                 onUploadFile={console.log}
+                                                onCancelReply={handleCancelReplyMessage}
                                             />
                                         </Box>
                                     </Box>

@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box'
 import ChatFooterWrapper from './ChatFooter'
+import { Message } from '../../types/Message'
 
 
 interface Props {
-    isReplying: boolean
-    replyUsername?: string
-    replyText?: string
+    authUserId: string
+    replyingMessage: Message | null
 
     onSendMessage(message: string): void
 
@@ -23,7 +23,7 @@ export default function ChatFooter(props: Props) {
             component='div'
             display='block'
         >
-            {props.isReplying && (
+            {props.replyingMessage && (
                 <Box
                     component='div'
                     paddingLeft='15px'
@@ -131,7 +131,7 @@ export default function ChatFooter(props: Props) {
                                                 wordBreak: 'break-word',
                                             }}
                                         >
-                                            {props.replyUsername}
+                                            {props.authUserId === props.replyingMessage.creator.id ? 'yourself' : props.replyingMessage.creator.username}
                                         </Box>
                                     </Box>
                                 </Box>
@@ -169,7 +169,7 @@ export default function ChatFooter(props: Props) {
                                         color='#8E8E8E'
                                         display='block'
                                     >
-                                        {props.replyText}
+                                        {props.replyingMessage.text ? props.replyingMessage.text : props.replyingMessage.videoUrl ? 'Video' : props.replyingMessage.photoUrl ? 'Image' : null}
                                     </Box>
                                 </Box>
                             </Box>
@@ -244,7 +244,7 @@ export default function ChatFooter(props: Props) {
                 </Box>
             )}
             <ChatFooterWrapper
-                isReplying={props.isReplying}
+                isReplying={!!props.replyingMessage}
                 onSendMessage={props.onSendMessage}
                 onSendLike={props.onSendLike}
                 onUploadFile={props.onUploadFile} />

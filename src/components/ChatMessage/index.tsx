@@ -19,7 +19,7 @@ interface Props {
 
     onReact(emoji: string): void
 
-    onReply(message: ReplyMessage): void
+    onReply(message: Message): void
 }
 
 const ForwardedChatMessageBubble = forwardRef((props, ref) => (
