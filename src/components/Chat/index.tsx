@@ -5,7 +5,7 @@ import ChatFooter from '../ChatFooter'
 import ChatDescription from '../ChatDescription'
 import ChatMessage from '../ChatMessage'
 import ChatMessageTimestamp from '../ChatMessageTimestamp'
-import { Message } from '../../types/Message'
+import { Message, ReplyMessage } from '../../types/Message'
 import moment from 'moment'
 
 
@@ -22,6 +22,12 @@ interface Props {
     onClickChatMembers(): void
 
     onClickChatDetails(): void
+
+    onClickPhoto(message: Message): void
+
+    onClickReplyPhoto(message: ReplyMessage): void
+
+    onReact(emoji: string): void
 
     onSendMessage(message: string, replyingMessage: Message | null): void
 
@@ -112,11 +118,14 @@ export default function Chat(props: Props) {
                         lhs={message.creator.id !== props.authUserId}
                         authUserId={props.authUserId}
                         message={message}
+                        onClickPhoto={props.onClickPhoto}
+                        onClickReplyPhoto={props.onClickReplyPhoto}
+                        onReact={props.onReact}
                         onReply={handleReplyMessage}
                     />
                 )
             })
-    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages, handleReplyMessage])
+    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages, handleReplyMessage, props.onClickPhoto, props.onClickReplyPhoto, props.onReact])
 
     return (
         <Box
