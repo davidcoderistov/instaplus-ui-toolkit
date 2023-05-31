@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import ChatAvatar from '../ChatAvatar'
+import { getChatMembers } from '../../utils'
 
 
 interface Props {
     photoUrls: string[]
     usernames: string[]
+    membersCount: number
 
     onClickChatMembers(): void
 
@@ -14,12 +16,10 @@ interface Props {
 
 export default function ChatHeader(props: Props) {
 
-    const usernames = useMemo(() => {
-        if (props.usernames.length > 5) {
-            return `${props.usernames.slice(0, 5).join(', ')}, others`
-        }
-        return props.usernames.join(', ')
-    }, [props.usernames])
+    const usernames = useMemo(
+        () => getChatMembers(props.usernames, props.membersCount),
+        [props.usernames, props.membersCount,
+        ])
 
     return (
         <Box

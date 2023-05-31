@@ -3,6 +3,7 @@ import { useMediaQuery } from '@mui/material'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import ChatAvatar from '../ChatAvatar'
+import { getChatMembers } from '../../utils'
 
 
 interface StaticProps {
@@ -42,10 +43,7 @@ export default function ChatMessageListItem(props: Props) {
         if (props.loading) {
             return null
         }
-        if (props.membersCount > 2 && props.usernames.length > 1) {
-            return `${props.usernames.slice(0, 2).join(', ')}, ${props.membersCount - 2} others`
-        }
-        return props.usernames.join(', ')
+        return getChatMembers(props.usernames, props.membersCount, 2)
     }, [props.loading, props.usernames, props.membersCount])
 
     return (

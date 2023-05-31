@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Button from '../Button'
 import ChatAvatar from '../ChatAvatar'
+import { getChatMembers } from '../../utils'
 
 
 interface Props {
@@ -15,12 +16,10 @@ interface Props {
 
 export default function ChatDescription(props: Props) {
 
-    const usernames = useMemo(() => {
-        if (props.usernames.length > 5) {
-            return `${props.usernames.slice(0, 5).join(', ')}, and ${props.membersCount} others`
-        }
-        return props.usernames.join(', ')
-    }, [props.usernames, props.membersCount])
+    const usernames = useMemo(
+        () => getChatMembers(props.usernames, props.membersCount),
+        [props.usernames, props.membersCount,
+        ])
 
     return (
         <Box
