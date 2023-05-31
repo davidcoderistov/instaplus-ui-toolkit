@@ -86,7 +86,7 @@ export default function ChatMessageBubble(props: Props) {
 
     const handleClickReply = useCallback(() => {
         props.onReply(props.message)
-    }, [props.onReply])
+    }, [props.onReply, props.message])
 
     return (
         <Box
