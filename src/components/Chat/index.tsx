@@ -365,10 +365,10 @@ export default function Chat(props: Props) {
                                                                                     flexDirection='row'
                                                                                     justifyContent='center'
                                                                                     alignItems='flex-start'
-                                                                                    height='60px'
+                                                                                    height='50px'
                                                                                 >
-                                                                                    <CircularProgress size={30} sx={{
-                                                                                        color: '#FFFFFF',
+                                                                                    <CircularProgress size={25} thickness={5} sx={{
+                                                                                        color: 'grey',
                                                                                         mt: 1,
                                                                                     }} />
                                                                                 </Box>
