@@ -26,7 +26,7 @@ export default function ChatMessageTitle(props: Props) {
             if (props.creator?.id === props.replyCreator?.id) {
                 return props.lhs ? `${props.creator?.username} replied to themself` : 'You replied to yourself'
             }
-            return props.lhs ? `${props.creator?.username} replied to ${props.replyCreator?.id === props.authUserId ? 'you' : props.type === 'group' ? props.replyCreator?.username : 'you'}` : props.rhs ? `You replied to ${props.creator?.username}` : null
+            return props.lhs ? `${props.creator?.username} replied to ${props.replyCreator?.id === props.authUserId ? 'you' : props.type === 'group' ? props.replyCreator?.username : 'you'}` : props.rhs ? `You replied to ${props.replyCreator?.username}` : null
         }
         return props.creator?.username
     }, [props.lhs, props.rhs, props.authUserId, props.type, props.reply, props.creator, props.replyCreator])
