@@ -345,7 +345,7 @@ export default function Chat(props: Props) {
                                                                         component='div'
                                                                         flexShrink='1'
                                                                         width='100%'
-                                                                        flexDirection='column'
+                                                                        flexDirection='column-reverse'
                                                                         display='flex'
                                                                         position='relative'
                                                                         flexGrow='1'
@@ -373,7 +373,7 @@ export default function Chat(props: Props) {
                                                                                     }} />
                                                                                 </Box>
                                                                             }
-                                                                            dataLength={props.messagesCount}
+                                                                            dataLength={props.messages.length}
                                                                             scrollableTarget='scrollableChat'
                                                                             inverse={true}
                                                                             style={{
