@@ -15,6 +15,14 @@ interface Props {
     messagesCount: number
     authUserId: number | string
 
+    memberPhotoUrls: string[]
+    memberUsernames: string[]
+    membersCount: number
+
+    onClickChatMembers(): void
+
+    onClickChatDetails(): void
+
     onSendMessage(message: string, replyingMessage: Message | null): void
 }
 
@@ -194,24 +202,11 @@ export default function Chat(props: Props) {
                                 }}
                             >
                                 <ChatHeader
-                                    photoUrls={[
-                                        'https://res.cloudinary.com/dd3isrbpv/image/upload/v1680258928/storage/avatars/1679067426167-IsabellaPhillips_bxquac.png',
-                                        'https://res.cloudinary.com/dd3isrbpv/image/upload/v1680258510/storage/avatars/1679066038798-DavidJohnson_yoygkf.png',
-                                    ]}
-                                    usernames={[
-                                        'Анита🤍✨',
-                                        'David Robertson',
-                                        'A N N A S T A S I A🍒',
-                                        'John Doe',
-                                        'Mike Tyson',
-                                        'Else',
-                                    ]}
-                                    onClickChatMembers={() => {
-                                        console.log('onClickChatMembers()')
-                                    }}
-                                    onClickChatDetails={() => {
-                                        console.log('onClickChatDetails()')
-                                    }}
+                                    photoUrls={props.memberPhotoUrls}
+                                    usernames={props.memberUsernames}
+                                    membersCount={props.membersCount}
+                                    onClickChatMembers={props.onClickChatMembers}
+                                    onClickChatDetails={props.onClickChatDetails}
                                 />
                                 <Box
                                     component='div'
