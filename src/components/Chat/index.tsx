@@ -34,6 +34,8 @@ interface Props {
 
     onClickChatDetails(): void
 
+    onViewChatDescription(): void
+
     onClickPhoto(message: Message): void
 
     onClickReplyPhoto(message: ReplyMessage): void
@@ -390,7 +392,9 @@ export default function Chat(props: Props) {
                                                                                         <ChatDescription
                                                                                             photoUrls={props.memberPhotoUrls}
                                                                                             usernames={props.memberUsernames}
+                                                                                            membersCount={props.membersCount}
                                                                                             creator={props.creator.username}
+                                                                                            onView={props.onViewChatDescription}
                                                                                         />
                                                                                         <Box
                                                                                             component='div'
