@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 
 
@@ -19,6 +20,16 @@ interface Props {
 }
 
 export default function ChatMessageTitle(props: Props) {
+
+    const title = useMemo(() => {
+        if (props.reply) {
+            if (props.creator?.id === props.replyCreator?.id) {
+                return props.lhs ? `${props.creator?.username} replied to themself` : 'You replied to yourself'
+            }
+            return props.lhs ? `${props.creator?.username} replied to ${props.replyCreator?.id === props.authUserId ? 'you' : props.type === 'group' ? props.replyCreator?.username : 'you'}` : props.rhs ? `You replied to ${props.creator?.username}` : null
+        }
+        return props.creator?.username
+    }, [props.lhs, props.rhs, props.authUserId, props.type, props.reply, props.creator, props.replyCreator])
 
     return (
         <Box
@@ -100,9 +111,7 @@ export default function ChatMessageTitle(props: Props) {
                                     wordBreak: 'break-word',
                                 }}
                             >
-                                {props.reply ?
-                                    props.lhs ? `${props.creator?.username} replied to ${props.replyCreator?.id === props.authUserId ? 'you' : props.type === 'group' ? props.replyCreator?.username : 'you'}` : props.rhs ? `You replied to ${props.creator?.username}` : null :
-                                    props.creator?.username}
+                                {title}
                             </Box>
                         </Box>
                     </Box>
