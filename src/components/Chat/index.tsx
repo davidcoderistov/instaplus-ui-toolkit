@@ -1,19 +1,30 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import ChatHeader from '../ChatHeader'
 import ChatFooter from '../ChatFooter'
 import ChatDescription from '../ChatDescription'
 import ChatMessage from '../ChatMessage'
 import ChatMessageTimestamp from '../ChatMessageTimestamp'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import { Message, ReplyMessage } from '../../types/Message'
 import moment from 'moment'
 
 
 interface Props {
     type: 'single' | 'group'
+    authUserId: number | string
+
     messages: Message[]
     messagesCount: number
-    authUserId: number | string
+    hasMoreMessages: boolean
+
+    onFetchMoreMessages(): void
+
+    creator: {
+        id: string
+        username: string
+    }
 
     memberPhotoUrls: string[]
     memberUsernames: string[]
@@ -330,6 +341,7 @@ export default function Chat(props: Props) {
                                                                     }}
                                                                 >
                                                                     <Box
+                                                                        id='scrollableChat'
                                                                         component='div'
                                                                         flexShrink='1'
                                                                         width='100%'
@@ -343,26 +355,62 @@ export default function Chat(props: Props) {
                                                                             overflowY: 'scroll',
                                                                         }}
                                                                     >
-                                                                        <ChatDescription
-                                                                            photoUrls={['https://scontent.cdninstagram.com/v/t51.2885-19/287437333_827705364875116_8262683665376304640_n.jpg?stp=dst-jpg_s100x100&_nc_cat=101&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=YuGAygNe81oAX9tUcof&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.cdninstagram.com&oh=00_AfDGbQTKBmHKy8gnrg0ZoGc6Tgn1ozzEiyFxn26t1yPNow&oe=647A51D1']}
-                                                                            usernames={['A N N A S T A S I A']}
-                                                                            creator='annastasia.m'
-                                                                        />
-                                                                        <Box
-                                                                            component='div'
-                                                                            minWidth='0'
-                                                                            position='relative'
-                                                                            zIndex='0'
-                                                                            flexGrow='1'
-                                                                            flexBasis='auto'
-                                                                            flexShrink='0'
-                                                                            display='flex'
-                                                                            flexDirection='column'
-                                                                            minHeight='0'
-                                                                            alignItems='stretch'
-                                                                            height='calc(100vh - 572px)'
-                                                                        />
-                                                                        {messages}
+                                                                        <InfiniteScroll
+                                                                            next={props.onFetchMoreMessages}
+                                                                            hasMore={props.hasMoreMessages}
+                                                                            loader={
+                                                                                <Box
+                                                                                    component='div'
+                                                                                    display='flex'
+                                                                                    flexDirection='row'
+                                                                                    justifyContent='center'
+                                                                                    alignItems='flex-start'
+                                                                                    height='60px'
+                                                                                >
+                                                                                    <CircularProgress size={30} sx={{
+                                                                                        color: '#FFFFFF',
+                                                                                        mt: 1,
+                                                                                    }} />
+                                                                                </Box>
+                                                                            }
+                                                                            dataLength={props.messagesCount}
+                                                                            scrollableTarget='scrollableChat'
+                                                                            inverse={true}
+                                                                            style={{
+                                                                                display: 'flex',
+                                                                                flexDirection: 'column-reverse',
+                                                                            }}
+                                                                        >
+                                                                            <Box
+                                                                                component='div'
+                                                                                display='block'
+                                                                            >
+                                                                                {!props.hasMoreMessages && (
+                                                                                    <>
+                                                                                        <ChatDescription
+                                                                                            photoUrls={props.memberPhotoUrls}
+                                                                                            usernames={props.memberUsernames}
+                                                                                            creator={props.creator.username}
+                                                                                        />
+                                                                                        <Box
+                                                                                            component='div'
+                                                                                            minWidth='0'
+                                                                                            position='relative'
+                                                                                            zIndex='0'
+                                                                                            flexGrow='1'
+                                                                                            flexBasis='auto'
+                                                                                            flexShrink='0'
+                                                                                            display='flex'
+                                                                                            flexDirection='column'
+                                                                                            minHeight='0'
+                                                                                            alignItems='stretch'
+                                                                                            height='calc(100vh - 572px)'
+                                                                                        />
+                                                                                    </>
+                                                                                )}
+                                                                                {messages}
+                                                                            </Box>
+                                                                        </InfiniteScroll>
                                                                     </Box>
                                                                 </Box>
                                                             </Box>
