@@ -1,23 +1,22 @@
-import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react'
+import React, { useMemo, useCallback, forwardRef, MutableRefObject } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessageTitle from '../ChatMessageTitle'
 import ChatMessageReply from '../ChatMessageReply'
 import ChatMessageBubble from '../ChatMessageBubble'
 import { Message, ReplyMessage } from '../../types/Message'
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
-import { useClickOutside } from '../../hooks'
 
 
 interface Props {
     type: 'single' | 'group'
     position: 'start' | 'between' | 'end' | 'solo'
+    emojiRef: MutableRefObject<Node | null>
     lhs: boolean
     authUserId: string | number
     message: Message
     onClickPhoto: (message: Message) => void | null
     onClickReplyPhoto: (message: ReplyMessage) => void | null
 
-    onReact(emoji: string): void
+    onReact(message: Message, lhs: boolean, event: React.MouseEvent): void
 
     onReply(message: Message): void
 }
@@ -37,27 +36,6 @@ export default function ChatMessage(props: Props) {
             props.onClickReplyPhoto(props.message.reply)
         }
     }, [props.onClickReplyPhoto, props.message.reply])
-
-    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
-
-    const emojiRef = useRef<Node | null>(null)
-    const emojiBtnRef = useRef<Node | null>(null)
-
-    useClickOutside(emojiRef, (target) => {
-        if (!emojiPickerOpen || (emojiPickerOpen && !emojiBtnRef.current?.contains(target))) {
-            setEmojiPickerOpen(false)
-        }
-    })
-
-    const handleOpenEmojiPicker = (event: React.MouseEvent) => {
-        setEmojiPickerOpen(emojiPickerOpen => !emojiPickerOpen)
-        event.stopPropagation()
-    }
-
-    const handlePickEmoji = useCallback(({ emoji }: EmojiClickData) => {
-        props.onReact(emoji)
-        setEmojiPickerOpen(false)
-    }, [props.onReact])
 
     return (
         <Box
@@ -114,12 +92,12 @@ export default function ChatMessage(props: Props) {
                         </>
                     )}
                     <ForwardedChatMessageBubble
-                        ref={emojiBtnRef}
+                        ref={props.emojiRef}
                         position={props.position}
                         lhs={props.lhs}
                         message={props.message}
                         onClickPhoto={props.onClickPhoto}
-                        onReact={handleOpenEmojiPicker}
+                        onReact={props.onReact}
                         onReply={props.onReply}
                     />
                     {(props.position === 'end' || props.position === 'solo') && (
@@ -133,37 +111,6 @@ export default function ChatMessage(props: Props) {
                     )}
                 </Box>
             </Box>
-            {emojiPickerOpen && (
-                <Box
-                    component='div'
-                    position='absolute'
-                    zIndex='100'
-                    display='flex'
-                    justifyContent={props.lhs ? 'flex-start' : 'flex-end'}
-                    width='100%'
-                    marginTop='2px'
-                >
-                    <Box
-                        component='div'
-                        ref={emojiRef}
-                        sx={{
-                            ...props.lhs && { marginLeft: '50px' },
-                            ...!props.lhs && { marginRight: '16px' },
-                        }}
-                    >
-                        <EmojiPicker
-                            theme='dark'
-                            emojiStyle='google'
-                            skinTonesDisabled
-                            searchDisabled
-                            previewConfig={{ showPreview: false }}
-                            height='340px'
-                            width='340px'
-                            onEmojiClick={handlePickEmoji}
-                        />
-                    </Box>
-                </Box>
-            )}
         </Box>
     )
 }

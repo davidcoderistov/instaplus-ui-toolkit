@@ -38,12 +38,12 @@ const ChatFooterEmojiPicker = React.memo(({ onPickEmoji }: Props) => {
                     component='div'
                     display='inline-block'
                     position='absolute'
-                    zIndex='1'
+                    zIndex='100'
                     bottom='70px'
                 >
                     <EmojiPicker
                         theme='dark'
-                        emojiStyle='google'
+                        emojiStyle='native'
                         skinTonesDisabled
                         searchDisabled
                         previewConfig={{ showPreview: false }}

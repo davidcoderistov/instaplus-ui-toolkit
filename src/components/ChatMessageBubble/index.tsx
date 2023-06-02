@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, MutableRefObject } from 'react'
+import React, { useState, useMemo, useCallback, MutableRefObject } from 'react'
 import Box from '@mui/material/Box'
 import ChatMessagePhoto from '../ChatMessagePhoto'
 import { Message } from '../../types/Message'
@@ -46,7 +46,7 @@ interface Props {
     onClickPhoto: (message: Message) => void | null
     emojiRef: MutableRefObject<Node | null>
 
-    onReact(): void
+    onReact(message: Message, lhs: boolean, event: React.MouseEvent): void
 
     onReply(message: Message): void
 }
@@ -83,6 +83,10 @@ export default function ChatMessageBubble(props: Props) {
     const handleMouseLeave = useCallback(() => {
         setHovered(false)
     }, [])
+
+    const handleClickReact = useCallback((event: React.MouseEvent) => {
+        props.onReact(props.message, props.lhs, event)
+    }, [props.onReact, props.message, props.lhs])
 
     const handleClickReply = useCallback(() => {
         props.onReply(props.message)
@@ -617,7 +621,7 @@ export default function ChatMessageBubble(props: Props) {
                                                     opacity: '0.568',
                                                     '&:hover': { opacity: 1 },
                                                 }}
-                                                onClick={props.onReact}
+                                                onClick={handleClickReact}
                                             >
                                                 <Box
                                                     display='flex'

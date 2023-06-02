@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useRef, forwardRef } from 'react'
+import { useClickOutside } from '../../hooks'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import ChatHeader from '../ChatHeader'
@@ -6,6 +7,7 @@ import ChatFooter from '../ChatFooter'
 import ChatDescription from '../ChatDescription'
 import ChatMessage from '../ChatMessage'
 import ChatMessageTimestamp from '../ChatMessageTimestamp'
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Message, ReplyMessage } from '../../types/Message'
 import moment from 'moment'
@@ -40,7 +42,7 @@ interface Props {
 
     onClickReplyPhoto(message: ReplyMessage): void
 
-    onReact(emoji: string): void
+    onReact(emoji: string, message: Message): void
 
     onSendMessage(message: string, replyingMessage: Message | null): void
 
@@ -48,6 +50,10 @@ interface Props {
 
     onUploadFile(file: File): void
 }
+
+const ForwardedChatMessage = forwardRef((props, ref) => (
+    <ChatMessage {...props} emojiRef={ref} />
+))
 
 export default function Chat(props: Props) {
 
@@ -79,6 +85,54 @@ export default function Chat(props: Props) {
         }
         return messagesCopy
     }, [])
+
+    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
+    const [emojiPickerTop, setEmojiPickerTop] = useState(0)
+    const [emojiPickerRight, setEmojiPickerRight] = useState(0)
+    const [emojiMessage, setEmojiMessage] = useState<Message | null>(null)
+
+    const emojiRef = useRef<Node | null>(null)
+    const emojiBtnRef = useRef<Node | null>(null)
+
+    useClickOutside(emojiRef, (target) => {
+        if (!emojiPickerOpen || (emojiPickerOpen && !emojiBtnRef.current?.contains(target))) {
+            setEmojiPickerOpen(false)
+        }
+    })
+
+    const handleOpenEmojiPicker = (message: Message, lhs: boolean, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect()
+        if (window.innerHeight - rect.bottom >= 350) {
+            setEmojiPickerTop(rect.bottom)
+            if (lhs) {
+                setEmojiPickerRight(window.innerWidth - rect.left - 348)
+            } else {
+                setEmojiPickerRight(window.innerWidth - rect.right + 8)
+            }
+        } else if (rect.top >= 350) {
+            setEmojiPickerTop(rect.top - 340)
+            if (lhs) {
+                setEmojiPickerRight(window.innerWidth - rect.left - 348)
+            } else {
+                setEmojiPickerRight(window.innerWidth - rect.right + 8)
+            }
+        } else {
+            setEmojiPickerTop(rect.top - 154)
+            if (lhs) {
+                setEmojiPickerRight(window.innerWidth - rect.right - 348)
+            } else {
+                setEmojiPickerRight(window.innerWidth - rect.left + 8)
+            }
+        }
+        setEmojiPickerOpen(emojiPickerOpen => !emojiPickerOpen)
+        setEmojiMessage(message)
+        event.stopPropagation()
+    }
+
+    const handlePickEmoji = useCallback(({ emoji }: EmojiClickData) => {
+        props.onReact(emoji, emojiMessage)
+        setEmojiPickerOpen(false)
+    }, [props.onReact, emojiMessage])
 
     const [replyingMessage, setReplyingMessage] = useState<Message | null>(null)
 
@@ -124,7 +178,8 @@ export default function Chat(props: Props) {
                     }
                 }
                 return (
-                    <ChatMessage
+                    <ForwardedChatMessage
+                        ref={emojiBtnRef}
                         key={message.id}
                         type={props.type}
                         position={position}
@@ -133,12 +188,12 @@ export default function Chat(props: Props) {
                         message={message}
                         onClickPhoto={props.onClickPhoto}
                         onClickReplyPhoto={props.onClickReplyPhoto}
-                        onReact={props.onReact}
+                        onReact={handleOpenEmojiPicker}
                         onReply={handleReplyMessage}
                     />
                 )
             })
-    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages, handleReplyMessage, props.onClickPhoto, props.onClickReplyPhoto, props.onReact])
+    }, [props.messages, props.messagesCount, props.type, props.authUserId, timestampMessages, handleReplyMessage, props.onClickPhoto, props.onClickReplyPhoto, props.onReact, emojiBtnRef])
 
     return (
         <Box
@@ -369,10 +424,12 @@ export default function Chat(props: Props) {
                                                                                     alignItems='flex-start'
                                                                                     height='50px'
                                                                                 >
-                                                                                    <CircularProgress size={25} thickness={5} sx={{
-                                                                                        color: 'grey',
-                                                                                        mt: 1,
-                                                                                    }} />
+                                                                                    <CircularProgress size={25}
+                                                                                                      thickness={5}
+                                                                                                      sx={{
+                                                                                                          color: 'grey',
+                                                                                                          mt: 1,
+                                                                                                      }} />
                                                                                 </Box>
                                                                             }
                                                                             dataLength={props.messages.length}
@@ -437,6 +494,25 @@ export default function Chat(props: Props) {
                         </Box>
                     </Box>
                 </Box>
+            </Box>
+            <Box
+                ref={emojiRef}
+                position='absolute'
+                display={emojiPickerOpen ? 'block' : 'none'}
+                top={`${emojiPickerTop}px`}
+                right={`${emojiPickerRight}px`}
+                zIndex='100'
+            >
+                <EmojiPicker
+                    theme='dark'
+                    emojiStyle='native'
+                    skinTonesDisabled
+                    searchDisabled
+                    previewConfig={{ showPreview: false }}
+                    height='340px'
+                    width='340px'
+                    onEmojiClick={handlePickEmoji}
+                />
             </Box>
         </Box>
     )
