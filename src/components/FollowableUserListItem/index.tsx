@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import Button from '../Button'
+import Skeleton from '@mui/material/Skeleton'
 
 
 interface StaticProps {
@@ -15,7 +16,20 @@ interface StaticProps {
     onUnfollow(): void
 }
 
-type Props = StaticProps
+interface LoadingProps {
+    loading: true
+    username?: never
+    firstName?: never
+    lastName?: never
+    photoUrl?: never
+    following?: never
+
+    onFollow?: never
+
+    onUnfollow?: never
+}
+
+type Props = StaticProps | LoadingProps
 
 export default function FollowableUserListItem(props: Props) {
 
@@ -176,7 +190,7 @@ export default function FollowableUserListItem(props: Props) {
                                         width='44px'
                                         height='44px'
                                         borderRadius='50%'
-                                        bgcolor='#121212'
+                                        bgcolor={props.loading ? '#000000' : '#121212'}
                                         paddingLeft='0'
                                         paddingTop='0'
                                         minWidth='0'
@@ -202,23 +216,32 @@ export default function FollowableUserListItem(props: Props) {
                                             borderWidth: '0',
                                             touchAction: 'manipulation',
                                             overflowX: 'hidden',
-                                            cursor: 'pointer',
+                                            cursor: props.loading ? 'default' : 'pointer',
                                             outlineStyle: 'none',
                                             overflowY: 'hidden',
                                         }}
                                     >
-                                        <img
-                                            alt={`${props.username} profile picture`}
-                                            style={{
-                                                fontSize: '100%',
-                                                width: '100%',
-                                                height: '100%',
-                                                verticalAlign: 'baseline',
-                                                padding: '0',
-                                                margin: '0',
-                                                border: '0',
-                                            }}
-                                            src={props.photoUrl} />
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='circular'
+                                                animation='wave'
+                                                width={44}
+                                                height={44}
+                                                sx={{ backgroundColor: '#202020' }} />
+                                        ) : (
+                                            <img
+                                                alt={`${props.username} profile picture`}
+                                                style={{
+                                                    fontSize: '100%',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    verticalAlign: 'baseline',
+                                                    padding: '0',
+                                                    margin: '0',
+                                                    border: '0',
+                                                }}
+                                                src={props.photoUrl} />
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
@@ -271,6 +294,7 @@ export default function FollowableUserListItem(props: Props) {
                                         overflowX: 'visible',
                                         borderTopLeftRadius: '0',
                                         borderTopRightRadius: '0',
+                                        ...props.loading && { rowGap: '7px' },
                                     }}
                                 >
                                     <Box
@@ -319,12 +343,12 @@ export default function FollowableUserListItem(props: Props) {
                                                 alignSelf='auto'
                                                 justifyContent='flex-start'
                                                 flexGrow='0'
-                                                borderTopLeftRadius='0'
-                                                borderTopRightRadius='0'
                                                 sx={{
                                                     overflowY: 'visible',
                                                     borderBottomLeftRadius: '0',
                                                     borderBottomRightRadius: '0',
+                                                    borderTopLeftRadius: '0',
+                                                    borderTopRightRadius: '0',
                                                     overflowX: 'visible',
                                                 }}
                                             >
@@ -348,7 +372,7 @@ export default function FollowableUserListItem(props: Props) {
                                                     borderTop='0'
                                                     sx={{
                                                         touchAction: 'manipulation',
-                                                        cursor: 'pointer',
+                                                        cursor: props.loading ? 'default' : 'pointer',
                                                     }}
                                                 >
                                                     <Box
@@ -414,7 +438,17 @@ export default function FollowableUserListItem(props: Props) {
                                                                     borderTopRightRadius: '0',
                                                                 }}
                                                             >
-                                                                {props.username}
+                                                                {props.loading ? (
+                                                                    <Skeleton
+                                                                        variant='rounded'
+                                                                        animation='wave'
+                                                                        width={240}
+                                                                        height={14}
+                                                                        sx={{
+                                                                            backgroundColor: '#202020',
+                                                                            borderRadius: '8px',
+                                                                        }} />
+                                                                ) : props.username}
                                                             </Box>
                                                         </Box>
                                                     </Box>
@@ -455,62 +489,74 @@ export default function FollowableUserListItem(props: Props) {
                                                 overflowY: 'hidden',
                                             }}
                                         >
-                                            {props.firstName} {props.lastName}
+                                            {props.loading ? (
+                                                <Skeleton
+                                                    variant='rounded'
+                                                    animation='wave'
+                                                    width={180}
+                                                    height={13}
+                                                    sx={{
+                                                        backgroundColor: '#202020',
+                                                        borderRadius: '8px',
+                                                    }} />
+                                            ) : `${props.firstName} ${props.lastName}`}
                                         </Box>
                                     </Box>
                                 </Box>
                             </Box>
                         </Box>
-                        <Box
-                            component='div'
-                            minWidth='0'
-                            flexDirection='column'
-                            alignSelf='center'
-                            boxSizing='border-box'
-                            display='flex'
-                            flexShrink='0'
-                            position='relative'
-                            zIndex='0'
-                            maxWidth='100%'
-                        >
+                        {!props.loading && (
                             <Box
                                 component='div'
-                                flexShrink='1'
-                                alignContent='stretch'
-                                bgcolor='transparent'
+                                minWidth='0'
+                                flexDirection='column'
+                                alignSelf='center'
                                 boxSizing='border-box'
                                 display='flex'
-                                position='static'
-                                alignItems='stretch'
-                                flexDirection='row'
-                                alignSelf='auto'
-                                justifyContent='flex-start'
-                                flexGrow='0'
-                                marginLeft='12px'
-                                sx={{
-                                    overflowY: 'visible',
-                                    borderBottomLeftRadius: '0',
-                                    borderBottomRightRadius: '0',
-                                    overflowX: 'visible',
-                                    borderTopLeftRadius: '0',
-                                    borderTopRightRadius: '0',
-                                }}
+                                flexShrink='0'
+                                position='relative'
+                                zIndex='0'
+                                maxWidth='100%'
                             >
-                                {props.following ? (
-                                    <Button
-                                        variant='secondary'
-                                        text='Following'
-                                        contained
-                                    />
-                                ) : (
-                                    <Button
-                                        variant='primary'
-                                        text='Follow'
-                                        contained
-                                    />
-                                )}
+                                <Box
+                                    component='div'
+                                    flexShrink='1'
+                                    alignContent='stretch'
+                                    bgcolor='transparent'
+                                    boxSizing='border-box'
+                                    display='flex'
+                                    position='static'
+                                    alignItems='stretch'
+                                    flexDirection='row'
+                                    alignSelf='auto'
+                                    justifyContent='flex-start'
+                                    flexGrow='0'
+                                    marginLeft='12px'
+                                    sx={{
+                                        overflowY: 'visible',
+                                        borderBottomLeftRadius: '0',
+                                        borderBottomRightRadius: '0',
+                                        overflowX: 'visible',
+                                        borderTopLeftRadius: '0',
+                                        borderTopRightRadius: '0',
+                                    }}
+                                >
+                                    {props.following ? (
+                                        <Button
+                                            variant='secondary'
+                                            text='Following'
+                                            contained
+                                        />
+                                    ) : (
+                                        <Button
+                                            variant='primary'
+                                            text='Follow'
+                                            contained
+                                        />
+                                    )}
+                                </Box>
                             </Box>
-                        </Box>
+                        )}
                     </Box>
                 </Box>
             </Box>
