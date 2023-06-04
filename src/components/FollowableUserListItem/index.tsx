@@ -224,7 +224,6 @@ export default function FollowableUserListItem(props: Props) {
                                         {props.loading ? (
                                             <Skeleton
                                                 variant='circular'
-                                                animation='wave'
                                                 width={44}
                                                 height={44}
                                                 sx={{ backgroundColor: '#202020' }} />
@@ -441,7 +440,6 @@ export default function FollowableUserListItem(props: Props) {
                                                                 {props.loading ? (
                                                                     <Skeleton
                                                                         variant='rounded'
-                                                                        animation='wave'
                                                                         width={240}
                                                                         height={14}
                                                                         sx={{
@@ -492,7 +490,6 @@ export default function FollowableUserListItem(props: Props) {
                                             {props.loading ? (
                                                 <Skeleton
                                                     variant='rounded'
-                                                    animation='wave'
                                                     width={180}
                                                     height={13}
                                                     sx={{
