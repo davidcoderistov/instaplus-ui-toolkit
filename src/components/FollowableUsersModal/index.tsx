@@ -17,6 +17,7 @@ interface Props {
     title: string
     open: boolean
     onCloseModal: () => void
+    authUserId: string | number
     users: User[]
     isInitialLoading: boolean
     hasMoreUsers: boolean
@@ -69,6 +70,7 @@ export default function FollowableUsersModal(props: Props) {
                 </IconButton>
             </Box>
             <FollowableUserList
+                authUserId={props.authUserId}
                 users={props.users}
                 isInitialLoading={props.isInitialLoading}
                 hasMoreUsers={props.hasMoreUsers}

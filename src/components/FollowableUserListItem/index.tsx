@@ -7,6 +7,7 @@ import UnfollowUserModal from '../UnfollowUserModal'
 
 interface StaticProps {
     loading?: never
+    authUserId: string | number
     user: {
         id: string | number
         username: string
@@ -26,6 +27,7 @@ interface StaticProps {
 
 interface LoadingProps {
     loading: true
+    authUserId?: never
     user?: never
 
     onFollowUser?: never
@@ -538,7 +540,7 @@ const FollowableUserListItem = React.memo((props: Props) => {
                                 </Box>
                             </Box>
                         </Box>
-                        {!props.loading && (
+                        {!props.loading && props.authUserId !== props.user.id && (
                             <Box
                                 component='div'
                                 minWidth='0'

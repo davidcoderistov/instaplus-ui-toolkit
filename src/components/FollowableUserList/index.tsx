@@ -14,6 +14,7 @@ interface User {
 }
 
 interface Props {
+    authUserId: string | number
     users: User[]
     isInitialLoading: boolean
     hasMoreUsers: boolean
@@ -77,6 +78,7 @@ export default function FollowableUserList(props: Props) {
                             {props.users.map(user => (
                                 <FollowableUserListItem
                                     key={user.id}
+                                    authUserId={props.authUserId}
                                     user={user}
                                     following={user.following}
                                     followingLoading={user.followingLoading}
