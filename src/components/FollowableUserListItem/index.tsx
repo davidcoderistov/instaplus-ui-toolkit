@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Button from '../Button'
 import Skeleton from '@mui/material/Skeleton'
@@ -37,7 +37,7 @@ interface LoadingProps {
 
 type Props = StaticProps | LoadingProps
 
-export default function FollowableUserListItem(props: Props) {
+const FollowableUserListItem = React.memo((props: Props) => {
 
     const [unfollowUserModalOpen, setUnfollowUserModalOpen] = useState(false)
 
@@ -609,4 +609,6 @@ export default function FollowableUserListItem(props: Props) {
             />
         </Box>
     )
-}
+})
+
+export default FollowableUserListItem
