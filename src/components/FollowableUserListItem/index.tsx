@@ -13,24 +13,26 @@ interface StaticProps {
         firstName: string
         lastName: string
         photoUrl: string
+        following: boolean
+        followingLoading: boolean
     }
-    following: boolean
-    followingLoading: boolean
 
     onFollowUser(id: string | number): void
 
     onUnfollowUser(id: string | number): void
+
+    onClickUser(id: string | number): void
 }
 
 interface LoadingProps {
     loading: true
     user?: never
-    following?: never
-    followingLoading?: never
 
     onFollowUser?: never
 
     onUnfollowUser?: never
+
+    onClickUser?: never
 }
 
 type Props = StaticProps | LoadingProps
@@ -59,6 +61,12 @@ export default function FollowableUserListItem(props: Props) {
             props.onUnfollowUser(props.user.id)
         }
     }, [props.loading, props.onUnfollowUser])
+
+    const handleClickUser = useCallback(() => {
+        if (!props.loading) {
+            props.onClickUser(props.user.id)
+        }
+    }, [props.loading, props.onClickUser])
 
     return (
         <Box
@@ -246,6 +254,7 @@ export default function FollowableUserListItem(props: Props) {
                                             outlineStyle: 'none',
                                             overflowY: 'hidden',
                                         }}
+                                        onClick={handleClickUser}
                                     >
                                         {props.loading ? (
                                             <Skeleton
@@ -399,6 +408,7 @@ export default function FollowableUserListItem(props: Props) {
                                                         touchAction: 'manipulation',
                                                         cursor: props.loading ? 'default' : 'pointer',
                                                     }}
+                                                    onClick={handleClickUser}
                                                 >
                                                     <Box
                                                         component='div'
@@ -564,12 +574,12 @@ export default function FollowableUserListItem(props: Props) {
                                         borderTopRightRadius: '0',
                                     }}
                                 >
-                                    {props.following ? (
+                                    {props.user.following ? (
                                         <Button
                                             variant='secondary'
                                             text='Following'
                                             contained
-                                            loading={props.followingLoading}
+                                            loading={props.user.followingLoading}
                                             onClick={handleOpenUnfollowUserModal}
                                         />
                                     ) : (
@@ -577,7 +587,7 @@ export default function FollowableUserListItem(props: Props) {
                                             variant='primary'
                                             text='Follow'
                                             contained
-                                            loading={props.followingLoading}
+                                            loading={props.user.followingLoading}
                                             onClick={handleFollowUser}
                                         />
                                     )}
