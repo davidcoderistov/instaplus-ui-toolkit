@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Button from '../Button'
 import Skeleton from '@mui/material/Skeleton'
