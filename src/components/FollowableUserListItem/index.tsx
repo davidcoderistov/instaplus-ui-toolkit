@@ -217,7 +217,6 @@ export default function FollowableUserListItem(props: Props) {
                                         width='44px'
                                         height='44px'
                                         borderRadius='50%'
-                                        bgcolor={props.loading ? '#000000' : '#121212'}
                                         paddingLeft='0'
                                         paddingTop='0'
                                         minWidth='0'
@@ -253,7 +252,7 @@ export default function FollowableUserListItem(props: Props) {
                                                 variant='circular'
                                                 width={44}
                                                 height={44}
-                                                sx={{ backgroundColor: '#202020' }} />
+                                                sx={{ backgroundColor: '#4E4E4E' }} />
                                         ) : (
                                             <img
                                                 alt={`${props.user.username} profile picture`}
@@ -470,7 +469,7 @@ export default function FollowableUserListItem(props: Props) {
                                                                         width={240}
                                                                         height={14}
                                                                         sx={{
-                                                                            backgroundColor: '#202020',
+                                                                            backgroundColor: '#4E4E4E',
                                                                             borderRadius: '8px',
                                                                         }} />
                                                                 ) : props.user.username}
@@ -520,7 +519,7 @@ export default function FollowableUserListItem(props: Props) {
                                                     width={180}
                                                     height={13}
                                                     sx={{
-                                                        backgroundColor: '#202020',
+                                                        backgroundColor: '#4E4E4E',
                                                         borderRadius: '8px',
                                                     }} />
                                             ) : `${props.user.firstName} ${props.user.lastName}`}
