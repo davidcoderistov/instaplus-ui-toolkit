@@ -17,9 +17,9 @@ interface StaticProps {
     following: boolean
     followingLoading: boolean
 
-    onFollowUser(): void
+    onFollowUser(id: string | number): void
 
-    onUnfollowUser(): void
+    onUnfollowUser(id: string | number): void
 }
 
 interface LoadingProps {
