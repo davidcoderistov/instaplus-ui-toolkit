@@ -252,7 +252,7 @@ export default function FollowableUserListItem(props: Props) {
                                                 variant='circular'
                                                 width={44}
                                                 height={44}
-                                                sx={{ backgroundColor: '#4E4E4E' }} />
+                                                sx={{ backgroundColor: '#3A3A3A' }} />
                                         ) : (
                                             <img
                                                 alt={`${props.user.username} profile picture`}
@@ -469,7 +469,7 @@ export default function FollowableUserListItem(props: Props) {
                                                                         width={240}
                                                                         height={14}
                                                                         sx={{
-                                                                            backgroundColor: '#4E4E4E',
+                                                                            backgroundColor: '#3A3A3A',
                                                                             borderRadius: '8px',
                                                                         }} />
                                                                 ) : props.user.username}
@@ -519,7 +519,7 @@ export default function FollowableUserListItem(props: Props) {
                                                     width={180}
                                                     height={13}
                                                     sx={{
-                                                        backgroundColor: '#4E4E4E',
+                                                        backgroundColor: '#3A3A3A',
                                                         borderRadius: '8px',
                                                     }} />
                                             ) : `${props.user.firstName} ${props.user.lastName}`}
