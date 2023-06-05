@@ -1,37 +1,64 @@
+import React, { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Button from '../Button'
 import Skeleton from '@mui/material/Skeleton'
+import UnfollowUserModal from '../UnfollowUserModal'
 
 
 interface StaticProps {
     loading?: never
-    username: string
-    firstName: string
-    lastName: string
-    photoUrl: string
+    user: {
+        id: string | number
+        username: string
+        firstName: string
+        lastName: string
+        photoUrl: string
+    }
     following: boolean
+    followingLoading: boolean
 
-    onFollow(): void
+    onFollowUser(): void
 
-    onUnfollow(): void
+    onUnfollowUser(): void
 }
 
 interface LoadingProps {
     loading: true
-    username?: never
-    firstName?: never
-    lastName?: never
-    photoUrl?: never
+    user?: never
     following?: never
+    followingLoading?: never
 
-    onFollow?: never
+    onFollowUser?: never
 
-    onUnfollow?: never
+    onUnfollowUser?: never
 }
 
 type Props = StaticProps | LoadingProps
 
 export default function FollowableUserListItem(props: Props) {
+
+    const [unfollowUserModalOpen, setUnfollowUserModalOpen] = useState(false)
+
+    const handleOpenUnfollowUserModal = () => {
+        setUnfollowUserModalOpen(true)
+    }
+
+    const handleCloseUnfollowUserModal = () => {
+        setUnfollowUserModalOpen(false)
+    }
+
+    const handleFollowUser = useCallback(() => {
+        if (!props.loading) {
+            props.onFollowUser(props.user.id)
+        }
+    }, [props.loading, props.onFollowUser])
+
+    const handleUnfollowUser = useCallback(() => {
+        if (!props.loading) {
+            setUnfollowUserModalOpen(false)
+            props.onUnfollowUser(props.user.id)
+        }
+    }, [props.loading, props.onUnfollowUser])
 
     return (
         <Box
@@ -229,7 +256,7 @@ export default function FollowableUserListItem(props: Props) {
                                                 sx={{ backgroundColor: '#202020' }} />
                                         ) : (
                                             <img
-                                                alt={`${props.username} profile picture`}
+                                                alt={`${props.user.username} profile picture`}
                                                 style={{
                                                     fontSize: '100%',
                                                     width: '100%',
@@ -239,7 +266,7 @@ export default function FollowableUserListItem(props: Props) {
                                                     margin: '0',
                                                     border: '0',
                                                 }}
-                                                src={props.photoUrl} />
+                                                src={props.user.photoUrl} />
                                         )}
                                     </Box>
                                 </Box>
@@ -446,7 +473,7 @@ export default function FollowableUserListItem(props: Props) {
                                                                             backgroundColor: '#202020',
                                                                             borderRadius: '8px',
                                                                         }} />
-                                                                ) : props.username}
+                                                                ) : props.user.username}
                                                             </Box>
                                                         </Box>
                                                     </Box>
@@ -496,7 +523,7 @@ export default function FollowableUserListItem(props: Props) {
                                                         backgroundColor: '#202020',
                                                         borderRadius: '8px',
                                                     }} />
-                                            ) : `${props.firstName} ${props.lastName}`}
+                                            ) : `${props.user.firstName} ${props.user.lastName}`}
                                         </Box>
                                     </Box>
                                 </Box>
@@ -543,12 +570,16 @@ export default function FollowableUserListItem(props: Props) {
                                             variant='secondary'
                                             text='Following'
                                             contained
+                                            loading={props.followingLoading}
+                                            onClick={handleOpenUnfollowUserModal}
                                         />
                                     ) : (
                                         <Button
                                             variant='primary'
                                             text='Follow'
                                             contained
+                                            loading={props.followingLoading}
+                                            onClick={handleFollowUser}
                                         />
                                     )}
                                 </Box>
@@ -557,6 +588,16 @@ export default function FollowableUserListItem(props: Props) {
                     </Box>
                 </Box>
             </Box>
+            <UnfollowUserModal
+                open={unfollowUserModalOpen}
+                user={{
+                    id: props.user?.id ?? '',
+                    username: props.user?.username ?? '',
+                    photoUrl: props.user?.photoUrl ?? '',
+                }}
+                onUnfollowUser={handleUnfollowUser}
+                onCloseModal={handleCloseUnfollowUserModal}
+            />
         </Box>
     )
 }
