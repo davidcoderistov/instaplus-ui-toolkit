@@ -11,7 +11,7 @@ interface Props {
         username: string
         photoUrl: string
     }
-    onUnfollowUser: (userId: string) => void
+    onUnfollowUser: (id: string | number) => void
     onCloseModal: () => void
 }
 
