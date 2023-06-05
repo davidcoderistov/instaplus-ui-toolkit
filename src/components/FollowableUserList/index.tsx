@@ -40,7 +40,7 @@ export default function FollowableUserList(props: Props) {
                     component='div'
                     display='block'
                 >
-                    {[...Array(6).keys()].map(index => (
+                    {[...Array(5).keys()].map(index => (
                         <FollowableUserListItem
                             key={index}
                             loading />

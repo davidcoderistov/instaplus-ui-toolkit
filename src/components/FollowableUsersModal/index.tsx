@@ -37,9 +37,10 @@ export default function FollowableUsersModal(props: Props) {
                     backgroundColor: '#262626',
                     borderRadius: '12px',
                     maxWidth: '400px',
-                    height: '440px',
+                    height: '400px',
                 },
             }}
+            onClose={props.onCloseModal}
         >
             <Box
                 component='div'
