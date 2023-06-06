@@ -16,7 +16,6 @@ interface User {
 interface Props {
     authUserId: string | number
     users: User[]
-    isInitialLoading: boolean
     hasMoreUsers: boolean
     onFetchMoreUsers: () => void
     onFollowUser: (id: string | number) => void
@@ -36,7 +35,7 @@ export default function FollowableUserList(props: Props) {
             paddingY='8px'
             sx={{ overflowX: 'hidden', overflowY: 'auto' }}
         >
-            {props.isInitialLoading ? (
+            {props.users.length < 1 && props.hasMoreUsers ? (
                 <Box
                     component='div'
                     display='block'
