@@ -12,6 +12,7 @@ import Skeleton from '@mui/material/Skeleton'
 
 interface StaticProps {
     loading?: never
+    dense?: boolean
     authUserId: string | number
     user: {
         id: string | number
@@ -34,6 +35,7 @@ interface StaticProps {
 
 interface LoadingProps {
     loading: true
+    dense?: boolean
     authUserId?: never
     user?: never
 
@@ -103,20 +105,22 @@ const SuggestedUserListItem = React.memo((props: Props) => {
                     title={props.user ? props.user.username : null}
                     onClick={handleClickUser}
                 />
-                <ListItemSubtitle
-                    loading={props.loading}
-                    loader={
-                        <Skeleton
-                            variant='rounded'
-                            width={180}
-                            height={16}
-                            sx={{
-                                backgroundColor: '#202020',
-                                borderRadius: '8px',
-                            }} />
-                    }
-                    subtitle={props.user ? `${props.user.firstName} ${props.user.lastName}` : null}
-                />
+                {!props.dense && (
+                    <ListItemSubtitle
+                        loading={props.loading}
+                        loader={
+                            <Skeleton
+                                variant='rounded'
+                                width={180}
+                                height={16}
+                                sx={{
+                                    backgroundColor: '#202020',
+                                    borderRadius: '8px',
+                                }} />
+                        }
+                        subtitle={props.user ? `${props.user.firstName} ${props.user.lastName}` : null}
+                    />
+                )}
                 {!props.loading && (
                     <ListItemSubtitle
                         loading={false}
@@ -130,7 +134,7 @@ const SuggestedUserListItem = React.memo((props: Props) => {
                 <ListItemActions>
                     {props.user.following ? (
                         <FollowingButton
-                            contained
+                            contained={!props.dense}
                             user={props.user}
                             onUnfollowUser={props.onUnfollowUser}
                         />
@@ -138,7 +142,7 @@ const SuggestedUserListItem = React.memo((props: Props) => {
                         <Button
                             variant='primary'
                             text='Follow'
-                            contained
+                            contained={!props.dense}
                             loading={props.user.followingLoading}
                             onClick={handleFollowUser}
                         />
