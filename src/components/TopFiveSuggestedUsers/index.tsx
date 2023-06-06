@@ -29,6 +29,7 @@ interface Props {
     onUnfollowUser: (id: string | number) => void
     onClickUser: (id: string | number) => void
     onClickAuthUser: () => void
+    onSeeAll: () => void
 }
 
 export default function TopFiveSuggestedUsers(props: Props) {
@@ -451,86 +452,88 @@ export default function TopFiveSuggestedUsers(props: Props) {
                             margin='0 0 12px -16px'
                             width='calc(100% + 32px)'
                         >
-                            <Box
-                                component='div'
-                                borderRadius='0'
-                                paddingBottom='4px'
-                                bgcolor='transparent'
-                                boxSizing='border-box'
-                                display='flex'
-                                alignItems='center'
-                                flexShrink='0'
-                                paddingLeft='16px'
-                                flexDirection='row'
-                                paddingRight='16px'
-                                alignSelf='auto'
-                                justifyContent='flex-start'
-                                position='relative'
-                                paddingTop='4px'
-                                flexGrow='0'
-                                sx={{
-                                    overflowY: 'visible',
-                                    overflowX: 'visible',
-                                }}
-                            >
+                            {!props.isInitialLoading && (
                                 <Box
                                     component='div'
                                     borderRadius='0'
+                                    paddingBottom='4px'
                                     bgcolor='transparent'
-                                    minWidth='0'
-                                    flexDirection='column'
                                     boxSizing='border-box'
                                     display='flex'
-                                    minHeight='0'
+                                    alignItems='center'
+                                    flexShrink='0'
+                                    paddingLeft='16px'
+                                    flexDirection='row'
+                                    paddingRight='16px'
                                     alignSelf='auto'
                                     justifyContent='flex-start'
                                     position='relative'
-                                    flexGrow='1'
-                                    alignItems='flex-start'
+                                    paddingTop='4px'
+                                    flexGrow='0'
                                     sx={{
                                         overflowY: 'visible',
                                         overflowX: 'visible',
                                     }}
                                 >
                                     <Box
-                                        component='span'
-                                        lineHeight='18px'
-                                        fontSize='14px'
+                                        component='div'
+                                        borderRadius='0'
+                                        bgcolor='transparent'
                                         minWidth='0'
-                                        margin='0!important'
-                                        fontWeight='600'
-                                        color='#A8A8A8'
+                                        flexDirection='column'
+                                        boxSizing='border-box'
+                                        display='flex'
+                                        minHeight='0'
+                                        alignSelf='auto'
+                                        justifyContent='flex-start'
                                         position='relative'
-                                        display='block'
-                                        maxWidth='100%'
+                                        flexGrow='1'
+                                        alignItems='flex-start'
                                         sx={{
                                             overflowY: 'visible',
                                             overflowX: 'visible',
-                                            wordWrap: 'break-word',
-                                            whiteSpace: 'pre-line',
-                                            wordBreak: 'break-word',
                                         }}
                                     >
-                                        Suggested for you
+                                        <Box
+                                            component='span'
+                                            lineHeight='18px'
+                                            fontSize='14px'
+                                            minWidth='0'
+                                            margin='0!important'
+                                            fontWeight='600'
+                                            color='#A8A8A8'
+                                            position='relative'
+                                            display='block'
+                                            maxWidth='100%'
+                                            sx={{
+                                                overflowY: 'visible',
+                                                overflowX: 'visible',
+                                                wordWrap: 'break-word',
+                                                whiteSpace: 'pre-line',
+                                                wordBreak: 'break-word',
+                                            }}
+                                        >
+                                            Suggested for you
+                                        </Box>
                                     </Box>
+                                    <Button
+                                        variant='text'
+                                        size='small'
+                                        sx={{
+                                            textTransform: 'none',
+                                            color: '#FFFFFF',
+                                            '&:hover': {
+                                                color: '#A8A8A8',
+                                            },
+                                            padding: 0,
+                                            minWidth: 0,
+                                        }}
+                                        onClick={props.onSeeAll}
+                                    >
+                                        See All
+                                    </Button>
                                 </Box>
-                                <Button
-                                    variant='text'
-                                    size='small'
-                                    sx={{
-                                        textTransform: 'none',
-                                        color: '#FFFFFF',
-                                        '&:hover': {
-                                            color: '#A8A8A8',
-                                        },
-                                        padding: 0,
-                                        minWidth: 0,
-                                    }}
-                                    onClick={console.log}
-                                >
-                                    See All
-                                </Button>
-                            </Box>
+                            )}
                             <Box
                                 component='div'
                                 marginLeft='4px'
