@@ -21,6 +21,7 @@ export default function Button(props: ButtonProps) {
             sx={props.contained ? {
                 textTransform: 'none',
                 borderRadius: '10px',
+                height: '34px',
                 ...!!props.minWidth && { minWidth: props.minWidth },
                 backgroundColor: primary ? '#0095F6' : '#EFEFEF',
                 ...!primary && { color: '#000000' },
