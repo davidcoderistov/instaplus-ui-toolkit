@@ -37,7 +37,7 @@ export default function FollowingButton(props: Props) {
             <Button
                 variant='secondary'
                 text='Following'
-                contained
+                contained={props.contained}
                 loading={props.user.followingLoading}
                 onClick={handleOpenUnfollowUserModal}
             />
