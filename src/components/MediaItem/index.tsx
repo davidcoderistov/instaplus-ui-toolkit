@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useMediaQuery } from '@mui/material'
 import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
 import { ChatBubble } from '@mui/icons-material'
 
 
@@ -87,7 +88,6 @@ export default function MediaItem(props: Props) {
                     <Box
                         component='div'
                         maxHeight='inherit'
-                        bgcolor='#202020'
                         display='block'
                         width='100%'
                         position='relative'
@@ -99,7 +99,7 @@ export default function MediaItem(props: Props) {
                             overflow='hidden'
                             paddingBottom='100%'
                         >
-                            {props.photoUrl && (
+                            {props.photoUrl ? (
                                 <img
                                     alt='Picture'
                                     style={{
@@ -116,6 +116,20 @@ export default function MediaItem(props: Props) {
                                     }}
                                     src={props.photoUrl}
                                 />
+                            ) : (
+                                <Skeleton
+                                    variant='rounded'
+                                    height='100%'
+                                    width='100%'
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        backgroundColor: '#202020',
+                                        borderRadius: '8px',
+                                    }} />
                             )}
                         </Box>
                     </Box>
