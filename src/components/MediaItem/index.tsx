@@ -88,6 +88,7 @@ export default function MediaItem(props: Props) {
                     <Box
                         component='div'
                         maxHeight='inherit'
+                        bgcolor={showPhoto ? '#202020' : 'transparent'}
                         display='block'
                         width='100%'
                         position='relative'
@@ -99,7 +100,7 @@ export default function MediaItem(props: Props) {
                             overflow='hidden'
                             paddingBottom='100%'
                         >
-                            {props.photoUrl ? (
+                            {showPhoto ? (
                                 <img
                                     alt='Picture'
                                     style={{
