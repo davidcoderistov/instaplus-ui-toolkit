@@ -5,6 +5,8 @@ import UnfollowUserModal from '../UnfollowUserModal'
 
 interface Props {
     contained: boolean
+    fullWidth?: boolean
+    minWidth?: number
     user: {
         id: string | number
         username: string
@@ -38,6 +40,8 @@ export default function FollowingButton(props: Props) {
                 variant='secondary'
                 text='Following'
                 contained={props.contained}
+                minWidth={props.minWidth}
+                fullWidth={props.fullWidth}
                 loading={props.user.followingLoading}
                 onClick={handleOpenUnfollowUserModal}
             />
