@@ -83,7 +83,10 @@ export default function MediaGallery({ items, onClick }: Props) {
                                         display='block'
                                         position='relative'
                                         width='100%'
-                                        sx={{ '@media (min-width: 736px)': { marginRight: '4px' } }}
+                                        sx={{
+                                            '&:last-child': { marginRight: 0 },
+                                            '@media (min-width: 736px)': { marginRight: '4px' },
+                                        }}
                                     >
                                         {itemIndex < itemsChunk.length && (
                                             <MediaItem
