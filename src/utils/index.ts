@@ -9,3 +9,10 @@ export function getChatMembers(usernames: string[], membersCount: number, showCo
     }
     return usernames.join(', ')
 }
+
+export function formatNumber(number: number) {
+    if (number >= 1000) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    return number.toString()
+}
