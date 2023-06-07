@@ -6,6 +6,9 @@ interface ButtonProps {
     variant: 'primary' | 'secondary'
     text: string
     minWidth?: number
+    fullWidth?: boolean
+    startIcon?: React.ReactNode
+    endIcon?: React.ReactNode
     contained: boolean
     loading: boolean
     onClick: (event: React.MouseEvent) => void
@@ -48,6 +51,9 @@ export default function Button(props: ButtonProps) {
                 paddingX: 0,
                 ...props.text === 'Follow' && { minWidth: '46px' },
             }}
+            fullWidth={Boolean(props.fullWidth)}
+            startIcon={props.startIcon ?? null}
+            endIcon={props.endIcon ?? null}
             loading={props.loading}
             onClick={props.onClick}
         >
