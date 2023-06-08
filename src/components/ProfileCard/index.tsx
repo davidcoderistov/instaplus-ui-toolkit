@@ -90,7 +90,6 @@ export default function ProfileCard(props: Props) {
             sx={{
                 gridRowGap: '16px',
             }}
-            border='1px solid purple'
         >
             <Box
                 component='div'
