@@ -5,6 +5,7 @@ import Box from '@mui/material/Box'
 interface Props {
     name: string
     isActive: boolean
+    isCondensed: boolean
     icon: React.ReactNode
     activeIcon: React.ReactNode
 }
@@ -15,7 +16,7 @@ export default function AppDrawerItem(props: Props) {
         <Box
             component='div'
             display='block'
-            height='56px'
+            height='54px'
         >
             <Box
                 component='div'
@@ -112,7 +113,7 @@ export default function AppDrawerItem(props: Props) {
                                         overflow='hidden'
                                         color='#F5F5F5'
                                         fontWeight={props.isActive ? '700' : '400'}
-                                        fontSize='15.4px'
+                                        fontSize='15px'
                                         lineHeight='24px'
                                         margin='-6px 0 -6px'
                                         sx={{
@@ -120,7 +121,7 @@ export default function AppDrawerItem(props: Props) {
                                             whiteSpace: 'nowrap',
                                         }}
                                     >
-                                        {props.name}
+                                        {!props.isCondensed && props.name}
                                     </Box>
                                 </Box>
                             </Box>
