@@ -1,4 +1,6 @@
+import { useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box'
+import { useMediaQuery } from '@mui/material'
 import MuiDrawer from '@mui/material/Drawer'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
@@ -47,7 +49,11 @@ interface Props {
 
 export default function AppDrawer(props: Props) {
 
-    const isDrawerOpen = props.open
+    const location = useLocation()
+
+    const mw1260 = useMediaQuery('(min-width:1260px)')
+
+    const isDrawerOpen = props.open && mw1260 && location.pathname !== '/chat'
 
     return (
         <Drawer
