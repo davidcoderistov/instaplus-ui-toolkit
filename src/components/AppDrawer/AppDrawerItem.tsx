@@ -6,6 +6,7 @@ interface Props {
     name: string
     isActive: boolean
     isCondensed: boolean
+    isBordered?: boolean
     icon: React.ReactNode
     activeIcon: React.ReactNode
 }
@@ -53,6 +54,7 @@ export default function AppDrawerItem(props: Props) {
                             display='flex'
                             sx={{
                                 cursor: 'pointer',
+                                ...props.isBordered && { border: '1px solid #DBDBDB' },
                                 '&:hover': {
                                     bgcolor: '#1A1A1A',
                                 },
