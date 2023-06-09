@@ -16,7 +16,7 @@ export default function AppDrawerItem(props: Props) {
         <Box
             component='div'
             display='block'
-            height='54px'
+            height='52px'
         >
             <Box
                 component='div'
