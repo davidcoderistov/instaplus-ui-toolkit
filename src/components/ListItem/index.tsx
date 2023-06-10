@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 
 interface Props {
     children: any
+    onClick?: () => void
 }
 
 export default function ListItem(props: Props) {
@@ -52,7 +53,14 @@ export default function ListItem(props: Props) {
                 borderTopLeftRadius: 'unset',
                 borderTopRightRadius: 'unset',
                 borderTopStyle: 'solid',
+                ...!!props.onClick && {
+                    cursor: 'pointer',
+                    '&:hover': {
+                        backgroundColor: '#121212',
+                    },
+                },
             }}
+            onClick={props.onClick}
         >
             <Box
                 component='div'
