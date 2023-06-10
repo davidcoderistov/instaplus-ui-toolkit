@@ -49,7 +49,7 @@ interface LoadingProps {
 
 type Props = StaticProps | LoadingProps
 
-export default function SearchDrawerListItem(props: Props) {
+const SearchDrawerListItem = React.memo((props: Props) => {
 
     const handleClickItem = () => {
         if (!props.loading) {
@@ -148,4 +148,6 @@ export default function SearchDrawerListItem(props: Props) {
             )}
         </ListItem>
     )
-}
+})
+
+export default SearchDrawerListItem
