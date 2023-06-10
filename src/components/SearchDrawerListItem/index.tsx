@@ -8,32 +8,39 @@ import ListItemActions from '../ListItemActions'
 import Skeleton from '@mui/material/Skeleton'
 import IconButton from '@mui/material/IconButton'
 import { Close } from '@mui/icons-material'
+import { formatNumber } from '../../utils'
 
+
+interface Tag {
+    type: 'tag'
+    id: string | number
+    name: string
+    postsCount: number
+}
+
+interface User {
+    type: 'user'
+    id: string | number
+    username: string
+    firstName: string
+    lastName: string
+    photoUrl: string
+    followedByUsernames: string[]
+    followedByCount: number
+}
 
 interface StaticProps {
     loading?: never
-    hashtag?: boolean
-    id: string | number
-    user?: {
-        id: string | number
-        username: string
-        firstName: string
-        lastName: string
-        photoUrl: string
-        followedByUsernames: string[]
-        followedByCount: number
-    }
+    item: Tag | User
 
-    onClickItem(id: string | number): void
+    onClickItem(id: string | number, type: 'tag' | 'user'): void
 
-    onRemoveItem?(id: string | number): void
+    onRemoveItem?(id: string | number, type: 'tag' | 'user'): void
 }
 
 interface LoadingProps {
     loading: true
-    hashtag?: never
-    id?: never
-    user?: never
+    item: Tag | User
 
     onClickItem?: never
 
@@ -46,33 +53,38 @@ export default function SearchDrawerListItem(props: Props) {
 
     const handleClickItem = () => {
         if (!props.loading) {
-            props.onClickItem(props.id)
+            props.onClickItem(props.item.id, props.item.type)
         }
     }
 
     const handleRemoveItem = (event: React.MouseEvent) => {
         if (!props.loading && props.onRemoveItem) {
             event.stopPropagation()
-            props.onRemoveItem(props.id)
+            props.onRemoveItem(props.item.id, props.item.type)
         }
     }
 
     const subtitle = useMemo(() => {
-        if (!props.loading && props.user) {
-            let followedBy = null
-            if (props.user.followedByCount > 0 && props.user.followedByUsernames.length > 0) {
-                const username = props.user.followedByUsernames[0]
-                if (props.user.followedByCount > 1) {
-                    followedBy = `Followed by ${username} + ${props.user.followedByCount - 1} more`
-                } else {
-                    followedBy = `Followed by ${username}`
+        if (!props.loading) {
+            if (props.item.type === 'user') {
+                let followedBy = null
+                if (props.item.followedByCount > 0 && props.item.followedByUsernames.length > 0) {
+                    const username = props.item.followedByUsernames[0]
+                    if (props.item.followedByCount > 1) {
+                        followedBy = `Followed by ${username} + ${props.item.followedByCount - 1} more`
+                    } else {
+                        followedBy = `Followed by ${username}`
+                    }
                 }
+                const user = `${props.item.firstName} ${props.item.lastName}`
+                return followedBy ? `${user} • ${followedBy}` : user
             }
-            const user = `${props.user.firstName} ${props.user.lastName}`
-            return followedBy ? `${user} • ${followedBy}` : user
+            if (props.item.postsCount > 0) {
+                return `${formatNumber(props.item.postsCount)} posts`
+            }
         }
         return null
-    }, [props.loading, props.user])
+    }, [props.loading, props.item])
 
     return (
         <ListItem
@@ -82,7 +94,7 @@ export default function SearchDrawerListItem(props: Props) {
         >
             <ListItemAvatar
                 loading={props.loading}
-                hashtag={props.hashtag}
+                hashtag={props.item.type === 'tag'}
                 loader={
                     <Skeleton
                         variant='circular'
@@ -90,7 +102,7 @@ export default function SearchDrawerListItem(props: Props) {
                         height={44}
                         sx={{ backgroundColor: '#202020' }} />
                 }
-                user={props.loading ? null : props.user}
+                user={!props.loading && props.item.type === 'user' ? props.item : null}
             />
             <ListItemContent gutters={props.loading}>
                 <ListItemTitle
@@ -105,9 +117,9 @@ export default function SearchDrawerListItem(props: Props) {
                                 borderRadius: '8px',
                             }} />
                     }
-                    title={props.user ? props.user.username : null}
+                    title={props.item.type === 'user' ? props.item.username : `#${props.item.name}`}
                 />
-                {!props.hashtag && (
+                {(props.item.type === 'user' || props.item.postsCount > 0) && (
                     <ListItemSubtitle
                         loading={props.loading}
                         loader={
