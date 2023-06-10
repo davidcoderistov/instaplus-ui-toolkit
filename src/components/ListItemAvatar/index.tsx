@@ -10,13 +10,13 @@ interface Props {
         photoUrl: string
     } | null
 
-    onClick(): void
+    onClick?(): void
 }
 
 export default function ListItemAvatar(props: Props) {
 
     const handleClick = useCallback(() => {
-        if (!props.loading) {
+        if (!props.loading && !!props.onClick) {
             props.onClick()
         }
     }, [props.loading, props.onClick])
