@@ -300,7 +300,6 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                                         <SearchDrawerUserItem
                                             key={item.id}
                                             item={item}
-                                            onClickItem={props.onClickItem}
                                             onRemoveItem={props.onRemoveItem}
                                         />
                                     ))}

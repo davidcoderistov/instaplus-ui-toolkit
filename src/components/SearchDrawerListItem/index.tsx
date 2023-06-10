@@ -33,7 +33,7 @@ interface StaticProps {
     loading?: never
     item: Tag | User
 
-    onClickItem(id: string | number, type: 'tag' | 'user'): void
+    onClickItem?(id: string | number, type: 'tag' | 'user'): void
 
     onRemoveItem?(id: string | number, type: 'tag' | 'user'): void
 }
@@ -52,7 +52,7 @@ type Props = StaticProps | LoadingProps
 const SearchDrawerListItem = React.memo((props: Props) => {
 
     const handleClickItem = () => {
-        if (!props.loading) {
+        if (!props.loading && props.onClickItem) {
             props.onClickItem(props.item.id, props.item.type)
         }
     }
