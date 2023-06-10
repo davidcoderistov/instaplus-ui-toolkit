@@ -127,10 +127,10 @@ export default function SearchDrawerListItem(props: Props) {
             {!props.loading && !!props.onRemoveItem && (
                 <ListItemActions>
                     <IconButton
-                        sx={{ padding: 0 }}
+                        sx={{ padding: '4px' }}
                         onClick={handleRemoveItem}
                     >
-                        <Close sx={{ color: '#A8A8A8', fontSize: '20px' }} />
+                        <Close sx={{ color: '#A8A8A8' }} />
                     </IconButton>
                 </ListItemActions>
             )}
