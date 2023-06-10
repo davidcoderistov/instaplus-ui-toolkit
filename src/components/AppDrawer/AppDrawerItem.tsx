@@ -9,6 +9,7 @@ interface Props {
     isBordered?: boolean
     icon: React.ReactNode
     activeIcon: React.ReactNode
+    onClick?: () => void
 }
 
 export default function AppDrawerItem(props: Props) {
@@ -59,6 +60,7 @@ export default function AppDrawerItem(props: Props) {
                                     bgcolor: '#1A1A1A',
                                 },
                             }}
+                            onClick={props.onClick}
                         >
                             <Box
                                 component='div'

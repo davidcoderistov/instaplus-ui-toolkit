@@ -48,6 +48,12 @@ interface Props {
     isNotificationsDrawerOpen: boolean
     isCreatingNewPost: boolean
     isSettingsOpen: boolean
+
+    onOpenSearchDrawer(): void
+
+    onOpenNotificationsDrawer(): void
+
+    onOpenCreateNewPost(): void
 }
 
 export default function AppDrawer(props: Props) {
@@ -195,6 +201,7 @@ export default function AppDrawer(props: Props) {
                     isActive={props.isSearchDrawerOpen}
                     isCondensed={!isDrawerOpen}
                     isBordered={props.isSearchDrawerOpen}
+                    onClick={props.onOpenSearchDrawer}
                     icon={
                         <AppDrawerIcon
                             ariaLabel='Search'
@@ -383,6 +390,7 @@ export default function AppDrawer(props: Props) {
                     isActive={props.isNotificationsDrawerOpen}
                     isCondensed={!isDrawerOpen}
                     isBordered={props.isNotificationsDrawerOpen}
+                    onClick={props.onOpenNotificationsDrawer}
                     icon={
                         <AppDrawerIcon
                             ariaLabel='Notifications'
@@ -406,6 +414,7 @@ export default function AppDrawer(props: Props) {
                     name='Create'
                     isActive={props.isCreatingNewPost}
                     isCondensed={!isDrawerOpen}
+                    onClick={props.onOpenCreateNewPost}
                     icon={
                         <AppDrawerIcon
                             ariaLabel='Create'
