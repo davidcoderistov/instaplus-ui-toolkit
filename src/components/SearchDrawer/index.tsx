@@ -83,7 +83,6 @@ export default function SearchDrawer(props: SearchDrawerProps) {
 
     const handleClearSearchQuery = useCallback(() => {
         setSearchQuery('')
-        props.onSearch('')
     }, [props.onSearch])
 
     useEffect(() => {
