@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 
 interface Props {
     loading: boolean
+    hashtag?: boolean
     loader: React.ReactNode
     user: {
         username: string
@@ -96,7 +97,7 @@ export default function ListItemAvatar(props: Props) {
                         paddingRight='0'
                         minHeight='0'
                         flexShrink='0'
-                        alignItems='stretch'
+                        alignItems={props.hashtag ? 'center' : 'stretch'}
                         position='relative'
                         marginLeft='0'
                         zIndex='0'
@@ -104,9 +105,8 @@ export default function ListItemAvatar(props: Props) {
                         textAlign='inherit'
                         marginRight='0'
                         sx={{
-                            borderStyle: 'solid',
-                            borderColor: '#00000066',
-                            borderWidth: '0',
+                            ...props.hashtag && { justifyContent: 'center', border: '1px solid #363636' },
+                            ...!props.hashtag && { borderStyle: 'solid', borderColor: '#00000066', borderWidth: '0' },
                             touchAction: 'manipulation',
                             overflowX: 'hidden',
                             cursor: props.loading ? 'default' : 'pointer',
@@ -115,7 +115,21 @@ export default function ListItemAvatar(props: Props) {
                         }}
                         onClick={handleClick}
                     >
-                        {props.loading ? props.loader : props.user ? (
+                        {props.loading ? props.loader : props.hashtag ? (
+                            <svg aria-label='Hashtag' style={{ position: 'relative', display: 'block' }}
+                                 color='rgb(245, 245, 245)'
+                                 fill='rgb(245, 245, 245)' height='16' role='img' viewBox='0 0 24 24' width='16'>
+                                <title>Hashtag</title>
+                                <line fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round'
+                                      strokeWidth='2' x1='4.728' x2='20.635' y1='7.915' y2='7.915' />
+                                <line fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round'
+                                      strokeWidth='2' x1='3.364' x2='19.272' y1='15.186' y2='15.186' />
+                                <line fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round'
+                                      strokeWidth='2' x1='17.009' x2='13.368' y1='2' y2='22' />
+                                <line fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round'
+                                      strokeWidth='2' x1='10.64' x2='7' y1='2' y2='22' />
+                            </svg>
+                        ) : props.user ? (
                             <img
                                 alt={`${props.user.username} profile picture`}
                                 style={{
