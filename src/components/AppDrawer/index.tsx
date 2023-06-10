@@ -8,6 +8,7 @@ import { NavLink as Link } from 'react-router-dom'
 import AppDrawerItem from './AppDrawerItem'
 import AppDrawerIcon from './AppDrawerIcon'
 import AppDrawerAvatar from './AppDrawerAvatar'
+import React from 'react'
 
 
 const StyledLink = styled(Link)({
@@ -47,6 +48,7 @@ interface Props {
     isSearchDrawerOpen: boolean
     isNotificationsDrawerOpen: boolean
     isCreatingNewPost: boolean
+    isSettingsOpen: boolean
 }
 
 export default function AppDrawer(props: Props) {
@@ -452,6 +454,43 @@ export default function AppDrawer(props: Props) {
                             activeIcon={<AppDrawerAvatar />} />
                     )}
                 </StyledLink>
+            </Box>
+            <Box
+                component='div'
+                display='block'
+                width='100%'
+            >
+                <AppDrawerItem
+                    name='More'
+                    isActive={props.isSettingsOpen}
+                    isCondensed={!isDrawerOpen}
+                    icon={
+                        <AppDrawerIcon
+                            ariaLabel='More'
+                            path={
+                                <>
+                                    <line fill='none' stroke='currentColor' strokeLinecap='round'
+                                          strokeLinejoin='round' strokeWidth='2'
+                                          x1='3' x2='21' y1='4' y2='4' />
+                                    <line fill='none' stroke='currentColor' strokeLinecap='round'
+                                          strokeLinejoin='round' strokeWidth='2'
+                                          x1='3' x2='21' y1='12' y2='12' />
+                                    <line fill='none' stroke='currentColor' strokeLinecap='round'
+                                          strokeLinejoin='round' strokeWidth='2'
+                                          x1='3' x2='21' y1='20' y2='20' />
+                                </>
+                            }
+                        />
+                    }
+                    activeIcon={
+                        <AppDrawerIcon
+                            ariaLabel='More'
+                            path={
+                                <path
+                                    d='M3.5 6.5h17a1.5 1.5 0 0 0 0-3h-17a1.5 1.5 0 0 0 0 3Zm17 4h-17a1.5 1.5 0 0 0 0 3h17a1.5 1.5 0 0 0 0-3Zm0 7h-17a1.5 1.5 0 0 0 0 3h17a1.5 1.5 0 0 0 0-3Z' />
+                            }
+                        />
+                    } />
             </Box>
         </Drawer>
     )
