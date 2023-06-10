@@ -13,7 +13,8 @@ import { Close } from '@mui/icons-material'
 interface StaticProps {
     loading?: never
     hashtag?: boolean
-    user: {
+    id: string | number
+    user?: {
         id: string | number
         username: string
         firstName: string
@@ -23,40 +24,41 @@ interface StaticProps {
         followedByCount: number
     }
 
-    onClickUser(id: string | number): void
+    onClickItem(id: string | number): void
 
-    onRemoveUser?(id: string | number): void
+    onRemoveItem?(id: string | number): void
 }
 
 interface LoadingProps {
     loading: true
     hashtag?: never
+    id?: never
     user?: never
 
-    onClickUser?: never
+    onClickItem?: never
 
-    onRemoveUser?: never
+    onRemoveItem?: never
 }
 
 type Props = StaticProps | LoadingProps
 
-export default function SearchDrawerUserItem(props: Props) {
+export default function SearchDrawerListItem(props: Props) {
 
-    const handleClickUser = useCallback(() => {
+    const handleClickItem = useCallback(() => {
         if (!props.loading) {
-            props.onClickUser(props.user.id)
+            props.onClickItem(props.id)
         }
-    }, [props.loading, props.onClickUser])
+    }, [props.loading, props.onClickItem, props.id])
 
-    const handleRemoveUser = useCallback((event: React.MouseEvent) => {
-        if (!props.loading && props.onRemoveUser) {
+    const handleRemoveItem = useCallback((event: React.MouseEvent) => {
+        if (!props.loading && props.onRemoveItem) {
             event.stopPropagation()
-            props.onRemoveUser(props.user.id)
+            props.onRemoveItem(props.id)
         }
-    }, [props.loading, props.onRemoveUser])
+    }, [props.loading, props.onRemoveItem])
 
     const subtitle = useMemo(() => {
-        if (!props.loading) {
+        if (!props.loading && props.user) {
             let followedBy = null
             if (props.user.followedByCount > 0 && props.user.followedByUsernames.length > 0) {
                 const username = props.user.followedByUsernames[0]
@@ -76,7 +78,7 @@ export default function SearchDrawerUserItem(props: Props) {
         <ListItem
             gutters
             clickable={!props.loading}
-            onClick={handleClickUser}
+            onClick={handleClickItem}
         >
             <ListItemAvatar
                 loading={props.loading}
@@ -122,11 +124,11 @@ export default function SearchDrawerUserItem(props: Props) {
                     />
                 )}
             </ListItemContent>
-            {!props.loading && !!props.onRemoveUser && (
+            {!props.loading && !!props.onRemoveItem && (
                 <ListItemActions>
                     <IconButton
                         sx={{ padding: 0 }}
-                        onClick={handleRemoveUser}
+                        onClick={handleRemoveItem}
                     >
                         <Close sx={{ color: '#A8A8A8', fontSize: '20px' }} />
                     </IconButton>
