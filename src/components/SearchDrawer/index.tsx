@@ -157,14 +157,14 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                     },
                 }}
                 startAdornment={<Search sx={{ marginRight: '5px', color: '#7A7C7F' }} />}
-                endAdornment={
+                endAdornment={searchQuery.length > 0 ? (
                     <IconButton
                         sx={{ padding: 0 }}
                         onClick={handleClearSearchQuery}
                     >
                         <Cancel sx={{ color: '#A8A8A8', fontSize: '17px' }} />
                     </IconButton>
-                }
+                ) : null}
                 placeholder='Search'
                 autoFocus
             />
