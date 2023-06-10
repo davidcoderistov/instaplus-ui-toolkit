@@ -44,7 +44,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 interface Props {
-    open: boolean
+    isSearchDrawerOpen: boolean
+    isNotificationsDrawerOpen: boolean
+    isCreatingNewPost: boolean
 }
 
 export default function AppDrawer(props: Props) {
@@ -53,7 +55,9 @@ export default function AppDrawer(props: Props) {
 
     const mw1260 = useMediaQuery('(min-width:1260px)')
 
-    const isDrawerOpen = props.open && mw1260 && location.pathname !== '/chat'
+    const isDrawerOpen = !props.isSearchDrawerOpen && !props.isNotificationsDrawerOpen && mw1260 && location.pathname !== '/chat'
+
+    const isLinkOpen = !props.isSearchDrawerOpen && !props.isNotificationsDrawerOpen && !props.isCreatingNewPost
 
     return (
         <Drawer
@@ -157,7 +161,7 @@ export default function AppDrawer(props: Props) {
                     {({ isActive }) => (
                         <AppDrawerItem
                             name='Home'
-                            isActive={isActive}
+                            isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={
                                 <AppDrawerIcon
@@ -185,8 +189,9 @@ export default function AppDrawer(props: Props) {
                 </StyledLink>
                 <AppDrawerItem
                     name='Search'
-                    isActive={false}
+                    isActive={props.isSearchDrawerOpen}
                     isCondensed={!isDrawerOpen}
+                    isBordered={props.isSearchDrawerOpen}
                     icon={
                         <AppDrawerIcon
                             ariaLabel='Search'
@@ -239,7 +244,7 @@ export default function AppDrawer(props: Props) {
                     {({ isActive }) => (
                         <AppDrawerItem
                             name='Explore'
-                            isActive={isActive}
+                            isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={
                                 <AppDrawerIcon
@@ -277,7 +282,7 @@ export default function AppDrawer(props: Props) {
                     {({ isActive }) => (
                         <AppDrawerItem
                             name='Reels'
-                            isActive={isActive}
+                            isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={
                                 <AppDrawerIcon
@@ -339,7 +344,7 @@ export default function AppDrawer(props: Props) {
                     {({ isActive }) => (
                         <AppDrawerItem
                             name='Messages'
-                            isActive={isActive}
+                            isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={
                                 <AppDrawerIcon
@@ -372,8 +377,9 @@ export default function AppDrawer(props: Props) {
                 </StyledLink>
                 <AppDrawerItem
                     name='Notifications'
-                    isActive={false}
+                    isActive={props.isNotificationsDrawerOpen}
                     isCondensed={!isDrawerOpen}
+                    isBordered={props.isNotificationsDrawerOpen}
                     icon={
                         <AppDrawerIcon
                             ariaLabel='Notifications'
@@ -395,7 +401,7 @@ export default function AppDrawer(props: Props) {
                     } />
                 <AppDrawerItem
                     name='Create'
-                    isActive={false}
+                    isActive={props.isCreatingNewPost}
                     isCondensed={!isDrawerOpen}
                     icon={
                         <AppDrawerIcon
@@ -440,7 +446,7 @@ export default function AppDrawer(props: Props) {
                     {({ isActive }) => (
                         <AppDrawerItem
                             name='Profile'
-                            isActive={isActive}
+                            isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={<AppDrawerAvatar />}
                             activeIcon={<AppDrawerAvatar />} />
