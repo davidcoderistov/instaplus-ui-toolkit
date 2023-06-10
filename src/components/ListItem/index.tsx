@@ -3,12 +3,12 @@ import Box from '@mui/material/Box'
 
 interface Props {
     children: any
+    gutters?: boolean
+    clickable?: boolean
     onClick?: () => void
 }
 
 export default function ListItem(props: Props) {
-
-    const clickable = !!props.onClick
 
     return (
         <Box
@@ -55,7 +55,7 @@ export default function ListItem(props: Props) {
                 borderTopLeftRadius: 'unset',
                 borderTopRightRadius: 'unset',
                 borderTopStyle: 'solid',
-                ...clickable && {
+                ...props.clickable && {
                     cursor: 'pointer',
                     '&:hover': {
                         backgroundColor: '#121212',
@@ -75,9 +75,9 @@ export default function ListItem(props: Props) {
                 flexShrink='0'
                 paddingTop='8px'
                 position='static'
-                paddingLeft={clickable ? '24px' : '16px'}
+                paddingLeft={props.gutters ? '24px' : '16px'}
                 alignItems='stretch'
-                paddingRight={clickable ? '24px' : '16px'}
+                paddingRight={props.gutters ? '24px' : '16px'}
                 alignSelf='auto'
                 justifyContent='flex-start'
                 flexGrow='0'
