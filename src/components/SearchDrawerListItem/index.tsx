@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useMemo } from 'react'
 import ListItem from '../ListItem'
 import ListItemAvatar from '../ListItemAvatar'
 import ListItemContent from '../ListItemContent'
@@ -44,18 +44,18 @@ type Props = StaticProps | LoadingProps
 
 export default function SearchDrawerListItem(props: Props) {
 
-    const handleClickItem = useCallback(() => {
+    const handleClickItem = () => {
         if (!props.loading) {
             props.onClickItem(props.id)
         }
-    }, [props.loading, props.onClickItem, props.id])
+    }
 
-    const handleRemoveItem = useCallback((event: React.MouseEvent) => {
+    const handleRemoveItem = (event: React.MouseEvent) => {
         if (!props.loading && props.onRemoveItem) {
             event.stopPropagation()
             props.onRemoveItem(props.id)
         }
-    }, [props.loading, props.onRemoveItem])
+    }
 
     const subtitle = useMemo(() => {
         if (!props.loading && props.user) {
