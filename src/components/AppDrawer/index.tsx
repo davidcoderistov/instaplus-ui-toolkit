@@ -450,7 +450,7 @@ export default function AppDrawer(props: Props) {
                             isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
                             icon={<AppDrawerAvatar />}
-                            activeIcon={<AppDrawerAvatar />} />
+                            activeIcon={<AppDrawerAvatar isActive />} />
                     )}
                 </StyledLink>
             </Box>

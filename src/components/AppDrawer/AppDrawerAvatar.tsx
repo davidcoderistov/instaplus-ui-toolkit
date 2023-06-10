@@ -1,14 +1,18 @@
 import Box from '@mui/material/Box'
 
 
-export default function AppDrawerAvatar() {
+interface Props {
+    isActive?: boolean
+}
+
+export default function AppDrawerAvatar(props: Props) {
 
     return (
         <Box
             component='span'
-            height='24px'
-            width='24px'
-            position='relative'
+            height={props.isActive ? '28px' : '24px'}
+            width={props.isActive ? '28px' : '24px'}
+            position={props.isActive ? 'absolute' : 'relative'}
             display='block'
             sx={{
                 borderBottomLeftRadius: '50%',
@@ -17,6 +21,12 @@ export default function AppDrawerAvatar() {
                 borderBottomRightRadius: '50%',
                 borderTopLeftRadius: '50%',
                 overflowY: 'hidden',
+                ...props.isActive && {
+                    border: '2px solid #DBDBDB',
+                    transform: 'translate(-50%,-50%)',
+                    left: '50%',
+                    top: '50%',
+                },
             }}
         >
             <img
