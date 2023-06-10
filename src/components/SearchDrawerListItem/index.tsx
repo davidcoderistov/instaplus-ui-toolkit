@@ -94,7 +94,7 @@ export default function SearchDrawerListItem(props: Props) {
         >
             <ListItemAvatar
                 loading={props.loading}
-                hashtag={props.item.type === 'tag'}
+                hashtag={!props.loading && props.item.type === 'tag'}
                 loader={
                     <Skeleton
                         variant='circular'
@@ -117,9 +117,9 @@ export default function SearchDrawerListItem(props: Props) {
                                 borderRadius: '8px',
                             }} />
                     }
-                    title={props.item.type === 'user' ? props.item.username : `#${props.item.name}`}
+                    title={!props.loading ? props.item.type === 'user' ? props.item.username : `#${props.item.name}` : null}
                 />
-                {(props.item.type === 'user' || props.item.postsCount > 0) && (
+                {(props.loading || props.item.type === 'user' || props.item.postsCount > 0) && (
                     <ListItemSubtitle
                         loading={props.loading}
                         loader={
