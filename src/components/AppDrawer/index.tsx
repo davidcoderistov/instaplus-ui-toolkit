@@ -8,7 +8,6 @@ import { NavLink as Link } from 'react-router-dom'
 import AppDrawerItem from './AppDrawerItem'
 import AppDrawerIcon from './AppDrawerIcon'
 import AppDrawerAvatar from './AppDrawerAvatar'
-import React from 'react'
 
 
 const StyledLink = styled(Link)({
