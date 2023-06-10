@@ -8,6 +8,8 @@ interface Props {
 
 export default function ListItem(props: Props) {
 
+    const clickable = !!props.onClick
+
     return (
         <Box
             component='div'
@@ -53,7 +55,7 @@ export default function ListItem(props: Props) {
                 borderTopLeftRadius: 'unset',
                 borderTopRightRadius: 'unset',
                 borderTopStyle: 'solid',
-                ...!!props.onClick && {
+                ...clickable && {
                     cursor: 'pointer',
                     '&:hover': {
                         backgroundColor: '#121212',
@@ -73,9 +75,9 @@ export default function ListItem(props: Props) {
                 flexShrink='0'
                 paddingTop='8px'
                 position='static'
-                paddingLeft='16px'
+                paddingLeft={clickable ? '24px' : '16px'}
                 alignItems='stretch'
-                paddingRight='16px'
+                paddingRight={clickable ? '24px' : '16px'}
                 alignSelf='auto'
                 justifyContent='flex-start'
                 flexGrow='0'
