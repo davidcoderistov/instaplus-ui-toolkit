@@ -12,6 +12,7 @@ import { Close } from '@mui/icons-material'
 
 interface StaticProps {
     loading?: never
+    hashtag?: boolean
     user: {
         id: string | number
         username: string
@@ -29,6 +30,7 @@ interface StaticProps {
 
 interface LoadingProps {
     loading: true
+    hashtag?: never
     user?: never
 
     onClickUser?: never
@@ -78,6 +80,7 @@ export default function SearchDrawerUserItem(props: Props) {
         >
             <ListItemAvatar
                 loading={props.loading}
+                hashtag={props.hashtag}
                 loader={
                     <Skeleton
                         variant='circular'
@@ -102,20 +105,22 @@ export default function SearchDrawerUserItem(props: Props) {
                     }
                     title={props.user ? props.user.username : null}
                 />
-                <ListItemSubtitle
-                    loading={props.loading}
-                    loader={
-                        <Skeleton
-                            variant='rounded'
-                            width={180}
-                            height={16}
-                            sx={{
-                                backgroundColor: '#202020',
-                                borderRadius: '8px',
-                            }} />
-                    }
-                    subtitle={subtitle}
-                />
+                {!props.hashtag && (
+                    <ListItemSubtitle
+                        loading={props.loading}
+                        loader={
+                            <Skeleton
+                                variant='rounded'
+                                width={180}
+                                height={16}
+                                sx={{
+                                    backgroundColor: '#202020',
+                                    borderRadius: '8px',
+                                }} />
+                        }
+                        subtitle={subtitle}
+                    />
+                )}
             </ListItemContent>
             {!props.loading && !!props.onRemoveUser && (
                 <ListItemActions>
