@@ -6,6 +6,7 @@ import InputBase from '@mui/material/InputBase'
 import { styled } from '@mui/material/styles'
 import { Search, Cancel } from '@mui/icons-material'
 import SearchDrawerUserItem from '../SearchDrawerListItem'
+import ClearSearchHistoryModal from '../ClearSearchHistoryModal'
 import Button from '../Button'
 import { Typography } from '@mui/material'
 
@@ -84,6 +85,21 @@ export default function SearchDrawer(props: SearchDrawerProps) {
     const handleClearSearchQuery = useCallback(() => {
         setSearchQuery('')
     }, [props.onSearch])
+
+    const [isClearSearchHistoryModalOpen, setIsClearSearchHistoryModalOpen] = useState(false)
+
+    const handleOpenClearSearchHistoryModal = useCallback(() => {
+        setIsClearSearchHistoryModalOpen(true)
+    }, [])
+
+    const handleCloseClearSearchHistoryModal = useCallback(() => {
+        setIsClearSearchHistoryModalOpen(false)
+    }, [])
+
+    const handleClearSearchHistory = useCallback(() => {
+        setIsClearSearchHistoryModalOpen(false)
+        props.onClearSearchHistory()
+    }, [props.onClearSearchHistory])
 
     useEffect(() => {
         if (!props.open) {
@@ -284,7 +300,7 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                                         variant='primary'
                                         text='Clear all'
                                         contained={false}
-                                        onClick={props.onClearSearchHistory}
+                                        onClick={handleOpenClearSearchHistoryModal}
                                     />
                                 )}
                             </Box>
@@ -328,6 +344,11 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                     </Box>
                 )}
             </Box>
+            <ClearSearchHistoryModal
+                open={isClearSearchHistoryModalOpen}
+                onClearSearchHistory={handleClearSearchHistory}
+                onCloseModal={handleCloseClearSearchHistoryModal}
+            />
         </Drawer>
     )
 }

@@ -89,7 +89,7 @@ export default function ClearSearchHistoryModal(props: Props) {
                             <Box
                                 component='span'
                                 lineHeight='18px'
-                                paddingTop='6px'
+                                paddingTop='10px'
                                 fontSize='14px'
                                 fontWeight='400'
                                 minWidth='0'
