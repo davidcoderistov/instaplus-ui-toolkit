@@ -1,38 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import MuiDrawer from '@mui/material/Drawer'
+import SidebarDrawer from '../SidebarDrawer'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import InputBase from '@mui/material/InputBase'
-import { styled } from '@mui/material/styles'
 import { Search, Cancel } from '@mui/icons-material'
 import SearchDrawerUserItem from '../SearchDrawerListItem'
 import ClearSearchHistoryModal from '../ClearSearchHistoryModal'
 import Button from '../Button'
 import { Typography } from '@mui/material'
 
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: 390,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: 0,
-            }),
-        },
-    }),
-)
 
 interface Tag {
     type: 'tag'
@@ -108,7 +84,7 @@ export default function SearchDrawer(props: SearchDrawerProps) {
     }, [props.open])
 
     return (
-        <Drawer
+        <SidebarDrawer
             variant='permanent'
             anchor='left'
             open={props.open}
@@ -349,6 +325,6 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                 onClearSearchHistory={handleClearSearchHistory}
                 onCloseModal={handleCloseClearSearchHistoryModal}
             />
-        </Drawer>
+        </SidebarDrawer>
     )
 }
