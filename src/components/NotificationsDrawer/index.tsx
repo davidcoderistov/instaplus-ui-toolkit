@@ -113,6 +113,16 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
         setView('all')
     }
 
+    const onlyOneSection = (
+        todayNotificationsCount > 0 && thisWeekNotificationsCount < 1 && thisMonthNotificationsCount < 1 && earlierNotificationsCount < 1
+    ) || (
+        todayNotificationsCount < 1 && thisWeekNotificationsCount > 0 && thisMonthNotificationsCount < 1 && earlierNotificationsCount < 1
+    ) || (
+        todayNotificationsCount < 1 && thisWeekNotificationsCount < 1 && thisMonthNotificationsCount > 0 && earlierNotificationsCount < 1
+    ) || (
+        todayNotificationsCount < 1 && thisWeekNotificationsCount < 1 && thisMonthNotificationsCount < 1 && earlierNotificationsCount > 0
+    )
+
     return (
         <SidebarDrawer
             variant='permanent'
@@ -168,7 +178,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
             </Box>
             <Box
                 component='div'
-                display={view === 'all' ? 'flex' : 'none'}
+                display={view === 'all' && !onlyOneSection ? 'flex' : 'none'}
                 flexDirection='column'
                 flexGrow='1'
                 flexShrink='1'
@@ -271,28 +281,28 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 </Box>
             </Box>
             <NotificationsInfiniteList
-                visible={view === 'today'}
+                visible={view === 'today' || (todayNotificationsCount > 0 && onlyOneSection)}
                 title='Today'
                 notifications={props.todayNotifications}
                 hasMoreNotifications={props.todayNotifications.length < todayNotificationsCount}
                 onFetchMoreNotifications={props.onFetchMoreTodayNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
-                visible={view === 'thisWeek'}
+                visible={view === 'thisWeek' || (thisWeekNotificationsCount && onlyOneSection)}
                 title='This week'
                 notifications={props.thisWeekNotifications}
                 hasMoreNotifications={props.thisWeekNotifications.length < thisWeekNotificationsCount}
                 onFetchMoreNotifications={props.onFetchMoreThisWeekNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
-                visible={view === 'thisMonth'}
+                visible={view === 'thisMonth' || (thisMonthNotificationsCount && onlyOneSection)}
                 title='This month'
                 notifications={props.thisMonthNotifications}
                 hasMoreNotifications={props.thisMonthNotifications.length < thisMonthNotificationsCount}
                 onFetchMoreNotifications={props.onFetchMoreThisMonthNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
-                visible={view === 'earlier'}
+                visible={view === 'earlier' || (earlierNotificationsCount && onlyOneSection)}
                 title='Earlier'
                 notifications={props.earlierNotifications}
                 hasMoreNotifications={props.earlierNotifications.length < earlierNotificationsCount}
