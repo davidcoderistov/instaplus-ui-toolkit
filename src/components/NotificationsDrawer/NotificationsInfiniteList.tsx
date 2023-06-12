@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import Box from '@mui/material/Box'
+import NotificationsDrawerTitle from './NotificationsDrawerTitle'
 import NotificationsDrawerListItem from '../NotificationsDrawerListItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -34,6 +35,7 @@ type NotificationI = FollowNotification | LikeNotification | CommentNotification
 
 interface Props {
     visible: boolean
+    title: string
     notifications: NotificationI[]
     hasMoreNotifications: boolean
 
@@ -95,6 +97,7 @@ export default function NotificationsInfiniteList(props: Props) {
                         component='div'
                         display='block'
                     >
+                        <NotificationsDrawerTitle title={props.title} />
                         {props.notifications.map((notification, index) => (
                             <NotificationsDrawerListItem
                                 key={index}
