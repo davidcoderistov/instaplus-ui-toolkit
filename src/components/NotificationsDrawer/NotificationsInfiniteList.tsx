@@ -34,6 +34,7 @@ interface CommentNotification extends PostNotification {
 type NotificationI = FollowNotification | LikeNotification | CommentNotification
 
 interface Props {
+    id: string
     visible: boolean
     title: string
     notifications: NotificationI[]
@@ -59,7 +60,7 @@ export default function NotificationsInfiniteList(props: Props) {
 
     return (
         <Box
-            id='scrollableNotificationsList'
+            id={props.id}
             component='div'
             display={props.visible ? 'flex' : 'none'}
             flexDirection='column'
@@ -81,7 +82,7 @@ export default function NotificationsInfiniteList(props: Props) {
                 sx={{ overflowX: 'hidden', overflowY: 'auto', verticalAlign: 'baseline' }}
             >
                 <InfiniteScroll
-                    scrollableTarget='scrollableNotificationsList'
+                    scrollableTarget={props.id}
                     next={props.onFetchMoreNotifications}
                     hasMore={props.hasMoreNotifications}
                     loader={<Box

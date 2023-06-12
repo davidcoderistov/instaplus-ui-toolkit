@@ -281,6 +281,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 </Box>
             </Box>
             <NotificationsInfiniteList
+                id='scrollableTodayNotificationsList'
                 visible={view === 'today' || (todayNotificationsCount > 0 && onlyOneSection)}
                 title='Today'
                 notifications={props.todayNotifications}
@@ -288,6 +289,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 onFetchMoreNotifications={props.onFetchMoreTodayNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
+                id='scrollableThisWeekNotificationsList'
                 visible={view === 'thisWeek' || (thisWeekNotificationsCount && onlyOneSection)}
                 title='This week'
                 notifications={props.thisWeekNotifications}
@@ -295,6 +297,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 onFetchMoreNotifications={props.onFetchMoreThisWeekNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
+                id='scrollableThisMonthNotificationsList'
                 visible={view === 'thisMonth' || (thisMonthNotificationsCount && onlyOneSection)}
                 title='This month'
                 notifications={props.thisMonthNotifications}
@@ -302,6 +305,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 onFetchMoreNotifications={props.onFetchMoreThisMonthNotifications}
                 onClickNotification={props.onClick} />
             <NotificationsInfiniteList
+                id='scrollableEarlierNotificationsList'
                 visible={view === 'earlier' || (earlierNotificationsCount && onlyOneSection)}
                 title='Earlier'
                 notifications={props.earlierNotifications}
