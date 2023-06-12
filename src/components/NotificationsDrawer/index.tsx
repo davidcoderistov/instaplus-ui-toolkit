@@ -1,46 +1,13 @@
+import { useState } from 'react'
 import SidebarDrawer from '../SidebarDrawer'
 import Box from '@mui/material/Box'
 import { Typography } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import { ArrowBackIos } from '@mui/icons-material'
 import NotificationsDrawerListItem from '../NotificationsDrawerListItem'
+import NotificationsDrawerTitle from './NotificationsDrawerTitle'
+import NotificationsInfiniteList from './NotificationsInfiniteList'
 
-
-const NotificationsDrawerTitle = (props: { title: string }) => {
-
-    return (
-        <Box
-            component='div'
-            paddingRight='24px'
-            paddingTop='0'
-            paddingLeft='24px'
-            display='flex'
-            marginTop='22px'
-            marginBottom='18px'
-            paddingBottom='0'
-        >
-            <Box
-                component='span'
-                lineHeight='20px'
-                fontSize='16px'
-                minWidth='0'
-                color='#F5F5F5'
-                margin='0!important'
-                fontWeight='700'
-                position='relative'
-                display='block'
-                maxWidth='100%'
-                sx={{
-                    overflowY: 'visible',
-                    wordWrap: 'break-word',
-                    overflowX: 'visible',
-                    whiteSpace: 'pre-line',
-                    wordBreak: 'break-word',
-                }}
-            >
-                {props.title}
-            </Box>
-        </Box>
-    )
-}
 
 const NotificationsDrawerDivider = () => {
 
@@ -96,19 +63,55 @@ interface SearchDrawerProps {
     open: boolean
     loading: boolean
     todayNotifications: NotificationI[]
+    todayNotificationsCount: number
     thisWeekNotifications: NotificationI[]
+    thisWeekNotificationsCount: number
     thisMonthNotifications: NotificationI[]
+    thisMonthNotificationsCount: number
     earlierNotifications: NotificationI[]
+    earlierNotificationsCount: number
+
+    onFetchMoreTodayNotifications(): void
+
+    onFetchMoreThisWeekNotifications(): void
+
+    onFetchMoreThisMonthNotifications(): void
+
+    onFetchMoreEarlierNotifications(): void
 
     onClick(type: 'follow' | 'like' | 'comment', id: string | number | null): void
 }
 
 export default function NotificationsDrawer(props: SearchDrawerProps) {
 
-    const todayNotificationsCount = props.todayNotifications.length
-    const thisWeekNotificationsCount = props.thisWeekNotifications.length
-    const thisMonthNotificationsCount = props.thisMonthNotifications.length
-    const earlierNotificationsCount = props.earlierNotifications.length
+    const {
+        todayNotificationsCount,
+        thisWeekNotificationsCount,
+        thisMonthNotificationsCount,
+        earlierNotificationsCount,
+    } = props
+
+    const [view, setView] = useState<'all' | 'today' | 'thisWeek' | 'thisMonth' | 'earlier'>('all')
+
+    const handleSeeAllToday = () => {
+        setView('today')
+    }
+
+    const handleSeeAllThisWeek = () => {
+        setView('thisWeek')
+    }
+
+    const handleSeeAllThisMonth = () => {
+        setView('thisMonth')
+    }
+
+    const handleSeeAllEarlier = () => {
+        setView('earlier')
+    }
+
+    const handleGoBack = () => {
+        setView('all')
+    }
 
     return (
         <SidebarDrawer
@@ -126,8 +129,15 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                 marginTop='8px'
                 marginLeft='0'
                 marginRight='0'
-                display='block'
+                display='flex'
+                justifyContent='flex-start'
+                alignItems='center'
             >
+                {view !== 'all' && (
+                    <IconButton onClick={handleGoBack} sx={{ padding: 0 }}>
+                        <ArrowBackIos sx={{ color: '#FFFFFF' }} />
+                    </IconButton>
+                )}
                 <Box
                     component='div'
                     display='block'
@@ -158,7 +168,7 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
             </Box>
             <Box
                 component='div'
-                display='flex'
+                display={view === 'all' ? 'flex' : 'none'}
                 flexDirection='column'
                 flexGrow='1'
                 flexShrink='1'
@@ -185,8 +195,12 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                         <>
                             {todayNotificationsCount > 0 && (
                                 <>
-                                    <NotificationsDrawerTitle title='Today' />
-                                    {props.todayNotifications.map((notification, index) => (
+                                    <NotificationsDrawerTitle
+                                        title='Today'
+                                        showSeeAll={props.todayNotificationsCount > 4}
+                                        onSeeAll={handleSeeAllToday}
+                                    />
+                                    {props.todayNotifications.slice(0, 4).map((notification, index) => (
                                         <NotificationsDrawerListItem
                                             key={index}
                                             notification={notification}
@@ -200,8 +214,12 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                             )}
                             {thisWeekNotificationsCount > 0 && (
                                 <>
-                                    <NotificationsDrawerTitle title='This Week' />
-                                    {props.thisWeekNotifications.map((notification, index) => (
+                                    <NotificationsDrawerTitle
+                                        title='This Week'
+                                        showSeeAll={props.thisWeekNotificationsCount > 4}
+                                        onSeeAll={handleSeeAllThisWeek}
+                                    />
+                                    {props.thisWeekNotifications.slice(0, 4).map((notification, index) => (
                                         <NotificationsDrawerListItem
                                             key={index + todayNotificationsCount}
                                             notification={notification}
@@ -215,8 +233,12 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                             )}
                             {thisMonthNotificationsCount > 0 && (
                                 <>
-                                    <NotificationsDrawerTitle title='This Month' />
-                                    {props.thisMonthNotifications.map((notification, index) => (
+                                    <NotificationsDrawerTitle
+                                        title='This Month'
+                                        showSeeAll={props.thisMonthNotificationsCount > 4}
+                                        onSeeAll={handleSeeAllThisMonth}
+                                    />
+                                    {props.thisMonthNotifications.slice(0, 4).map((notification, index) => (
                                         <NotificationsDrawerListItem
                                             key={index + todayNotificationsCount + thisWeekNotificationsCount}
                                             notification={notification}
@@ -230,8 +252,12 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                             )}
                             {earlierNotificationsCount > 0 && (
                                 <>
-                                    <NotificationsDrawerTitle title='Earlier' />
-                                    {props.earlierNotifications.map((notification, index) => (
+                                    <NotificationsDrawerTitle
+                                        title='Earlier'
+                                        showSeeAll={props.earlierNotificationsCount > 4}
+                                        onSeeAll={handleSeeAllEarlier}
+                                    />
+                                    {props.earlierNotifications.slice(0, 4).map((notification, index) => (
                                         <NotificationsDrawerListItem
                                             key={index + todayNotificationsCount + thisWeekNotificationsCount + thisMonthNotificationsCount}
                                             notification={notification}
@@ -244,6 +270,34 @@ export default function NotificationsDrawer(props: SearchDrawerProps) {
                     )}
                 </Box>
             </Box>
+            <NotificationsInfiniteList
+                visible={view === 'today'}
+                title='Today'
+                notifications={props.todayNotifications}
+                hasMoreNotifications={props.todayNotifications.length < todayNotificationsCount}
+                onFetchMoreNotifications={props.onFetchMoreTodayNotifications}
+                onClickNotification={props.onClick} />
+            <NotificationsInfiniteList
+                visible={view === 'thisWeek'}
+                title='This week'
+                notifications={props.thisWeekNotifications}
+                hasMoreNotifications={props.thisWeekNotifications.length < thisWeekNotificationsCount}
+                onFetchMoreNotifications={props.onFetchMoreThisWeekNotifications}
+                onClickNotification={props.onClick} />
+            <NotificationsInfiniteList
+                visible={view === 'thisMonth'}
+                title='This month'
+                notifications={props.thisMonthNotifications}
+                hasMoreNotifications={props.thisMonthNotifications.length < thisMonthNotificationsCount}
+                onFetchMoreNotifications={props.onFetchMoreThisMonthNotifications}
+                onClickNotification={props.onClick} />
+            <NotificationsInfiniteList
+                visible={view === 'earlier'}
+                title='Earlier'
+                notifications={props.earlierNotifications}
+                hasMoreNotifications={props.earlierNotifications.length < earlierNotificationsCount}
+                onFetchMoreNotifications={props.onFetchMoreEarlierNotifications}
+                onClickNotification={props.onClick} />
             {!props.loading && todayNotificationsCount < 1 && thisWeekNotificationsCount < 1 && thisMonthNotificationsCount < 1 && earlierNotificationsCount < 1 && (
                 <Box
                     component='div'
