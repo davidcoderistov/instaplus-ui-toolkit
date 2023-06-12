@@ -9,7 +9,6 @@ import { getTimeElapsed } from '../../utils'
 
 
 interface Notification {
-    id: string | number
     photoUrls: string[]
     usernames: string[]
     peopleCount: number
