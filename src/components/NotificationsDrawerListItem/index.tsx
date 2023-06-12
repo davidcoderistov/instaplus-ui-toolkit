@@ -3,6 +3,7 @@ import ListItem from '../ListItem'
 import ListItemAvatar from '../ListItemAvatar'
 import ListItemContent from '../ListItemContent'
 import ListItemTitle from '../ListItemTitle'
+import ListItemSubtitle from '../ListItemSubtitle'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import { getTimeElapsed } from '../../utils'
@@ -156,6 +157,22 @@ const NotificationsDrawerListItem = React.memo((props: Props) => {
                     }
                     title={title}
                 />
+                {props.loading && (
+                    <ListItemSubtitle
+                        loading={props.loading}
+                        loader={
+                            <Skeleton
+                                variant='rounded'
+                                width={180}
+                                height={16}
+                                sx={{
+                                    backgroundColor: '#202020',
+                                    borderRadius: '8px',
+                                }} />
+                        }
+                        subtitle={null}
+                    />
+                )}
             </ListItemContent>
             {!props.loading && (props.notification.type === 'like' || props.notification.type === 'comment') && (
                 <Box
