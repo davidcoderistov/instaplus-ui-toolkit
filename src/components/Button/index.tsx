@@ -48,7 +48,10 @@ export default function Button(props: ButtonProps) {
                 '.MuiLoadingButton-loadingIndicator': {
                     color: primary ? '#0095F6' : '#DBDBDB',
                 },
-                paddingX: 0,
+                padding: 0,
+                margin: 0,
+                lineHeight: '18px',
+                minWidth: 0,
                 ...props.text === 'Follow' && { minWidth: '46px' },
             }}
             fullWidth={Boolean(props.fullWidth)}
@@ -56,6 +59,7 @@ export default function Button(props: ButtonProps) {
             endIcon={props.endIcon ?? null}
             loading={props.loading}
             onClick={props.onClick}
+            disableFocusRipple
         >
             {props.text}
         </LoadingButton>
