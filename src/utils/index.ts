@@ -47,12 +47,16 @@ export const getTimeElapsed = (timestamp: number, granularity?: 'seconds' | 'min
     } else if (now.diff(ago, 'minutes') < 1 && 0 >= granularityOrder) {
         return `${now.diff(ago, 'seconds')}s`
     } else if (now.diff(ago, 'minutes') < 60 && 1 >= granularityOrder) {
-        return `${now.diff(ago, 'minutes')}m`
+        const diffMinutes = now.diff(ago, 'minutes')
+        return `${diffMinutes > 0 ? diffMinutes : 1}m`
     } else if (now.diff(ago, 'hours') < 24 && 2 >= granularityOrder) {
-        return `${now.diff(ago, 'hours')}h`
+        const diffHours = now.diff(ago, 'hours')
+        return `${diffHours > 0 ? diffHours : 1}h`
     } else if (now.diff(ago, 'days') < 7 && 3 >= granularityOrder) {
-        return `${now.diff(ago, 'days')}d`
+        const diffDays = now.diff(ago, 'days')
+        return `${diffDays > 0 ? diffDays : 1}d`
     } else {
-        return `${now.diff(ago, 'weeks')}w`
+        const diffWeeks = now.diff(ago, 'weeks')
+        return `${diffWeeks > 0 ? diffWeeks : 1}w`
     }
 }
