@@ -47,6 +47,16 @@ interface Props {
 
 export default function NotificationsInfiniteList(props: Props) {
 
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (props.visible) {
+            if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollTop = 0
+            }
+        }
+    }, [props.visible])
+
     const initialFetch = useRef(true)
 
     useEffect(() => {
@@ -61,6 +71,7 @@ export default function NotificationsInfiniteList(props: Props) {
     return (
         <Box
             id={props.id}
+            ref={scrollContainerRef}
             component='div'
             display={props.visible ? 'flex' : 'none'}
             flexDirection='column'
