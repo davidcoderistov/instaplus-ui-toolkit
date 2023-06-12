@@ -102,7 +102,8 @@ const SearchDrawerListItem = React.memo((props: Props) => {
                         height={44}
                         sx={{ backgroundColor: '#202020' }} />
                 }
-                user={!props.loading && props.item.type === 'user' ? props.item : null}
+                photoUrls={!props.loading && props.item.type === 'user' ? [props.item.photoUrl] : []}
+                usernames={!props.loading && props.item.type === 'user' ? [props.item.username] : []}
             />
             <ListItemContent gutters={props.loading}>
                 <ListItemTitle
