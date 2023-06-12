@@ -69,7 +69,8 @@ const FollowableUserListItem = React.memo((props: Props) => {
                         height={44}
                         sx={{ backgroundColor: '#3A3A3A' }} />
                 }
-                user={props.loading ? null : props.user}
+                photoUrls={props.loading ? [] : [props.user.photoUrl]}
+                usernames={props.loading ? [] : [props.user.username]}
                 onClick={handleClickUser}
             />
             <ListItemContent gutters={props.loading}>
