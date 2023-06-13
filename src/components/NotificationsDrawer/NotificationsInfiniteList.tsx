@@ -61,12 +61,12 @@ export default function NotificationsInfiniteList(props: Props) {
 
     useEffect(() => {
         if (props.visible && initialFetch.current) {
-            if (props.hasMoreNotifications) {
+            if (props.hasMoreNotifications && props.notifications.length <= 4) {
                 props.onFetchMoreNotifications()
             }
             initialFetch.current = false
         }
-    }, [props.visible, props.hasMoreNotifications])
+    }, [props.visible, props.hasMoreNotifications, props.notifications])
 
     return (
         <Box
