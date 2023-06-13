@@ -2,7 +2,7 @@ import PostActionsButton from '../PostActionsButton'
 
 
 interface Props {
-    isLiked: boolean
+    isPostLiked: boolean
 
     onLikePost(): void
 
@@ -12,7 +12,7 @@ interface Props {
 export default function PostActionsLikeButton(props: Props) {
 
     const handleClick = () => {
-        if (props.isLiked) {
+        if (props.isPostLiked) {
             props.onUnlikePost()
         } else {
             props.onLikePost()
@@ -21,7 +21,7 @@ export default function PostActionsLikeButton(props: Props) {
 
     return (
         <PostActionsButton onClick={handleClick}>
-            {({ isHovered }) => props.isLiked ? (
+            {({ isHovered }) => props.isPostLiked ? (
                 <svg
                     aria-label='Unlike'
                     style={{ display: 'block', position: 'relative' }}

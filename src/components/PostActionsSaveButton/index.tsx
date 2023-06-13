@@ -2,7 +2,7 @@ import PostActionsButton from '../PostActionsButton'
 
 
 interface Props {
-    isSaved: boolean
+    isPostSaved: boolean
 
     onSavePost(): void
 
@@ -12,7 +12,7 @@ interface Props {
 export default function PostActionsSaveButton(props: Props) {
 
     const handleClick = () => {
-        if (props.isSaved) {
+        if (props.isPostSaved) {
             props.onRemovePost()
         } else {
             props.onSavePost()
@@ -21,7 +21,7 @@ export default function PostActionsSaveButton(props: Props) {
 
     return (
         <PostActionsButton onClick={handleClick}>
-            {({ isHovered }) => props.isSaved ? (
+            {({ isHovered }) => props.isPostSaved ? (
                 <svg
                     aria-label='Remove'
                     style={{ display: 'block', position: 'relative' }}
