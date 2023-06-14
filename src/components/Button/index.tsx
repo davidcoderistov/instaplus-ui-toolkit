@@ -50,7 +50,7 @@ export default function Button(props: ButtonProps) {
                     color: primary ? '#0095F6' : '#DBDBDB',
                 },
                 '&.Mui-disabled': {
-                    color: '#4F6070',
+                    color: props.loading ? 'default' : '#4F6070',
                 },
                 padding: 0,
                 margin: 0,
