@@ -9,8 +9,9 @@ interface ButtonProps {
     fullWidth?: boolean
     startIcon?: React.ReactNode
     endIcon?: React.ReactNode
-    contained: boolean
-    loading: boolean
+    contained?: boolean
+    loading?: boolean
+    disabled?: boolean
     onClick: (event: React.MouseEvent) => void
 }
 
@@ -48,6 +49,9 @@ export default function Button(props: ButtonProps) {
                 '.MuiLoadingButton-loadingIndicator': {
                     color: primary ? '#0095F6' : '#DBDBDB',
                 },
+                '&.Mui-disabled': {
+                    color: '#4F6070',
+                },
                 padding: 0,
                 margin: 0,
                 lineHeight: '18px',
@@ -60,6 +64,7 @@ export default function Button(props: ButtonProps) {
             loading={props.loading}
             onClick={props.onClick}
             disableFocusRipple
+            disabled={props.disabled}
         >
             {props.text}
         </LoadingButton>
