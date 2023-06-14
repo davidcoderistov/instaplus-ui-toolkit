@@ -11,6 +11,8 @@ interface User {
 interface Props {
     dense?: boolean
     likingUsers: User[]
+
+    onViewLikes(): void
 }
 
 export default function PostLikeAvatars(props: Props) {
@@ -48,6 +50,7 @@ export default function PostLikeAvatars(props: Props) {
                     touchAction: 'manipulation',
                     cursor: 'pointer',
                 }}
+                onClick={props.onViewLikes}
             >
                 <Box
                     component='span'
