@@ -49,7 +49,6 @@ export default function NotificationsDrawerTitle(props: Props) {
                 <Button
                     variant='primary'
                     text='See all'
-                    contained={false}
                     onClick={props.onSeeAll}
                 />
             )}

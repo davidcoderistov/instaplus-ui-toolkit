@@ -275,7 +275,6 @@ export default function SearchDrawer(props: SearchDrawerProps) {
                                     <Button
                                         variant='primary'
                                         text='Clear all'
-                                        contained={false}
                                         onClick={handleOpenClearSearchHistoryModal}
                                     />
                                 )}

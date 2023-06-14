@@ -41,7 +41,6 @@ export default function ChatFooterAction(props: Props) {
         <Button
             variant='primary'
             text='Send'
-            contained={false}
             onClick={props.onSendMessage}
         />
     ) : (

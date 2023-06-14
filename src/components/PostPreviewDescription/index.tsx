@@ -322,7 +322,6 @@ export default function PostPreviewDescription(props: Props) {
                                     <Button
                                         variant='primary'
                                         text='Follow'
-                                        contained={false}
                                         loading={props.user.followingLoading}
                                         onClick={handleFollowUser}
                                     />
