@@ -278,38 +278,38 @@ export default function PostPreviewDescription(props: Props) {
                                     </Box>
                                 </Box>
                             </Box>
-                            {(!props.user.following || props.user.followingLoading) && (
+                            <Box
+                                component='div'
+                                alignItems='baseline'
+                                border='0'
+                                boxSizing='border-box'
+                                display='flex'
+                                flexDirection='row'
+                                flexShrink='0'
+                                fontSize='100%'
+                                margin='0'
+                                padding='0'
+                                position='relative'
+                                top='1px'
+                                sx={{ verticalAlign: 'baseline' }}
+                            >
                                 <Box
                                     component='div'
-                                    alignItems='baseline'
+                                    alignItems='stretch'
                                     border='0'
                                     boxSizing='border-box'
                                     display='flex'
-                                    flexDirection='row'
+                                    flexDirection='column'
                                     flexShrink='0'
                                     fontSize='100%'
-                                    margin='0'
+                                    marginLeft='0'
+                                    marginRight='2px'
+                                    marginY='0'
                                     padding='0'
                                     position='relative'
-                                    top='1px'
                                     sx={{ verticalAlign: 'baseline' }}
                                 >
-                                    <Box
-                                        component='div'
-                                        alignItems='stretch'
-                                        border='0'
-                                        boxSizing='border-box'
-                                        display='flex'
-                                        flexDirection='column'
-                                        flexShrink='0'
-                                        fontSize='100%'
-                                        marginLeft='0'
-                                        marginRight='2px'
-                                        marginY='0'
-                                        padding='0'
-                                        position='relative'
-                                        sx={{ verticalAlign: 'baseline' }}
-                                    >
+                                    {(!props.user.following || props.user.followingLoading) ? (
                                         <Box
                                             component='span'
                                             marginLeft='4px'
@@ -319,15 +319,19 @@ export default function PostPreviewDescription(props: Props) {
                                         >
                                             •
                                         </Box>
-                                    </Box>
+                                    ) : (
+                                        <Box component='span' display='inline'>&#8203;</Box>
+                                    )}
+                                </Box>
+                                {(!props.user.following || props.user.followingLoading) && (
                                     <Button
                                         variant='primary'
                                         text='Follow'
                                         loading={props.user.followingLoading}
                                         onClick={handleFollowUser}
                                     />
-                                </Box>
-                            )}
+                                )}
+                            </Box>
                         </Box>
                         {props.post.location && (
                             <Box
