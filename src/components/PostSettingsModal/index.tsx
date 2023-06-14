@@ -6,6 +6,9 @@ import Button from '@mui/material/Button'
 
 interface Props {
     open: boolean
+    following: boolean
+
+    onUnfollowUser(): void
 
     onGoToPost(): void
 
@@ -52,6 +55,28 @@ export default function PostSettingsModal(props: Props) {
                         display='flex'
                         flexDirection='column'
                     >
+                        {props.following && (
+                            <Button
+                                variant='text'
+                                fullWidth
+                                color='error'
+                                size='large'
+                                sx={{
+                                    color: '#ED4956',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: 'inherit',
+                                    },
+                                    paddingY: '12px',
+                                    borderBottom: '1px solid #363636',
+                                }}
+                                onClick={props.onUnfollowUser}
+                                disableElevation
+                                disableRipple
+                            >
+                                Unfollow
+                            </Button>
+                        )}
                         <Button
                             variant='text'
                             fullWidth
@@ -62,6 +87,7 @@ export default function PostSettingsModal(props: Props) {
                                     backgroundColor: 'inherit',
                                 },
                                 paddingY: '12px',
+                                borderBottom: '1px solid #363636',
                             }}
                             onClick={props.onGoToPost}
                             disableElevation
@@ -78,8 +104,8 @@ export default function PostSettingsModal(props: Props) {
                                 '&:hover': {
                                     backgroundColor: 'inherit',
                                 },
-                                borderTop: '1px solid #363636',
                                 paddingY: '12px',
+                                borderBottom: '1px solid #363636',
                             }}
                             onClick={props.onViewProfile}
                             disableElevation
@@ -96,7 +122,6 @@ export default function PostSettingsModal(props: Props) {
                                 '&:hover': {
                                     backgroundColor: 'inherit',
                                 },
-                                borderTop: '1px solid #363636',
                                 paddingY: '12px',
                             }}
                             onClick={props.onCloseModal}
