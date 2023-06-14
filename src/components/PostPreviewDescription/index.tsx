@@ -312,7 +312,8 @@ export default function PostPreviewDescription(props: Props) {
                                     >
                                         <Box
                                             component='span'
-                                            marginX='4px'
+                                            marginLeft='4px'
+                                            marginRight='2px'
                                             color='#F5F5F5'
                                             display='inline'
                                         >
