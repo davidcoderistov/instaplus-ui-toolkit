@@ -185,6 +185,7 @@ export default function PostBaseComment(props: Props) {
                             minWidth='0'
                             padding='0'
                             position='relative'
+                            lineHeight='14px'
                             sx={{ verticalAlign: 'baseline' }}
                         >
                             <Box
