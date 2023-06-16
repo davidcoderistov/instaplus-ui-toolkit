@@ -3,19 +3,23 @@ import Box from '@mui/material/Box'
 import { getTimeElapsed, formatNumber } from '../../utils'
 
 
+interface Creator {
+    id: string | number
+    username: string
+    photoUrl: string
+}
+
+interface Comment {
+    id: string | number
+    creator: Creator
+    body: string
+    isLiked: boolean
+    likesCount: number
+    createdAt: number
+}
+
 interface Props {
-    user: {
-        id: string | number
-        username: string
-        photoUrl: string
-    }
-    comment: {
-        id: string | number
-        body: string
-        isLiked: boolean
-        likesCount: number
-        createdAt: number
-    }
+    comment: Comment
 
     onViewUser(userId: string | number): void
 
@@ -42,7 +46,7 @@ export default function PostBaseComment(props: Props) {
     }, [props.comment.likesCount])
 
     const handleViewUser = () => {
-        props.onViewUser(props.user.id)
+        props.onViewUser(props.comment.creator.id)
     }
 
     const handleViewCommentLikes = () => {
@@ -155,7 +159,7 @@ export default function PostBaseComment(props: Props) {
                                         onClick={handleViewUser}
                                     >
                                         <img
-                                            alt={`${props.user.username} profile picture`}
+                                            alt={`${props.comment.creator.username} profile picture`}
                                             style={{
                                                 fontSize: '100%',
                                                 width: '100%',
@@ -165,7 +169,7 @@ export default function PostBaseComment(props: Props) {
                                                 margin: '0',
                                                 border: '0',
                                             }}
-                                            src={props.user.photoUrl} />
+                                            src={props.comment.creator.photoUrl} />
                                     </Box>
                                 </Box>
                             </Box>
@@ -241,7 +245,7 @@ export default function PostBaseComment(props: Props) {
                                         }}
                                         onClick={handleViewUser}
                                     >
-                                        {props.user.username}
+                                        {props.comment.creator.username}
                                     </Box>
                                 </Box>
                             </Box>
