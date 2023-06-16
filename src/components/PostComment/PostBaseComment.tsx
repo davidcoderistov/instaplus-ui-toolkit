@@ -12,8 +12,8 @@ interface Props {
     comment: {
         id: string | number
         body: string
-        likesCount: number
         isLiked: boolean
+        likesCount: number
         createdAt: number
     }
 
