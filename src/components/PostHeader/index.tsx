@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
 import Button from '../Button'
 import PostSettingsModal from '../PostSettingsModal'
 import UnfollowUserModal from '../UnfollowUserModal'
 import { getTimeElapsed } from '../../utils'
 
 
-interface Props {
+interface StaticProps {
+    loading?: never
     dense?: boolean
     user: {
         id: string | number
@@ -30,23 +32,46 @@ interface Props {
     onViewProfile(id: string | number): void
 }
 
+interface LoadingProps {
+    loading: true
+    dense?: never
+    user?: never
+    post?: never
+
+    onFollowUser?(): never
+
+    onUnfollowUser?(): never
+
+    onGoToPost?(): never
+
+    onViewProfile?(): never
+}
+
+type Props = StaticProps | LoadingProps
+
 export default function PostHeader(props: Props) {
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
     const [isUnfollowUserModalOpen, setIsUnfollowUserModalOpen] = useState(false)
 
     const handleFollowUser = () => {
-        props.onFollowUser(props.user.id)
+        if (!props.loading) {
+            props.onFollowUser(props.user.id)
+        }
     }
 
     const handleUnfollowUser = () => {
-        setIsUnfollowUserModalOpen(false)
-        props.onUnfollowUser(props.user.id)
+        if (!props.loading) {
+            setIsUnfollowUserModalOpen(false)
+            props.onUnfollowUser(props.user.id)
+        }
     }
 
 
     const handleViewProfile = () => {
-        props.onViewProfile(props.user.id)
+        if (!props.loading) {
+            props.onViewProfile(props.user.id)
+        }
     }
 
     const handleGoToPost = () => {
@@ -55,8 +80,10 @@ export default function PostHeader(props: Props) {
     }
 
     const handleViewProfileFromModal = () => {
-        setIsSettingsModalOpen(false)
-        props.onViewProfile(props.user.id)
+        if (!props.loading) {
+            setIsSettingsModalOpen(false)
+            props.onViewProfile(props.user.id)
+        }
     }
 
     const handleOpenSettingsModal = () => {
@@ -76,12 +103,7 @@ export default function PostHeader(props: Props) {
         setIsUnfollowUserModalOpen(false)
     }
 
-    const timeAgo = useMemo(() => {
-        if (props.dense) {
-            return getTimeElapsed(props.post.createdAt, 'minutes')
-        }
-        return null
-    }, [props.dense, props.post.createdAt])
+    const timeAgo = !props.loading && props.dense ? getTimeElapsed(props.post.createdAt, 'minutes') : null
 
     return (
         <Box
@@ -135,7 +157,7 @@ export default function PostHeader(props: Props) {
                                     component='div'
                                     height='32px'
                                     width='32px'
-                                    bgcolor='#1A1A1A'
+                                    bgcolor={props.loading ? '#000000' : '#1A1A1A'}
                                     paddingLeft='0'
                                     paddingTop='0'
                                     minWidth='0'
@@ -167,7 +189,7 @@ export default function PostHeader(props: Props) {
                                         overflowX: 'hidden',
                                         borderLeftColor: '#00000066',
                                         borderLeftStyle: 'solid',
-                                        cursor: 'pointer',
+                                        cursor: props.loading ? 'default' : 'pointer',
                                         outlineStyle: 'none',
                                         borderBottomWidth: '0',
                                         borderBottomStyle: 'solid',
@@ -178,18 +200,26 @@ export default function PostHeader(props: Props) {
                                     }}
                                     onClick={handleViewProfile}
                                 >
-                                    <img
-                                        alt={`${props.user.username} profile picture`}
-                                        style={{
-                                            fontSize: '100%',
-                                            width: '100%',
-                                            height: '100%',
-                                            verticalAlign: 'baseline',
-                                            padding: '0',
-                                            margin: '0',
-                                            border: '0',
-                                        }}
-                                        src={props.user.photoUrl} />
+                                    {props.loading ? (
+                                        <Skeleton
+                                            variant='circular'
+                                            width={32}
+                                            height={32}
+                                            sx={{ backgroundColor: '#202020' }} />
+                                    ) : (
+                                        <img
+                                            alt={`${props.user.username} profile picture`}
+                                            style={{
+                                                fontSize: '100%',
+                                                width: '100%',
+                                                height: '100%',
+                                                verticalAlign: 'baseline',
+                                                padding: '0',
+                                                margin: '0',
+                                                border: '0',
+                                            }}
+                                            src={props.user.photoUrl} />
+                                    )}
                                 </Box>
                             </Box>
                         </Box>
@@ -233,10 +263,10 @@ export default function PostHeader(props: Props) {
                                 overflow='hidden'
                                 padding='2px'
                                 position='relative'
-                                top={props.post.location ? '1px' : '0'}
+                                top={props.loading || props.post.location ? '1px' : '0'}
                                 sx={{
                                     verticalAlign: 'baseline',
-                                    cursor: 'pointer',
+                                    cursor: props.loading ? 'default' : 'pointer',
                                 }}
                                 onClick={handleViewProfile}
                             >
@@ -278,13 +308,23 @@ export default function PostHeader(props: Props) {
                                             component='div'
                                             display='inline'
                                         >
-                                            {props.user.username}
+                                            {props.loading ? (
+                                                <Skeleton
+                                                    variant='rounded'
+                                                    width={210}
+                                                    height={11}
+                                                    sx={{
+                                                        backgroundColor: '#202020',
+                                                        borderRadius: '8px',
+                                                    }} />
+
+                                            ) : props.user.username}
                                         </Box>
                                     </Box>
                                 </Box>
                             </Box>
                         </Box>
-                        {timeAgo && (
+                        {!props.loading && timeAgo && (
                             <Box
                                 component='div'
                                 borderRadius='0'
@@ -358,7 +398,7 @@ export default function PostHeader(props: Props) {
                             margin='0'
                             padding='0'
                             position='relative'
-                            top={props.post.location ? '1px' : '0'}
+                            top={props.loading || props.post.location ? '1px' : '0'}
                             sx={{ verticalAlign: 'baseline' }}
                         >
                             <Box
@@ -377,7 +417,7 @@ export default function PostHeader(props: Props) {
                                 position='relative'
                                 sx={{ verticalAlign: 'baseline' }}
                             >
-                                {(!props.user.following || props.user.followingLoading) ? (
+                                {!props.loading && (!props.user.following || props.user.followingLoading) ? (
                                     <Box
                                         component='span'
                                         marginLeft='4px'
@@ -391,7 +431,7 @@ export default function PostHeader(props: Props) {
                                     <Box component='span' display='inline'>&#8203;</Box>
                                 )}
                             </Box>
-                            {(!props.user.following || props.user.followingLoading) && (
+                            {!props.loading && (!props.user.following || props.user.followingLoading) && (
                                 <Button
                                     variant='primary'
                                     text='Follow'
@@ -401,7 +441,7 @@ export default function PostHeader(props: Props) {
                             )}
                         </Box>
                     </Box>
-                    {props.post.location && props.dense ? (
+                    {(props.loading || props.post.location) ? props.dense ? (
                         (
                             <Box
                                 component='div'
@@ -450,7 +490,16 @@ export default function PostHeader(props: Props) {
                                             wordBreak: 'break-word',
                                         }}
                                     >
-                                        {props.post.location}
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='rounded'
+                                                width={150}
+                                                height={10}
+                                                sx={{
+                                                    backgroundColor: '#202020',
+                                                    borderRadius: '8px',
+                                                }} />
+                                        ) : props.post.location}
                                     </Box>
                                 </Box>
                             </Box>
@@ -502,93 +551,108 @@ export default function PostHeader(props: Props) {
                                             wordBreak: 'break-word',
                                         }}
                                     >
-                                        {props.post.location}
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='rounded'
+                                                width={150}
+                                                height={10}
+                                                sx={{
+                                                    backgroundColor: '#202020',
+                                                    borderRadius: '8px',
+                                                }} />
+                                        ) : props.post.location}
                                     </Box>
                                 </Box>
                             </Box>
                         </Box>
-                    )}
+                    ) : null}
                 </Box>
             </Box>
-            <Box
-                component='div'
-                padding='0'
-                display='block'
-                sx={{
-                    ...props.dense && { padding: '0', marginRight: '-8px' },
-                    ...!props.dense && { paddingRight: '8px' },
-                }}
-            >
+            {!props.loading && (
                 <Box
                     component='div'
-                    alignItems='center'
-                    border='none'
-                    display='flex'
-                    justifyContent='center'
-                    padding='8px'
-                    lineHeight='18px'
-                    fontSize='14px'
-                    margin='0'
-                    sx={{ cursor: 'pointer' }}
-                    onClick={handleOpenSettingsModal}
+                    padding='0'
+                    display='block'
+                    sx={{
+                        ...props.dense && { padding: '0', marginRight: '-8px' },
+                        ...!props.dense && { paddingRight: '8px' },
+                    }}
                 >
                     <Box
                         component='div'
                         alignItems='center'
+                        border='none'
                         display='flex'
                         justifyContent='center'
+                        padding='8px'
+                        lineHeight='18px'
+                        fontSize='14px'
+                        margin='0'
+                        sx={{ cursor: 'pointer' }}
+                        onClick={handleOpenSettingsModal}
                     >
                         <Box
                             component='div'
-                            height='24px'
-                            width='24px'
-                            borderRadius='0'
-                            justifyContent='center'
-                            bgcolor='transparent'
-                            flexDirection='column'
-                            boxSizing='border-box'
                             alignItems='center'
-                            flexShrink='0'
-                            alignSelf='auto'
-                            position='relative'
-                            flexGrow='0'
-                            sx={{
-                                overflowY: 'visible',
-                                overflowX: 'visible',
-                            }}
+                            display='flex'
+                            justifyContent='center'
                         >
-                            <svg
-                                aria-label='More options'
-                                className='_ab6-'
-                                style={{ display: 'block', position: 'relative' }}
-                                fill='rgb(245, 245, 245)'
-                                height='24'
-                                role='img'
-                                viewBox='0 0 24 24'
-                                width='24'
+                            <Box
+                                component='div'
+                                height='24px'
+                                width='24px'
+                                borderRadius='0'
+                                justifyContent='center'
+                                bgcolor='transparent'
+                                flexDirection='column'
+                                boxSizing='border-box'
+                                alignItems='center'
+                                flexShrink='0'
+                                alignSelf='auto'
+                                position='relative'
+                                flexGrow='0'
+                                sx={{
+                                    overflowY: 'visible',
+                                    overflowX: 'visible',
+                                }}
                             >
-                                <circle cx='12' cy='12' r='1.5' />
-                                <circle cx='6' cy='12' r='1.5' />
-                                <circle cx='18' cy='12' r='1.5' />
-                            </svg>
+                                <svg
+                                    aria-label='More options'
+                                    className='_ab6-'
+                                    style={{ display: 'block', position: 'relative' }}
+                                    fill='rgb(245, 245, 245)'
+                                    height='24'
+                                    role='img'
+                                    viewBox='0 0 24 24'
+                                    width='24'
+                                >
+                                    <circle cx='12' cy='12' r='1.5' />
+                                    <circle cx='6' cy='12' r='1.5' />
+                                    <circle cx='18' cy='12' r='1.5' />
+                                </svg>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
-            </Box>
-            <PostSettingsModal
-                open={isSettingsModalOpen}
-                following={props.user.following}
-                onUnfollowUser={handleOpenUnfollowUserModal}
-                onGoToPost={handleGoToPost}
-                onViewProfile={handleViewProfileFromModal}
-                onCloseModal={handleCloseSettingsModal}
-            />
-            <UnfollowUserModal
-                open={isUnfollowUserModalOpen}
-                user={props.user}
-                onUnfollowUser={handleUnfollowUser}
-                onCloseModal={handleCloseUnfollowUserModal}
-            />
+            )}
+            {!props.loading && (
+                <>
+                    <PostSettingsModal
+                        open={isSettingsModalOpen}
+                        following={props.user.following}
+                        onUnfollowUser={handleOpenUnfollowUserModal}
+                        onGoToPost={handleGoToPost}
+                        onViewProfile={handleViewProfileFromModal}
+                        onCloseModal={handleCloseSettingsModal}
+                    />
+                    <UnfollowUserModal
+                        open={isUnfollowUserModalOpen}
+                        user={props.user}
+                        onUnfollowUser={handleUnfollowUser}
+                        onCloseModal={handleCloseUnfollowUserModal}
+                    />
+                </>
+            )}
         </Box>
     )
 }
