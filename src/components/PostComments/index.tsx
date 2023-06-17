@@ -31,7 +31,8 @@ interface Post {
 }
 
 interface Props {
-    post: Post
+    post: Post | null
+    postLoading: boolean
     comments: Comment[]
     commentsLoading: boolean
     hasMoreComments: boolean
@@ -55,14 +56,18 @@ interface Props {
 
 export default function PostComments(props: Props) {
 
+    const commentsLoading = useMemo(() => {
+        return props.postLoading || props.commentsLoading
+    }, [props.postLoading, props.commentsLoading])
+
     const handleFetchMoreComments = useCallback(() => {
-        if (!props.commentsLoading) {
+        if (!commentsLoading) {
             props.onFetchMoreComments()
         }
-    }, [props.commentsLoading, props.onFetchMoreComments])
+    }, [commentsLoading, props.onFetchMoreComments])
 
     const postDescriptionComment = useMemo(() => {
-        return props.post.description && (
+        return !commentsLoading && props.post && props.post.description && (
             <PostComment
                 key='post-description-comment'
                 condensed
@@ -79,7 +84,7 @@ export default function PostComments(props: Props) {
                 }}
             />
         )
-    }, [props.post])
+    }, [commentsLoading, props.post])
 
     return (
         <Box
@@ -98,7 +103,7 @@ export default function PostComments(props: Props) {
                 overflowY: 'auto',
             }}
         >
-            {!props.commentsLoading && !props.hasMoreComments && props.comments.length < 1 ? (
+            {!commentsLoading && !props.hasMoreComments && props.comments.length < 1 ? (
                 <Box
                     component='div'
                     height='100%'
@@ -222,7 +227,7 @@ export default function PostComments(props: Props) {
                         verticalAlign: 'baseline',
                     }}
                 >
-                    {props.commentsLoading && props.comments.length < 1 ? [...Array(6).keys()].map(index => (
+                    {commentsLoading && props.comments.length < 1 ? [...Array(8).keys()].map(index => (
                         <PostComment
                             key={index}
                             loading />
@@ -242,7 +247,7 @@ export default function PostComments(props: Props) {
                                     onHideReplies={props.onHideReplies}
                                 />
                             ))}
-                            {((props.commentsLoading && props.comments.length > 0) || props.hasMoreComments) && (
+                            {((commentsLoading && props.comments.length > 0) || props.hasMoreComments) && (
                                 <Box
                                     component='div'
                                     minHeight='40px'
@@ -271,7 +276,7 @@ export default function PostComments(props: Props) {
                                         lineHeight='18px'
                                         margin='0'
                                         padding='8px'
-                                        sx={{ cursor: props.commentsLoading ? 'default' : 'pointer' }}
+                                        sx={{ cursor: commentsLoading ? 'default' : 'pointer' }}
                                         onClick={handleFetchMoreComments}
                                     >
                                         <Box
@@ -280,7 +285,7 @@ export default function PostComments(props: Props) {
                                             alignItems='center'
                                             justifyContent='center'
                                         >
-                                            {props.commentsLoading ? (
+                                            {commentsLoading ? (
                                                 <CircularProgress
                                                     size={24}
                                                     thickness={5}
