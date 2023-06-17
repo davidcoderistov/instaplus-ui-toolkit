@@ -1,49 +1,16 @@
 import Box from '@mui/material/Box'
-import { formatNumber } from '../../utils'
+import PostLikesContainer from './PostLikesContainer'
 
 
-const Typography = (props: { children: string, onClick?(): void }) => {
-
-    return (
-        <Box
-            component='span'
-            display='inline'
-            padding='0'
-            margin='0'
-            border='0'
-            bgcolor='transparent'
-            boxSizing='border-box'
-            textAlign='inherit'
-            sx={{
-                touchAction: 'manipulation',
-                cursor: 'pointer',
-                outline: 'none',
-            }}
-            onClick={props.onClick}
-        >
-            <Box
-                component='span'
-                lineHeight='18px'
-                fontSize='14px'
-                display='inline'
-                minWidth='0'
-                margin='0!important'
-                color='#F5F5F5'
-                fontWeight='600'
-                maxWidth='100%'
-                sx={{
-                    wordWrap: 'break-word',
-                    whiteSpace: 'pre-line',
-                    wordBreak: 'break-word',
-                }}
-            >
-                {props.children}
-            </Box>
-        </Box>
-    )
+interface User {
+    id: string | number
+    username: string
+    photoUrl: string
 }
 
 interface Props {
+    dense?: boolean
+    likingUsers: User[] | null
     likingUser: {
         id: string | number
         username: string
@@ -59,47 +26,74 @@ interface Props {
 
 export default function PostLikes(props: Props) {
 
-    const handleViewUser = () => {
-        if (props.likingUser) {
-            props.onViewUser(props.likingUser.id)
-        }
-    }
-
-    return (
+    return props.dense ? (
         <Box
-            component='span'
-            lineHeight='18px'
-            fontSize='14px'
-            fontWeight='400'
-            minWidth='0'
-            margin='0!important'
-            color='#F5F5F5'
-            position='relative'
+            component='div'
+            marginBottom='0'
             display='block'
-            maxWidth='100%'
-            sx={{
-                wordWrap: 'break-word',
-                whiteSpace: 'pre-line',
-                wordBreak: 'break-word',
-                overflowY: 'visible',
-                overflowX: 'visible',
-            }}
         >
-            {props.likesCount > 0 && props.likingUser ? (
-                <>
-                    Liked by <Typography
-                    onClick={handleViewUser}>{props.likingUser.username}</Typography> {props.likesCount > 1 && (
-                    <>
-                        and <Typography
-                        onClick={props.onViewLikes}>{formatNumber(props.likesCount - 1)} {props.likesCount - 1 > 1 ? 'others' : 'other'}</Typography>
-                    </>
-                )}
-                </>
-            ) : (
-                <>
-                    Be the first to like <Typography onClick={props.onViewPost}>this</Typography>
-                </>
-            )}
+            <Box
+                component='div'
+                borderRadius='0'
+                bgcolor='transparent'
+                minWidth='0'
+                boxSizing='border-box'
+                display='flex'
+                alignItems='center'
+                minHeight='0'
+                flexDirection='row'
+                justifyContent='flex-start'
+                position='relative'
+                sx={{
+                    overflowY: 'visible',
+                    overflowX: 'visible',
+                }}
+            >
+                <PostLikesContainer
+                    dense={props.dense}
+                    likingUsers={props.likingUsers}
+                    likingUser={props.likingUser}
+                    likesCount={props.likesCount}
+                    onViewUser={props.onViewUser}
+                    onViewLikes={props.onViewLikes}
+                    onViewPost={props.onViewPost} />
+            </Box>
+        </Box>
+    ) : (
+        <Box
+            component='div'
+            paddingLeft='16px'
+            paddingRight='16px'
+            marginBottom='4px'
+            order='4'
+            display='block'
+        >
+            <Box
+                component='div'
+                borderRadius='0'
+                bgcolor='transparent'
+                minWidth='0'
+                boxSizing='border-box'
+                display='flex'
+                minHeight='0'
+                alignItems='stretch'
+                flexDirection='row'
+                justifyContent='flex-start'
+                position='relative'
+                sx={{
+                    overflowY: 'visible',
+                    overflowX: 'visible',
+                }}
+            >
+                <PostLikesContainer
+                    dense={props.dense}
+                    likingUsers={props.likingUsers}
+                    likingUser={props.likingUser}
+                    likesCount={props.likesCount}
+                    onViewUser={props.onViewUser}
+                    onViewLikes={props.onViewLikes}
+                    onViewPost={props.onViewPost} />
+            </Box>
         </Box>
     )
 }
