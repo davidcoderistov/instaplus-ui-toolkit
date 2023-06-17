@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
 import { getTimeElapsed, formatNumber } from '../../utils'
 
 
@@ -18,7 +18,8 @@ interface Comment {
     createdAt: number
 }
 
-interface Props {
+interface StaticProps {
+    loading?: never
     comment: Comment
     condensed?: boolean
 
@@ -33,36 +34,55 @@ interface Props {
     onUnlikeComment(commentId: string | number): void
 }
 
+interface LoadingProps {
+    loading: true
+    comment?: never
+    condensed?: never
+
+    onViewUser?(): never
+
+    onViewCommentLikes?(): never
+
+    onReplyToComment?(): never
+
+    onLikeComment?(): never
+
+    onUnlikeComment?(): never
+}
+
+type Props = StaticProps | LoadingProps
+
 export default function PostBaseComment(props: Props) {
 
-    const createdAt = useMemo(() => {
-        return getTimeElapsed(props.comment.createdAt, 'minutes')
-    }, [props.comment.createdAt])
+    const createdAt = props.loading ? null : getTimeElapsed(props.comment.createdAt, 'minutes')
 
-    const likesCount = useMemo(() => {
-        if (props.comment.likesCount > 0) {
-            return formatNumber(props.comment.likesCount)
-        }
-        return 0
-    }, [props.comment.likesCount])
+    const likesCount = props.loading || props.comment.likesCount < 1 ? 0 : formatNumber(props.comment.likesCount)
 
     const handleViewUser = () => {
-        props.onViewUser(props.comment.creator.id)
+        if (!props.loading) {
+            props.onViewUser(props.comment.creator.id)
+        }
     }
 
     const handleViewCommentLikes = () => {
-        props.onViewCommentLikes(props.comment.id)
+        if (!props.loading) {
+            props.onViewCommentLikes(props.comment.id)
+        }
     }
 
     const handleReplyToComment = () => {
-        props.onReplyToComment(props.comment.id)
+        if (!props.loading) {
+            props.onReplyToComment(props.comment.id)
+        }
     }
 
     const handleClickLikeComment = () => {
-        if (props.comment.isLiked) {
-            props.onUnlikeComment(props.comment.id)
-        } else {
-            props.onLikeComment(props.comment.id)
+        if (!props.loading) {
+            if (props.comment.isLiked) {
+                props.onUnlikeComment(props.comment.id)
+            } else {
+                props.onLikeComment(props.comment.id)
+            }
         }
     }
 
@@ -138,7 +158,7 @@ export default function PostBaseComment(props: Props) {
                                         width='32px'
                                         borderRadius='50%'
                                         borderColor='#00000066'
-                                        bgcolor='#1A1A1A'
+                                        bgcolor={props.loading ? '#000000' : '#1A1A1A'}
                                         padding='0'
                                         minWidth='0'
                                         flexDirection='column'
@@ -155,22 +175,30 @@ export default function PostBaseComment(props: Props) {
                                             borderStyle: 'solid',
                                             borderWidth: '0',
                                             touchAction: 'manipulation',
-                                            cursor: 'pointer',
+                                            cursor: props.loading ? 'default' : 'pointer',
                                         }}
                                         onClick={handleViewUser}
                                     >
-                                        <img
-                                            alt={`${props.comment.creator.username} profile picture`}
-                                            style={{
-                                                fontSize: '100%',
-                                                width: '100%',
-                                                height: '100%',
-                                                verticalAlign: 'baseline',
-                                                padding: '0',
-                                                margin: '0',
-                                                border: '0',
-                                            }}
-                                            src={props.comment.creator.photoUrl} />
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='circular'
+                                                width={32}
+                                                height={32}
+                                                sx={{ backgroundColor: '#202020' }} />
+                                        ) : (
+                                            <img
+                                                alt={`${props.comment.creator.username} profile picture`}
+                                                style={{
+                                                    fontSize: '100%',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    verticalAlign: 'baseline',
+                                                    padding: '0',
+                                                    margin: '0',
+                                                    border: '0',
+                                                }}
+                                                src={props.comment.creator.photoUrl} />
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
@@ -241,27 +269,38 @@ export default function PostBaseComment(props: Props) {
                                             textOverflow: 'ellipsis',
                                             touchAction: 'manipulation',
                                             userSelect: 'none',
-                                            cursor: 'pointer',
+                                            cursor: props.loading ? 'default' : 'pointer',
                                             borderStyle: 'none',
                                             outlineStyle: 'none',
                                         }}
                                         onClick={handleViewUser}
                                     >
-                                        {props.comment.creator.username}
+                                        {props.loading ? (
+                                            <Skeleton
+                                                variant='rounded'
+                                                width={240}
+                                                height={11}
+                                                sx={{
+                                                    backgroundColor: '#202020',
+                                                    borderRadius: '8px',
+                                                }} />
+                                        ) : props.comment.creator.username}
                                     </Box>
                                 </Box>
                             </Box>
-                            <Box
-                                component='div'
-                                display='inline'
-                                margin='0!important'
-                                color='#F5F5F5'
-                                fontWeight='400'
-                                fontSize='14px'
-                                lineHeight='18px'
-                            >
-                                {props.comment.body}
-                            </Box>
+                            {!props.loading && (
+                                <Box
+                                    component='div'
+                                    display='inline'
+                                    margin='0!important'
+                                    color='#F5F5F5'
+                                    fontWeight='400'
+                                    fontSize='14px'
+                                    lineHeight='18px'
+                                >
+                                    {props.comment.body}
+                                </Box>
+                            )}
                             <Box
                                 component='div'
                                 borderRadius='0'
@@ -298,114 +337,127 @@ export default function PostBaseComment(props: Props) {
                                         wordBreak: 'break-word',
                                     }}
                                 >
-                                    <Box
-                                        component='div'
-                                        display='inline'
-                                        padding='0'
-                                        margin='0'
-                                        border='0'
-                                        bgcolor='transparent'
-                                        boxSizing='border-box'
-                                        textAlign='inherit'
-                                        sx={{
-                                            touchAction: 'manipulation',
-                                            outline: 'none',
-                                        }}
-                                    >
-                                        <Box
-                                            component='span'
-                                            fontSize='12px'
-                                            lineHeight='16px'
-                                            fontWeight='400'
-                                            color='#A8A8A8'
-                                            border='none'
-                                            display='inline'
-                                            marginRight='12px!important'
-                                            padding='0'
-                                            position='relative'
-                                        >
-                                            {createdAt}
-                                        </Box>
-                                    </Box>
-                                    {!props.condensed && props.comment.likesCount > 0 && (
-                                        <Box
-                                            component='div'
-                                            color='#A8A8A8'
-                                            border='none'
-                                            display='inline'
-                                            marginRight='12px!important'
-                                            padding='0'
-                                            position='relative'
-                                            fontSize='14px'
-                                            lineHeight='18px'
-                                            margin='0'
+                                    {props.loading ? (
+                                        <Skeleton
+                                            variant='rounded'
+                                            width={180}
+                                            height={10}
                                             sx={{
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={handleViewCommentLikes}
-                                        >
+                                                backgroundColor: '#202020',
+                                                borderRadius: '8px',
+                                            }} />
+                                    ) : (
+                                        <>
                                             <Box
-                                                component='span'
+                                                component='div'
                                                 display='inline'
-                                                lineHeight='16px'
-                                                minWidth='0'
-                                                margin='0!important'
-                                                fontWeight='600'
-                                                color='#A8A8A8'
-                                                fontSize='12px'
-                                                maxWidth='100%'
+                                                padding='0'
+                                                margin='0'
+                                                border='0'
+                                                bgcolor='transparent'
+                                                boxSizing='border-box'
+                                                textAlign='inherit'
                                                 sx={{
-                                                    wordWrap: 'break-word',
-                                                    whiteSpace: 'pre-line',
-                                                    wordBreak: 'break-word',
+                                                    touchAction: 'manipulation',
+                                                    outline: 'none',
                                                 }}
                                             >
-                                                {likesCount} {props.comment.likesCount > 1 ? 'likes' : 'like'}
+                                                <Box
+                                                    component='span'
+                                                    fontSize='12px'
+                                                    lineHeight='16px'
+                                                    fontWeight='400'
+                                                    color='#A8A8A8'
+                                                    border='none'
+                                                    display='inline'
+                                                    marginRight='12px!important'
+                                                    padding='0'
+                                                    position='relative'
+                                                >
+                                                    {createdAt}
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    )}
-                                    {!props.condensed && (
-                                        <Box
-                                            component='div'
-                                            color='#A8A8A8'
-                                            border='none'
-                                            display='inline'
-                                            marginRight='12px!important'
-                                            padding='0'
-                                            position='relative'
-                                            fontSize='14px'
-                                            lineHeight='18px'
-                                            margin='0'
-                                            sx={{
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={handleReplyToComment}
-                                        >
-                                            <Box
-                                                component='span'
-                                                display='inline'
-                                                lineHeight='16px'
-                                                minWidth='0'
-                                                margin='0!important'
-                                                fontWeight='600'
-                                                color='#A8A8A8'
-                                                fontSize='12px'
-                                                maxWidth='100%'
-                                                sx={{
-                                                    wordWrap: 'break-word',
-                                                    whiteSpace: 'pre-line',
-                                                    wordBreak: 'break-word',
-                                                }}
-                                            >
-                                                Reply
-                                            </Box>
-                                        </Box>
+                                            {!props.condensed && props.comment.likesCount > 0 && (
+                                                <Box
+                                                    component='div'
+                                                    color='#A8A8A8'
+                                                    border='none'
+                                                    display='inline'
+                                                    marginRight='12px!important'
+                                                    padding='0'
+                                                    position='relative'
+                                                    fontSize='14px'
+                                                    lineHeight='18px'
+                                                    margin='0'
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={handleViewCommentLikes}
+                                                >
+                                                    <Box
+                                                        component='span'
+                                                        display='inline'
+                                                        lineHeight='16px'
+                                                        minWidth='0'
+                                                        margin='0!important'
+                                                        fontWeight='600'
+                                                        color='#A8A8A8'
+                                                        fontSize='12px'
+                                                        maxWidth='100%'
+                                                        sx={{
+                                                            wordWrap: 'break-word',
+                                                            whiteSpace: 'pre-line',
+                                                            wordBreak: 'break-word',
+                                                        }}
+                                                    >
+                                                        {likesCount} {props.comment.likesCount > 1 ? 'likes' : 'like'}
+                                                    </Box>
+                                                </Box>
+                                            )}
+                                            {!props.condensed && (
+                                                <Box
+                                                    component='div'
+                                                    color='#A8A8A8'
+                                                    border='none'
+                                                    display='inline'
+                                                    marginRight='12px!important'
+                                                    padding='0'
+                                                    position='relative'
+                                                    fontSize='14px'
+                                                    lineHeight='18px'
+                                                    margin='0'
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={handleReplyToComment}
+                                                >
+                                                    <Box
+                                                        component='span'
+                                                        display='inline'
+                                                        lineHeight='16px'
+                                                        minWidth='0'
+                                                        margin='0!important'
+                                                        fontWeight='600'
+                                                        color='#A8A8A8'
+                                                        fontSize='12px'
+                                                        maxWidth='100%'
+                                                        sx={{
+                                                            wordWrap: 'break-word',
+                                                            whiteSpace: 'pre-line',
+                                                            wordBreak: 'break-word',
+                                                        }}
+                                                    >
+                                                        Reply
+                                                    </Box>
+                                                </Box>
+                                            )}
+                                        </>
                                     )}
                                 </Box>
                             </Box>
                         </Box>
                     </Box>
-                    {!props.condensed && (
+                    {!props.loading && !props.condensed && (
                         <Box
                             component='span'
                             marginTop='9px'

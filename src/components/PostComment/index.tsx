@@ -23,7 +23,8 @@ interface Comment {
     createdAt: number
 }
 
-interface Props {
+interface StaticProps {
+    loading?: never
     comment: Comment
     condensed?: boolean
 
@@ -42,17 +43,41 @@ interface Props {
     onHideReplies(commentId: string | number): void
 }
 
+interface LoadingProps {
+    loading: true
+    comment?: never
+    condensed?: never
+
+    onViewUser?(): never
+
+    onViewCommentLikes?(): never
+
+    onReplyToComment?(): never
+
+    onLikeComment?(): never
+
+    onUnlikeComment?(): never
+
+    onViewReplies?(): never
+
+    onHideReplies?(): never
+}
+
+type Props = StaticProps | LoadingProps
+
 export default function PostComment(props: Props) {
 
-    const shownRepliesCount = props.comment.showReplies ? props.comment.repliesCount - props.comment.replies.length : props.comment.repliesCount
+    const shownRepliesCount = props.loading ? 0 : props.comment.showReplies ? props.comment.repliesCount - props.comment.replies.length : props.comment.repliesCount
 
     const handleClickReplies = () => {
-        if (shownRepliesCount > 0) {
-            if (!props.comment.repliesLoading) {
-                props.onViewReplies(props.comment.id)
+        if (!props.loading) {
+            if (shownRepliesCount > 0) {
+                if (!props.comment.repliesLoading) {
+                    props.onViewReplies(props.comment.id)
+                }
+            } else {
+                props.onHideReplies(props.comment.id)
             }
-        } else {
-            props.onHideReplies(props.comment.id)
         }
     }
 
@@ -70,6 +95,7 @@ export default function PostComment(props: Props) {
             }}
         >
             <PostBaseComment
+                loading={props.loading}
                 comment={props.comment}
                 condensed={props.condensed}
                 onViewUser={props.onViewUser}
@@ -77,7 +103,7 @@ export default function PostComment(props: Props) {
                 onReplyToComment={props.onReplyToComment}
                 onLikeComment={props.onLikeComment}
                 onUnlikeComment={props.onUnlikeComment} />
-            {!props.condensed && props.comment.repliesCount > 0 && (
+            {!props.loading && !props.condensed && props.comment.repliesCount > 0 && (
                 <Box
                     component='div'
                     display='block'
