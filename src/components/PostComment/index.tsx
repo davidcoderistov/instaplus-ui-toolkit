@@ -1,3 +1,4 @@
+import React from 'react'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import PostBaseComment from './PostBaseComment'
@@ -65,7 +66,7 @@ interface LoadingProps {
 
 type Props = StaticProps | LoadingProps
 
-export default function PostComment(props: Props) {
+const PostComment = React.memo((props: Props) => {
 
     const shownRepliesCount = props.loading ? 0 : props.comment.showReplies ? props.comment.repliesCount - props.comment.replies.length : props.comment.repliesCount
 
@@ -222,4 +223,6 @@ export default function PostComment(props: Props) {
             )}
         </Box>
     )
-}
+})
+
+export default PostComment
