@@ -24,6 +24,7 @@ const EmojiPickerMemo = React.memo((props: { onEmojiClick(data: EmojiClickData):
 
 interface Props {
     isPostingComment: boolean
+    disabled?: boolean
 
     onPostComment(comment: string): void
 }
@@ -205,7 +206,7 @@ export default function PostPreviewAddComment(props: Props) {
                                 variant='primary'
                                 text='Post'
                                 loading={props.isPostingComment}
-                                disabled={comment.trim().length < 1}
+                                disabled={Boolean(props.disabled) || comment.trim().length < 1}
                                 onClick={handleClickPostComment}
                             />
                         </Box>
