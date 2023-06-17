@@ -278,7 +278,7 @@ export default function PostBaseComment(props: Props) {
                                         {props.loading ? (
                                             <Skeleton
                                                 variant='rounded'
-                                                width={240}
+                                                width={270}
                                                 height={11}
                                                 sx={{
                                                     backgroundColor: '#202020',
@@ -340,7 +340,7 @@ export default function PostBaseComment(props: Props) {
                                     {props.loading ? (
                                         <Skeleton
                                             variant='rounded'
-                                            width={180}
+                                            width={210}
                                             height={10}
                                             sx={{
                                                 backgroundColor: '#202020',
