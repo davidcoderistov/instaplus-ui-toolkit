@@ -125,7 +125,7 @@ const PostComment = React.memo((props: Props) => {
                             fontSize='100%'
                             marginX='0'
                             marginTop='0'
-                            marginBottom={props.comment.showReplies ? '13px' : '0'}
+                            marginBottom={props.comment.showReplies && props.comment.replies.length > 0 ? '13px' : '0'}
                             padding='0'
                             sx={{ verticalAlign: 'baseline' }}
                         >
