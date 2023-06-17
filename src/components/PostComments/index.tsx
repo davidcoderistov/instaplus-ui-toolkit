@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import PostComment from '../PostComment'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -54,11 +55,31 @@ interface Props {
 
 export default function PostComments(props: Props) {
 
-    const handleFetchMoreComments = () => {
+    const handleFetchMoreComments = useCallback(() => {
         if (!props.commentsLoading) {
             props.onFetchMoreComments()
         }
-    }
+    }, [props.commentsLoading, props.onFetchMoreComments])
+
+    const postDescriptionComment = useMemo(() => {
+        return props.post.description && (
+            <PostComment
+                key='post-description-comment'
+                condensed
+                comment={{
+                    id: 'post-description-comment',
+                    creator: props.post.creator,
+                    body: props.post.description,
+                    isLiked: false,
+                    likesCount: 0,
+                    repliesCount: 0,
+                    showReplies: false,
+                    repliesLoading: false,
+                    createdAt: props.post.createdAt,
+                }}
+            />
+        )
+    }, [props.post])
 
     return (
         <Box
@@ -207,22 +228,7 @@ export default function PostComments(props: Props) {
                             loading />
                     )) : (
                         <>
-                            {props.post.description && (
-                                <PostComment
-                                    condensed
-                                    comment={{
-                                        id: 'post-description-comment',
-                                        creator: props.post.creator,
-                                        body: props.post.description,
-                                        isLiked: false,
-                                        likesCount: 0,
-                                        repliesCount: 0,
-                                        showReplies: false,
-                                        repliesLoading: false,
-                                        createdAt: props.post.createdAt,
-                                    }}
-                                />
-                            )}
+                            {postDescriptionComment}
                             {props.comments.map(comment => (
                                 <PostComment
                                     key={comment.id}
