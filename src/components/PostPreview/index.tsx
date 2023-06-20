@@ -20,23 +20,23 @@ interface Props {
     hasMoreComments: boolean
     isPostingComment: boolean
 
-    onFollowUser(id: string | number): void
+    onFollowUser(userId: string | number): void
 
-    onUnfollowUser(id: string | number): void
+    onUnfollowUser(userId: string | number): void
 
-    onLikePost(): void
+    onLikePost(postId: string | number): void
 
-    onUnlikePost(): void
+    onUnlikePost(postId: string | number): void
 
-    onSavePost(): void
+    onSavePost(postId: string | number): void
 
-    onRemovePost(): void
+    onRemovePost(postId: string | number): void
 
-    onCommentOnPost(): void
+    onCommentOnPost?(postId: string | number): void
 
-    onViewLikes(): void
+    onViewPostLikes(postId: string | number): void
 
-    onViewPost(): void
+    onViewPost(postId: string | number): void
 
     onFetchMoreComments(): void
 
@@ -81,6 +81,48 @@ export default function PostPreview(props: Props) {
         }
         return null
     }, [props.post])
+
+    const handleLikePost = () => {
+        if (props.post) {
+            props.onLikePost(props.post.id)
+        }
+    }
+
+    const handleUnlikePost = () => {
+        if (props.post) {
+            props.onUnlikePost(props.post.id)
+        }
+    }
+
+    const handleSavePost = () => {
+        if (props.post) {
+            props.onSavePost(props.post.id)
+        }
+    }
+
+    const handleRemovePost = () => {
+        if (props.post) {
+            props.onRemovePost(props.post.id)
+        }
+    }
+
+    const handleCommentOnPost = () => {
+        if (props.post && props.onCommentOnPost) {
+            props.onCommentOnPost(props.post.id)
+        }
+    }
+
+    const handleViewPost = () => {
+        if (props.post) {
+            props.onViewPost(props.post.id)
+        }
+    }
+
+    const handleViewPostLikes = () => {
+        if (props.post) {
+            props.onViewPostLikes(props.post.id)
+        }
+    }
 
     return (
         <Box
@@ -146,7 +188,7 @@ export default function PostPreview(props: Props) {
                                 user={props.post.creator}
                                 onFollowUser={props.onFollowUser}
                                 onUnfollowUser={props.onUnfollowUser}
-                                onGoToPost={props.onViewPost}
+                                onGoToPost={handleViewPost}
                                 onViewProfile={props.onViewUser}
                             />
                         ) : null}
@@ -166,12 +208,12 @@ export default function PostPreview(props: Props) {
                         {!props.postLoading && props.post && (
                             <PostActions
                                 isPostLiked={props.post.isLiked}
-                                onLikePost={props.onLikePost}
-                                onUnlikePost={props.onUnlikePost}
+                                onLikePost={handleLikePost}
+                                onUnlikePost={handleUnlikePost}
                                 isPostSaved={props.post.isSaved}
-                                onSavePost={props.onSavePost}
-                                onRemovePost={props.onRemovePost}
-                                onCommentOnPost={props.onCommentOnPost}
+                                onSavePost={handleSavePost}
+                                onRemovePost={handleRemovePost}
+                                onCommentOnPost={handleCommentOnPost}
                             />
                         )}
                         {!props.postLoading && props.post && (
@@ -180,8 +222,8 @@ export default function PostPreview(props: Props) {
                                 likingUser={props.post.lastLikingUser}
                                 likesCount={props.post.likesCount}
                                 onViewUser={props.onViewUser}
-                                onViewLikes={props.onViewLikes}
-                                onViewPost={props.onViewPost}
+                                onViewLikes={handleViewPostLikes}
+                                onViewPost={handleViewPost}
                             />
                         )}
                         <PostComments

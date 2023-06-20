@@ -22,23 +22,23 @@ interface Props {
     hasMoreComments: boolean
     isPostingComment: boolean
 
-    onFollowUser(id: string | number): void
+    onFollowUser(userId: string | number): void
 
-    onUnfollowUser(id: string | number): void
+    onUnfollowUser(userId: string | number): void
 
-    onLikePost(): void
+    onLikePost(postId: string | number): void
 
-    onUnlikePost(): void
+    onUnlikePost(postId: string | number): void
 
-    onSavePost(): void
+    onSavePost(postId: string | number): void
 
-    onRemovePost(): void
+    onRemovePost(postId: string | number): void
 
-    onCommentOnPost(): void
+    onCommentOnPost?(postId: string | number): void
 
-    onViewLikes(): void
+    onViewPostLikes(postId: string | number): void
 
-    onViewPost(): void
+    onViewPost(postId: string | number): void
 
     onFetchMoreComments(): void
 
@@ -199,7 +199,7 @@ export default function PostPreviewModal(props: Props) {
                                         onSavePost={props.onSavePost}
                                         onRemovePost={props.onRemovePost}
                                         onCommentOnPost={props.onCommentOnPost}
-                                        onViewLikes={props.onViewLikes}
+                                        onViewPostLikes={props.onViewPostLikes}
                                         onViewPost={props.onViewPost}
                                         onFetchMoreComments={props.onFetchMoreComments}
                                         onViewUser={props.onViewUser}
