@@ -28,6 +28,7 @@ interface StaticProps {
     loading?: never
     comment: Comment
     condensed?: boolean
+    dense?: boolean
 
     onViewUser(userId: string | number): void
 
@@ -48,6 +49,7 @@ interface LoadingProps {
     loading: true
     comment?: never
     condensed?: never
+    dense?: never
 
     onViewUser?(): never
 
@@ -99,6 +101,7 @@ const PostComment = React.memo((props: Props) => {
                 loading={props.loading}
                 comment={props.comment}
                 condensed={props.condensed}
+                dense={props.dense}
                 onViewUser={props.onViewUser}
                 onViewCommentLikes={props.onViewCommentLikes}
                 onReplyToComment={props.onReplyToComment}

@@ -22,6 +22,7 @@ interface StaticProps {
     loading?: never
     comment: Comment
     condensed?: boolean
+    dense?: boolean
 
     onViewUser(userId: string | number): void
 
@@ -38,6 +39,7 @@ interface LoadingProps {
     loading: true
     comment?: never
     condensed?: never
+    dense?: never
 
     onViewUser?(): never
 
@@ -278,7 +280,7 @@ export default function PostBaseComment(props: Props) {
                                         {props.loading ? (
                                             <Skeleton
                                                 variant='rounded'
-                                                width={360}
+                                                width={props.dense ? 270 : 360}
                                                 height={11}
                                                 sx={{
                                                     backgroundColor: '#202020',
@@ -340,7 +342,7 @@ export default function PostBaseComment(props: Props) {
                                     {props.loading ? (
                                         <Skeleton
                                             variant='rounded'
-                                            width={300}
+                                            width={props.dense ? 210 : 300}
                                             height={10}
                                             sx={{
                                                 backgroundColor: '#202020',

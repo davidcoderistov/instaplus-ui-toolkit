@@ -53,6 +53,7 @@ interface Comment {
 }
 
 interface Props {
+    dense?: boolean
     post: Post | null
     postLoading: boolean
     comments: Comment[]
@@ -225,6 +226,7 @@ export default function PostPreview(props: Props) {
                             />
                         )}
                         <PostComments
+                            dense={props.dense}
                             post={props.post}
                             postLoading={props.postLoading}
                             comments={props.comments}
