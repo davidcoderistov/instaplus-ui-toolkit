@@ -32,6 +32,7 @@ interface MediaProp {
 interface Props {
     media: MediaProp[]
     loading: boolean
+    large?: boolean
 }
 
 export default function PostPreviewSlider(props: Props) {
@@ -141,6 +142,7 @@ export default function PostPreviewSlider(props: Props) {
             {props.loading ? (
                 <ImagePreview
                     visible
+                    large={props.large}
                     photoUrl={null} />
             ) : media.map((media, index, arr) => {
 
@@ -162,6 +164,7 @@ export default function PostPreviewSlider(props: Props) {
                     <VideoPreviewPlayer
                         key={index}
                         visible={media.visible}
+                        large={props.large}
                         videoUrl={media.videoUrl}
                         isPlaying={media.isPlaying}
                         isMuted={media.isMuted}
@@ -174,6 +177,7 @@ export default function PostPreviewSlider(props: Props) {
                     <ImagePreview
                         key={index}
                         visible={media.visible}
+                        large={props.large}
                         photoUrl={media.photoUrl}
                         leftSliderArrow={LeftSliderArrow}
                         rightSliderArrow={RightSliderArrow}
