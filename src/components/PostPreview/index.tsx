@@ -7,50 +7,9 @@ import PostLikes from '../PostLikes'
 import PostActions from '../PostActions'
 import PostPreviewAddComment from '../PostPreviewAddComment'
 import moment from 'moment'
+import { Post } from '../../types/Post'
+import { Comment } from '../../types/Comment'
 
-
-interface PostCreator {
-    id: string | number
-    username: string
-    photoUrl: string
-    following: boolean
-    followingLoading: boolean
-}
-
-interface User {
-    id: string | number
-    username: string
-    photoUrl: string
-}
-
-interface Post {
-    id: string | number
-    description: string | null
-    location: string | null
-    creator: PostCreator
-    isLiked: boolean
-    isSaved: boolean
-    lastLikingMutualFollowers: User[] | null
-    lastLikingUser: {
-        id: string | number
-        username: string
-    } | null
-    likesCount: number
-    createdAt: number
-}
-
-interface Comment {
-    id: string | number
-    creator: User
-    body: string
-    isLiked: boolean
-    likesCount: number
-    repliesCount: number
-    replies: Comment[]
-    showReplies: boolean
-    repliesLoading: boolean
-    createdAt: number
-}
 
 interface Props {
     dense?: boolean

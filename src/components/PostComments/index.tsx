@@ -2,37 +2,13 @@ import { useMemo, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import PostComment from '../PostComment'
 import CircularProgress from '@mui/material/CircularProgress'
+import { Post } from '../../types/Post'
+import { Comment } from '../../types/Comment'
 
-
-interface Creator {
-    id: string | number
-    username: string
-    photoUrl: string
-}
-
-interface Comment {
-    id: string | number
-    creator: Creator
-    body: string
-    isLiked: boolean
-    likesCount: number
-    repliesCount: number
-    replies: Comment[]
-    showReplies: boolean
-    repliesLoading: boolean
-    createdAt: number
-}
-
-interface Post {
-    id: string | number
-    creator: Creator
-    description: string | null
-    createdAt: number
-}
 
 interface Props {
     dense?: boolean
-    post: Post | null
+    post: Pick<Post, 'id' | 'creator' | 'description' | 'createdAt'> | null
     postLoading: boolean
     comments: Comment[]
     commentsLoading: boolean

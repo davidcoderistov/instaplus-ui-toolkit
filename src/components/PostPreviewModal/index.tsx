@@ -6,56 +6,9 @@ import { Close } from '@mui/icons-material'
 import PostPreviewSlider from '../PostPreviewSlider'
 import PostPreview from '../PostPreview'
 import { useClickOutside } from '../../hooks'
+import { Post } from '../../types/Post'
+import { Comment } from '../../types/Comment'
 
-
-interface PostCreator {
-    id: string | number
-    username: string
-    photoUrl: string
-    following: boolean
-    followingLoading: boolean
-}
-
-interface User {
-    id: string | number
-    username: string
-    photoUrl: string
-}
-
-interface Media {
-    photoUrl: string
-    videoUrl: string | null
-}
-
-interface Post {
-    id: string | number
-    description: string | null
-    location: string | null
-    creator: PostCreator
-    media: Media[]
-    isLiked: boolean
-    isSaved: boolean
-    lastLikingMutualFollowers: User[] | null
-    lastLikingUser: {
-        id: string | number
-        username: string
-    } | null
-    likesCount: number
-    createdAt: number
-}
-
-interface Comment {
-    id: string | number
-    creator: User
-    body: string
-    isLiked: boolean
-    likesCount: number
-    repliesCount: number
-    replies: Comment[]
-    showReplies: boolean
-    repliesLoading: boolean
-    createdAt: number
-}
 
 interface Props {
     open: boolean
