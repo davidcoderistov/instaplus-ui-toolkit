@@ -30,6 +30,10 @@ interface StaticProps {
     onGoToPost(): void
 
     onViewProfile(id: string | number): void
+
+    onOpenSettingsModal?(): void
+
+    onCloseSettingsModal?(): void
 }
 
 interface LoadingProps {
@@ -45,6 +49,10 @@ interface LoadingProps {
     onGoToPost?(): never
 
     onViewProfile?(): never
+
+    onOpenSettingsModal?(): never
+
+    onCloseSettingsModal?(): never
 }
 
 type Props = StaticProps | LoadingProps
@@ -75,32 +83,46 @@ export default function PostHeader(props: Props) {
     }
 
     const handleGoToPost = () => {
-        setIsSettingsModalOpen(false)
+        closeSettingsModal()
         props.onGoToPost()
     }
 
     const handleViewProfileFromModal = () => {
         if (!props.loading) {
-            setIsSettingsModalOpen(false)
+            closeSettingsModal()
             props.onViewProfile(props.user.id)
         }
     }
 
     const handleOpenSettingsModal = () => {
-        setIsSettingsModalOpen(true)
+        openSettingsModal()
     }
 
     const handleCloseSettingsModal = () => {
-        setIsSettingsModalOpen(false)
+        closeSettingsModal()
     }
 
     const handleOpenUnfollowUserModal = () => {
-        setIsSettingsModalOpen(false)
+        closeSettingsModal()
         setIsUnfollowUserModalOpen(true)
     }
 
     const handleCloseUnfollowUserModal = () => {
         setIsUnfollowUserModalOpen(false)
+    }
+
+    const openSettingsModal = () => {
+        setIsSettingsModalOpen(true)
+        if (props.onOpenSettingsModal) {
+            props.onOpenSettingsModal()
+        }
+    }
+
+    const closeSettingsModal = () => {
+        setIsSettingsModalOpen(false)
+        if (props.onCloseSettingsModal) {
+            props.onCloseSettingsModal()
+        }
     }
 
     const timeAgo = !props.loading && props.dense ? getTimeElapsed(props.post.createdAt, 'minutes') : null

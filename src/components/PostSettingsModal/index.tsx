@@ -30,6 +30,7 @@ export default function PostSettingsModal(props: Props) {
                     maxWidth: '400px',
                 },
             }}
+            sx={{ zIndex: 99999 }}
             onClose={props.onCloseModal}
         >
             <Box

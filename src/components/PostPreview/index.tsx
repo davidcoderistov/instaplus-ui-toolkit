@@ -55,6 +55,10 @@ interface Props {
     onHideReplies(commentId: string | number): void
 
     onPostComment(comment: string): void
+
+    onOpenSettingsModal?(): void
+
+    onCloseSettingsModal?(): void
 }
 
 export default function PostPreview(props: Props) {
@@ -190,6 +194,8 @@ export default function PostPreview(props: Props) {
                                 onUnfollowUser={props.onUnfollowUser}
                                 onGoToPost={handleViewPost}
                                 onViewProfile={props.onViewUser}
+                                onOpenSettingsModal={props.onOpenSettingsModal}
+                                onCloseSettingsModal={props.onCloseSettingsModal}
                             />
                         ) : null}
                     </Box>
