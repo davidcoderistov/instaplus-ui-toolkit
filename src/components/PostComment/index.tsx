@@ -34,7 +34,7 @@ interface StaticProps {
 
     onViewCommentLikes(commentId: string | number): void
 
-    onReplyToComment(commentId: string | number): void
+    onReplyToComment(commentId: string | number, username: string): void
 
     onLikeComment(commentId: string | number): void
 

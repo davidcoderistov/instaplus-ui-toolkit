@@ -25,8 +25,12 @@ const EmojiPickerMemo = React.memo((props: { onEmojiClick(data: EmojiClickData):
 interface Props {
     isPostingComment: boolean
     disabled?: boolean
+    isReplying: boolean
+    replyingUsername?: string
 
     onPostComment(comment: string): void
+
+    onCancelReply(): void
 }
 
 const PostPreviewAddComment = forwardRef((props: Props, ref) => {
@@ -90,6 +94,186 @@ const PostPreviewAddComment = forwardRef((props: Props, ref) => {
             paddingTop='6px'
             display='block'
         >
+            {props.isReplying && props.replyingUsername && (
+                <Box
+                    component='div'
+                    paddingLeft='15px'
+                    bgcolor='#000000'
+                    paddingY='5px'
+                    display='flex'
+                    justifyContent='space-between'
+                    alignItems='flex-start'
+                >
+                    <Box
+                        component='div'
+                        display='block'
+                        marginRight='10px'
+                    >
+                        <Box
+                            component='div'
+                            marginBottom='-5px'
+                            flexShrink='1'
+                            minWidth='0'
+                            flexDirection='column'
+                            flexBasis='auto'
+                            boxSizing='border-box'
+                            display='flex'
+                            minHeight='0'
+                            alignItems='stretch'
+                            position='relative'
+                            zIndex='0'
+                            marginTop='-5px'
+                        >
+                            <Box
+                                component='div'
+                                marginBottom='5px'
+                                minWidth='0'
+                                flexDirection='column'
+                                flexBasis='auto'
+                                boxSizing='border-box'
+                                display='flex'
+                                minHeight='0'
+                                flexShrink='0'
+                                alignItems='stretch'
+                                marginTop='5px'
+                                position='relative'
+                                zIndex='0'
+                            >
+                                <Box
+                                    component='span'
+                                    color='#F5F5F5'
+                                    lineHeight='1.3333'
+                                    minWidth='0'
+                                    fontSize='0.9375rem'
+                                    textAlign='left'
+                                    display='block'
+                                    fontWeight='normal'
+                                    maxWidth='100%'
+                                    sx={{
+                                        wordWrap: 'break-word',
+                                        wordBreak: 'break-word',
+                                    }}
+                                >
+                                    <Box
+                                        component='span'
+                                        lineHeight='18px'
+                                        fontSize='14px'
+                                        fontWeight='400'
+                                        minWidth='0'
+                                        marginBottom='0!important'
+                                        position='relative'
+                                        display='block'
+                                        maxWidth='100%'
+                                        marginLeft='0!important'
+                                        marginTop='0!important'
+                                        sx={{
+                                            overflowY: 'visible',
+                                            wordWrap: 'break-word',
+                                            overflowX: 'visible',
+                                            whiteSpace: 'pre-line',
+                                            wordBreak: 'break-word',
+                                        }}
+                                    >
+                                        <Box
+                                            component='span'
+                                            marginRight='5px'
+                                        >
+                                            Replying to
+                                        </Box>
+                                        <Box
+                                            component='span'
+                                            lineHeight='18px'
+                                            fontSize='14px'
+                                            display='inline'
+                                            minWidth='0'
+                                            marginBottom='0!important'
+                                            color='#F5F5F5'
+                                            marginRight='0!important'
+                                            fontWeight='600'
+                                            maxWidth='100%'
+                                            marginLeft='0!important'
+                                            marginTop='0!important'
+                                            sx={{
+                                                wordWrap: 'break-word',
+                                                whiteSpace: 'pre-line',
+                                                wordBreak: 'break-word',
+                                            }}
+                                        >
+                                            {props.replyingUsername}
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box
+                        component='div'
+                        paddingBottom='8px'
+                        paddingLeft='8px'
+                        justifyContent='center'
+                        bgcolor='transparent'
+                        paddingTop='0'
+                        marginTop='0'
+                        marginBottom='0'
+                        boxSizing='border-box'
+                        display='flex'
+                        alignItems='center'
+                        paddingRight='8px'
+                        marginLeft='0'
+                        textAlign='inherit'
+                        marginRight='0'
+                        sx={{
+                            touchAction: 'manipulation',
+                            borderRightStyle: 'none',
+                            borderLeft: '0',
+                            cursor: 'pointer',
+                            borderBottomStyle: 'none',
+                            borderTopStyle: 'none',
+                            borderRight: '0',
+                            borderBottom: '0',
+                            borderTop: '0',
+                        }}
+                        onClick={props.onCancelReply}
+                    >
+                        <Box
+                            component='div'
+                            justifyContent='center'
+                            flexDirection='column'
+                            display='flex'
+                            alignItems='center'
+                        >
+                            <svg
+                                aria-label='Cancel reply'
+                                style={{ position: 'relative', display: 'block' }}
+                                color='rgb(245, 245, 245)'
+                                fill='rgb(245, 245, 245)'
+                                height='12'
+                                role='img'
+                                viewBox='0 0 24 24'
+                                width='12'>
+                                <title>Cancel reply</title>
+                                <polyline
+                                    fill='none'
+                                    points='20.643 3.357 12 12 3.353 20.647'
+                                    stroke='currentColor'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth='3' />
+                                <line
+                                    fill='none'
+                                    stroke='currentColor'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth='3'
+                                    x1='20.649'
+                                    x2='3.354'
+                                    y1='20.649'
+                                    y2='3.354' />
+                            </svg>
+                        </Box>
+                    </Box>
+                </Box>
+            )}
             {emojiPickerRendered && (
                 <Box
                     ref={emojiRef}

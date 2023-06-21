@@ -28,7 +28,7 @@ interface StaticProps {
 
     onViewCommentLikes(commentId: string | number): void
 
-    onReplyToComment(commentId: string | number): void
+    onReplyToComment(commentId: string | number, username: string): void
 
     onLikeComment(commentId: string | number): void
 
@@ -74,7 +74,7 @@ export default function PostBaseComment(props: Props) {
 
     const handleReplyToComment = () => {
         if (!props.loading) {
-            props.onReplyToComment(props.comment.id)
+            props.onReplyToComment(props.comment.id, props.comment.creator.username)
         }
     }
 

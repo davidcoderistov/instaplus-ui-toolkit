@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import PostHeader from '../PostHeader'
@@ -44,7 +44,7 @@ interface Props {
 
     onViewCommentLikes(commentId: string | number): void
 
-    onReplyToComment(commentId: string | number): void
+    onReplyToComment(commentId: string | number, comment: string): void
 
     onLikeComment(commentId: string | number): void
 
@@ -133,6 +133,29 @@ export default function PostPreview(props: Props) {
     const handleViewPostLikes = () => {
         if (props.post) {
             props.onViewPostLikes(props.post.id)
+        }
+    }
+
+    const [replyingCommentId, setReplyingCommentId] = useState<string | number | null>(null)
+    const [replyingUsername, setReplyingUsername] = useState<string | null>(null)
+
+    const handleReplyToComment = (commentId: string | number, username: string) => {
+        setReplyingCommentId(commentId)
+        setReplyingUsername(username)
+    }
+
+    const handleCloseReplyToComment = () => {
+        setReplyingCommentId(null)
+        setReplyingUsername(null)
+    }
+
+    const handlePostComment = (comment: string) => {
+        if (replyingCommentId) {
+            props.onReplyToComment(replyingCommentId, comment)
+            setReplyingCommentId(null)
+            setReplyingUsername(null)
+        } else {
+            props.onPostComment(comment)
         }
     }
 
@@ -252,7 +275,7 @@ export default function PostPreview(props: Props) {
                             onFetchMoreComments={props.onFetchMoreComments}
                             onViewUser={props.onViewUser}
                             onViewCommentLikes={props.onViewCommentLikes}
-                            onReplyToComment={props.onReplyToComment}
+                            onReplyToComment={handleReplyToComment}
                             onLikeComment={props.onLikeComment}
                             onUnlikeComment={props.onUnlikeComment}
                             onViewReplies={props.onViewReplies}
@@ -280,9 +303,12 @@ export default function PostPreview(props: Props) {
                         )}
                         <PostPreviewAddComment
                             ref={inputRef}
+                            isReplying={!!replyingCommentId}
+                            replyingUsername={replyingUsername}
                             isPostingComment={props.isPostingComment}
                             disabled={props.postLoading || props.commentsLoading}
-                            onPostComment={props.onPostComment} />
+                            onPostComment={handlePostComment}
+                            onCancelReply={handleCloseReplyToComment} />
                     </Box>
                 </Box>
             </Box>

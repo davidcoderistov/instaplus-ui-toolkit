@@ -46,7 +46,7 @@ interface Props {
 
     onViewCommentLikes(commentId: string | number): void
 
-    onReplyToComment(commentId: string | number): void
+    onReplyToComment(commentId: string | number, comment: string): void
 
     onLikeComment(commentId: string | number): void
 
