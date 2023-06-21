@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useCallback, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import PostHeader from '../PostHeader'
@@ -139,10 +139,10 @@ export default function PostPreview(props: Props) {
     const [replyingCommentId, setReplyingCommentId] = useState<string | number | null>(null)
     const [replyingUsername, setReplyingUsername] = useState<string | null>(null)
 
-    const handleReplyToComment = (commentId: string | number, username: string) => {
+    const handleReplyToComment = useCallback((commentId: string | number, username: string) => {
         setReplyingCommentId(commentId)
         setReplyingUsername(username)
-    }
+    }, [])
 
     const handleCloseReplyToComment = () => {
         setReplyingCommentId(null)
