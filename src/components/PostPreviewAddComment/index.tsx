@@ -41,12 +41,14 @@ const PostPreviewAddComment = forwardRef((props: Props, ref) => {
         if (event.code === 'Enter') {
             if (comment.trim().length > 0) {
                 props.onPostComment(comment)
+                setComment('')
             }
         }
     }
 
     const handleClickPostComment = () => {
         props.onPostComment(comment)
+        setComment('')
     }
 
     const [emojiPickerRendered, setEmojiPickerRendered] = useState(false)
