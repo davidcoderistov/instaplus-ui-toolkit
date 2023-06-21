@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Backdrop from '@mui/material/Backdrop'
 import IconButton from '@mui/material/IconButton'
@@ -63,7 +63,45 @@ export default function PostPreviewModal(props: Props) {
 
     const postRef = useRef<Node | null>(null)
 
-    useClickOutside(postRef, props.onClose)
+    const closeModal = () => {
+        if (!settingsModalOpenRef.current && !unfollowUserModalRef.current) {
+            props.onClose()
+        }
+    }
+
+    useEffect(() => {
+        const handleKeyPress = (event: React.KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                closeModal()
+            }
+        }
+        document.addEventListener('keydown', handleKeyPress)
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress)
+        }
+    }, [])
+
+    useClickOutside(postRef, closeModal)
+
+    const settingsModalOpenRef = useRef(false)
+
+    const handleOpenSettingsModal = () => {
+        settingsModalOpenRef.current = true
+    }
+
+    const handleCloseSettingsModal = () => {
+        settingsModalOpenRef.current = false
+    }
+
+    const unfollowUserModalRef = useRef(false)
+
+    const handleOpenUnfollowUserModal = () => {
+        unfollowUserModalRef.current = true
+    }
+
+    const handleCloseUnfollowUserModal = () => {
+        unfollowUserModalRef.current = false
+    }
 
     return (
 
@@ -92,7 +130,7 @@ export default function PostPreviewModal(props: Props) {
                         display='block'
                         overflow='hidden'
                         position='absolute'
-                        margin='5px'
+                        margin='10px'
                         right='0'
                         sx={{ opacity: '1' }}
                     >
@@ -210,6 +248,10 @@ export default function PostPreviewModal(props: Props) {
                                         onViewReplies={props.onViewReplies}
                                         onHideReplies={props.onHideReplies}
                                         onPostComment={props.onPostComment}
+                                        onOpenSettingsModal={handleOpenSettingsModal}
+                                        onCloseSettingsModal={handleCloseSettingsModal}
+                                        onOpenUnfollowUserModal={handleOpenUnfollowUserModal}
+                                        onCloseUnfollowUserModal={handleCloseUnfollowUserModal}
                                     />
                                 </Box>
                             </Box>
