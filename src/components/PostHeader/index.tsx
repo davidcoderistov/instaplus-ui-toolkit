@@ -34,6 +34,10 @@ interface StaticProps {
     onOpenSettingsModal?(): void
 
     onCloseSettingsModal?(): void
+
+    onOpenUnfollowUserModal?(): void
+
+    onCloseUnfollowUserModal?(): void
 }
 
 interface LoadingProps {
@@ -53,6 +57,10 @@ interface LoadingProps {
     onOpenSettingsModal?(): never
 
     onCloseSettingsModal?(): never
+
+    onOpenUnfollowUserModal?(): never
+
+    onCloseUnfollowUserModal?(): never
 }
 
 type Props = StaticProps | LoadingProps
@@ -70,7 +78,7 @@ export default function PostHeader(props: Props) {
 
     const handleUnfollowUser = () => {
         if (!props.loading) {
-            setIsUnfollowUserModalOpen(false)
+            closeUnfollowUserModal()
             props.onUnfollowUser(props.user.id)
         }
     }
@@ -104,11 +112,11 @@ export default function PostHeader(props: Props) {
 
     const handleOpenUnfollowUserModal = () => {
         closeSettingsModal()
-        setIsUnfollowUserModalOpen(true)
+        openUnfollowUserModal()
     }
 
     const handleCloseUnfollowUserModal = () => {
-        setIsUnfollowUserModalOpen(false)
+        closeUnfollowUserModal()
     }
 
     const openSettingsModal = () => {
@@ -122,6 +130,20 @@ export default function PostHeader(props: Props) {
         setIsSettingsModalOpen(false)
         if (props.onCloseSettingsModal) {
             props.onCloseSettingsModal()
+        }
+    }
+
+    const openUnfollowUserModal = () => {
+        setIsUnfollowUserModalOpen(true)
+        if (props.onOpenUnfollowUserModal) {
+            props.onOpenUnfollowUserModal()
+        }
+    }
+
+    const closeUnfollowUserModal = () => {
+        setIsUnfollowUserModalOpen(false)
+        if (props.onCloseUnfollowUserModal) {
+            props.onCloseUnfollowUserModal()
         }
     }
 

@@ -59,6 +59,10 @@ interface Props {
     onOpenSettingsModal?(): void
 
     onCloseSettingsModal?(): void
+
+    onOpenUnfollowUserModal?(): void
+
+    onCloseUnfollowUserModal?(): void
 }
 
 export default function PostPreview(props: Props) {
@@ -196,6 +200,8 @@ export default function PostPreview(props: Props) {
                                 onViewProfile={props.onViewUser}
                                 onOpenSettingsModal={props.onOpenSettingsModal}
                                 onCloseSettingsModal={props.onCloseSettingsModal}
+                                onOpenUnfollowUserModal={props.onOpenUnfollowUserModal}
+                                onCloseUnfollowUserModal={props.onCloseUnfollowUserModal}
                             />
                         ) : null}
                     </Box>

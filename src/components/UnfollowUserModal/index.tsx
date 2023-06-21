@@ -30,6 +30,7 @@ export default function UnfollowUserModal(props: Props) {
                     maxWidth: '400px',
                 },
             }}
+            sx={{ zIndex: 999999 }}
             onClose={props.onCloseModal}
         >
             <Box
