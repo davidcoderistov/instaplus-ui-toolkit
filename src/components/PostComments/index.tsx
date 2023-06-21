@@ -204,7 +204,7 @@ export default function PostComments(props: Props) {
                         verticalAlign: 'baseline',
                     }}
                 >
-                    {commentsLoading && props.comments.length < 1 ? [...Array(props.dense ? 8 : 9).keys()].map(index => (
+                    {props.postLoading || (props.commentsLoading && props.comments.length < 1) ? [...Array(props.dense ? 8 : 9).keys()].map(index => (
                         <PostComment
                             key={index}
                             dense={props.dense}
