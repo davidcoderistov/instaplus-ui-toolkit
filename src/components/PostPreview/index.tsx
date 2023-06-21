@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import PostHeader from '../PostHeader'
@@ -114,9 +114,13 @@ export default function PostPreview(props: Props) {
         }
     }
 
+    const inputRef = useRef<HTMLInputElement | null>(null)
+
     const handleCommentOnPost = () => {
         if (props.post && props.onCommentOnPost) {
             props.onCommentOnPost(props.post.id)
+        } else {
+            inputRef.current?.focus()
         }
     }
 
@@ -275,6 +279,7 @@ export default function PostPreview(props: Props) {
                             </Box>
                         )}
                         <PostPreviewAddComment
+                            ref={inputRef}
                             isPostingComment={props.isPostingComment}
                             disabled={props.postLoading || props.commentsLoading}
                             onPostComment={props.onPostComment} />

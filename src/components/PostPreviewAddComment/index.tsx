@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, forwardRef } from 'react'
 import Box from '@mui/material/Box'
 import InputBase from '@mui/material/InputBase'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
@@ -29,7 +29,7 @@ interface Props {
     onPostComment(comment: string): void
 }
 
-export default function PostPreviewAddComment(props: Props) {
+const PostPreviewAddComment = forwardRef((props: Props, ref) => {
 
     const [comment, setComment] = useState('')
 
@@ -177,6 +177,7 @@ export default function PostPreviewAddComment(props: Props) {
                             </Box>
                         </Box>
                         <InputBase
+                            inputRef={ref}
                             value={comment}
                             onChange={handleChangeComment}
                             onKeyPress={handleKeyPress}
@@ -215,4 +216,6 @@ export default function PostPreviewAddComment(props: Props) {
             </Box>
         </Box>
     )
-}
+})
+
+export default PostPreviewAddComment
