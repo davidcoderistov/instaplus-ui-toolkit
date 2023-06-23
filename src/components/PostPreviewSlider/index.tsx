@@ -33,6 +33,7 @@ interface Props {
     media: MediaProp[]
     loading: boolean
     large?: boolean
+    dense?: boolean
 }
 
 export default function PostPreviewSlider(props: Props) {
@@ -143,6 +144,7 @@ export default function PostPreviewSlider(props: Props) {
                 <ImagePreview
                     visible
                     large={props.large}
+                    dense={props.dense}
                     photoUrl={null} />
             ) : media.map((media, index, arr) => {
 
@@ -165,6 +167,7 @@ export default function PostPreviewSlider(props: Props) {
                         key={index}
                         visible={media.visible}
                         large={props.large}
+                        dense={props.dense}
                         videoUrl={media.videoUrl}
                         isPlaying={media.isPlaying}
                         isMuted={media.isMuted}
@@ -178,6 +181,7 @@ export default function PostPreviewSlider(props: Props) {
                         key={index}
                         visible={media.visible}
                         large={props.large}
+                        dense={props.dense}
                         photoUrl={media.photoUrl}
                         leftSliderArrow={LeftSliderArrow}
                         rightSliderArrow={RightSliderArrow}

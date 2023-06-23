@@ -6,6 +6,7 @@ interface Props {
     visible: boolean
     photoUrl: string | null
     large?: boolean
+    dense?: boolean
     leftSliderArrow?: React.ReactNode
     rightSliderArrow?: React.ReactNode
     slider?: React.ReactNode
@@ -16,9 +17,9 @@ export default function ImagePreview(props: Props) {
     return (
         <Box
             component='div'
-            maxHeight='674px'
-            maxWidth='674px'
-            flexBasis='674px'
+            maxHeight={props.dense ? '470px' : '674px'}
+            maxWidth={props.dense ? '470px' : '674px'}
+            flexBasis={props.dense ? '470px' : '674px'}
             bgcolor='#000000'
             flexGrow='1'
             justifyContent='center'

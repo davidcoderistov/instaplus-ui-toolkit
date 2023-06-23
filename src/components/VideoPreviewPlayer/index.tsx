@@ -10,6 +10,7 @@ interface Props {
     isPlaying: boolean
     isMuted: boolean
     large?: boolean
+    dense?: boolean
     leftSliderArrow?: React.ReactNode
     rightSliderArrow?: React.ReactNode
     slider?: React.ReactNode
@@ -30,7 +31,7 @@ export default function VideoPreviewPlayer(props: Props) {
             bgcolor='#000000'
             flexGrow='1'
             justifyContent='center'
-            minHeight={props.large ? '670px' : '450px'}
+            minHeight={props.large ? '670px' : props.dense ? '545px' : '450px'}
             overflow='hidden'
             flexShrink='1'
             display={props.visible ? 'flex' : 'none'}
