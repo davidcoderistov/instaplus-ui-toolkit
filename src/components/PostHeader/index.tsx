@@ -23,11 +23,11 @@ interface StaticProps {
         createdAt: number
     }
 
-    onFollowUser(id: string | number): void
+    onFollowUser(userId: string | number): void
 
-    onUnfollowUser(id: string | number): void
+    onUnfollowUser(userId: string | number): void
 
-    onGoToPost(): void
+    onGoToPost(postId: string | number): void
 
     onViewProfile(id: string | number): void
 
@@ -92,7 +92,7 @@ export default function PostHeader(props: Props) {
 
     const handleGoToPost = () => {
         closeSettingsModal()
-        props.onGoToPost()
+        props.onGoToPost(props.post?.id)
     }
 
     const handleViewProfileFromModal = () => {
