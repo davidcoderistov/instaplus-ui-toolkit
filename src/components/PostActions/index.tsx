@@ -5,25 +5,47 @@ import PostActionsSaveButton from '../PostActionsSaveButton'
 
 
 interface Props {
+    postId: string | number
+
     dense?: boolean
 
     isPostLiked: boolean
 
-    onLikePost(): void
+    onLikePost(postId: string | number): void
 
-    onUnlikePost(): void
+    onUnlikePost(postId: string | number): void
 
     isPostSaved: boolean
 
-    onSavePost(): void
+    onSavePost(postId: string | number): void
 
-    onRemovePost(): void
+    onRemovePost(postId: string | number): void
 
-    onCommentOnPost(): void
+    onCommentOnPost(postId: string | number): void
 }
 
 
 export default function PostActions(props: Props) {
+
+    const handleLikePost = () => {
+        props.onLikePost(props.postId)
+    }
+
+    const handleUnlikePost = () => {
+        props.onUnlikePost(props.postId)
+    }
+
+    const handleSavePost = () => {
+        props.onSavePost(props.postId)
+    }
+
+    const handleRemovePost = () => {
+        props.onRemovePost(props.postId)
+    }
+
+    const handleCommentOnPost = () => {
+        props.onCommentOnPost(props.postId)
+    }
 
     return (
         <Box
@@ -52,14 +74,14 @@ export default function PostActions(props: Props) {
             >
                 <PostActionsLikeButton
                     isPostLiked={props.isPostLiked}
-                    onLikePost={props.onLikePost}
-                    onUnlikePost={props.onUnlikePost} />
+                    onLikePost={handleLikePost}
+                    onUnlikePost={handleUnlikePost} />
             </Box>
             <Box
                 component='span'
                 display='inline-block'
             >
-                <PostActionsCommentButton onClick={props.onCommentOnPost} />
+                <PostActionsCommentButton onClick={handleCommentOnPost} />
             </Box>
             <Box
                 component='span'
@@ -71,8 +93,8 @@ export default function PostActions(props: Props) {
             >
                 <PostActionsSaveButton
                     isPostSaved={props.isPostSaved}
-                    onSavePost={props.onSavePost}
-                    onRemovePost={props.onRemovePost} />
+                    onSavePost={handleSavePost}
+                    onRemovePost={handleRemovePost} />
             </Box>
         </Box>
     )
