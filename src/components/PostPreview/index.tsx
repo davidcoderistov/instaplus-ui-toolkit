@@ -90,49 +90,13 @@ export default function PostPreview(props: Props) {
         return null
     }, [props.post])
 
-    const handleLikePost = () => {
-        if (props.post) {
-            props.onLikePost(props.post.id)
-        }
-    }
-
-    const handleUnlikePost = () => {
-        if (props.post) {
-            props.onUnlikePost(props.post.id)
-        }
-    }
-
-    const handleSavePost = () => {
-        if (props.post) {
-            props.onSavePost(props.post.id)
-        }
-    }
-
-    const handleRemovePost = () => {
-        if (props.post) {
-            props.onRemovePost(props.post.id)
-        }
-    }
-
     const inputRef = useRef<HTMLInputElement | null>(null)
 
-    const handleCommentOnPost = () => {
-        if (props.post && props.onCommentOnPost) {
-            props.onCommentOnPost(props.post.id)
+    const handleCommentOnPost = (postId: string | number) => {
+        if (props.onCommentOnPost) {
+            props.onCommentOnPost(postId)
         } else {
             inputRef.current?.focus()
-        }
-    }
-
-    const handleViewPost = () => {
-        if (props.post) {
-            props.onViewPost(props.post.id)
-        }
-    }
-
-    const handleViewPostLikes = () => {
-        if (props.post) {
-            props.onViewPostLikes(props.post.id)
         }
     }
 
@@ -223,7 +187,7 @@ export default function PostPreview(props: Props) {
                                 user={props.post.creator}
                                 onFollowUser={props.onFollowUser}
                                 onUnfollowUser={props.onUnfollowUser}
-                                onGoToPost={handleViewPost}
+                                onGoToPost={props.onViewPost}
                                 onViewProfile={props.onViewUser}
                                 onOpenSettingsModal={props.onOpenSettingsModal}
                                 onCloseSettingsModal={props.onCloseSettingsModal}
@@ -246,12 +210,13 @@ export default function PostPreview(props: Props) {
                     >
                         {!props.postLoading && props.post && (
                             <PostActions
+                                postId={props.post.id}
                                 isPostLiked={props.post.isLiked}
-                                onLikePost={handleLikePost}
-                                onUnlikePost={handleUnlikePost}
+                                onLikePost={props.onLikePost}
+                                onUnlikePost={props.onUnlikePost}
                                 isPostSaved={props.post.isSaved}
-                                onSavePost={handleSavePost}
-                                onRemovePost={handleRemovePost}
+                                onSavePost={props.onSavePost}
+                                onRemovePost={props.onRemovePost}
                                 onCommentOnPost={handleCommentOnPost}
                             />
                         )}
@@ -261,8 +226,8 @@ export default function PostPreview(props: Props) {
                                 likingUser={props.post.lastLikingUser}
                                 likesCount={props.post.likesCount}
                                 onViewUser={props.onViewUser}
-                                onViewLikes={handleViewPostLikes}
-                                onViewPost={handleViewPost}
+                                onViewLikes={props.onViewPostLikes}
+                                onViewPost={props.onViewPost}
                             />
                         )}
                         <PostComments
