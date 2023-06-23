@@ -51,6 +51,7 @@ export default function PostLikes(props: Props) {
                 }}
             >
                 <PostLikesContainer
+                    postId={props.postId}
                     dense={props.dense}
                     likingUsers={props.likingUsers}
                     likingUser={props.likingUser}
