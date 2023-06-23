@@ -51,6 +51,7 @@ interface User {
 }
 
 interface Props {
+    postId: string | number
     dense?: boolean
     likingUsers: User[] | null
     likingUser: {
@@ -59,11 +60,11 @@ interface Props {
     } | null
     likesCount: number
 
-    onViewUser(id): void
+    onViewUser(userId: string | number): void
 
-    onViewLikes(): void
+    onViewLikes(postId: string | number): void
 
-    onViewPost?(): void
+    onViewPost?(postId: string | number): void
 }
 
 export default function PostLikesContainer(props: Props) {
@@ -74,13 +75,23 @@ export default function PostLikesContainer(props: Props) {
         }
     }
 
+    const handleViewLikes = () => {
+        props.onViewLikes(props.postId)
+    }
+
+    const handleViewPost = () => {
+        if (props.onViewPost) {
+            props.onViewPost(props.postId)
+        }
+    }
+
     return (
         <>
             {props.likingUsers && props.likingUsers.length > 0 && (
                 <PostLikeAvatars
                     dense={props.dense}
                     likingUsers={props.likingUsers}
-                    onViewLikes={props.onViewLikes}
+                    onViewLikes={handleViewLikes}
                 />
             )}
             <Box
@@ -130,13 +141,13 @@ export default function PostLikesContainer(props: Props) {
                             onClick={handleViewUser}>{props.likingUser.username}</Typography> {props.likesCount > 1 && (
                             <>
                                 and <Typography
-                                onClick={props.onViewLikes}>{formatNumber(props.likesCount - 1)} {props.likesCount - 1 > 1 ? 'others' : 'other'}</Typography>
+                                onClick={handleViewLikes}>{formatNumber(props.likesCount - 1)} {props.likesCount - 1 > 1 ? 'others' : 'other'}</Typography>
                             </>
                         )}
                         </>
                     ) : (
                         <>
-                            Be the first to like <Typography onClick={props.onViewPost}>this</Typography>
+                            Be the first to like <Typography onClick={handleViewPost}>this</Typography>
                         </>
                     )}
                 </Box>

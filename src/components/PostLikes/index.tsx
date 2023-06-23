@@ -9,6 +9,7 @@ interface User {
 }
 
 interface Props {
+    postId: string | number
     dense?: boolean
     likingUsers: User[] | null
     likingUser: {
@@ -17,11 +18,11 @@ interface Props {
     } | null
     likesCount: number
 
-    onViewUser(id): void
+    onViewUser(userId: string | number): void
 
-    onViewLikes(): void
+    onViewLikes(postId: string | number): void
 
-    onViewPost?(): void
+    onViewPost?(postId: string | number): void
 }
 
 export default function PostLikes(props: Props) {
