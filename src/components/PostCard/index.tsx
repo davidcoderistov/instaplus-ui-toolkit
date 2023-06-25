@@ -195,7 +195,7 @@ export default function PostCard(props: Props) {
                                     onCommentOnPost={props.onCommentOnPost}
                                 />
                             )}
-                            {!props.loading && (
+                            {!props.loading && props.post.likesCount > 0 && (
                                 <PostLikes
                                     postId={props.post.id}
                                     dense

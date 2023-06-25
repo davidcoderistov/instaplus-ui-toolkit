@@ -220,7 +220,7 @@ export default function PostPreview(props: Props) {
                                 onCommentOnPost={handleCommentOnPost}
                             />
                         )}
-                        {!props.postLoading && props.post && (
+                        {!props.postLoading && props.post && props.post.likesCount > 0 && (
                             <PostLikes
                                 likingUsers={props.post.lastLikingMutualFollowers}
                                 likingUser={props.post.lastLikingUser}
