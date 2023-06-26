@@ -7,7 +7,13 @@ import Button from '../Button'
 import UserAvatar from './UserAvatar'
 
 
+interface Media {
+    photoUrl: string | null
+    videoUrl: string | null
+}
+
 interface Props {
+    media: Media[]
     user: {
         username: string
         photoUrl: string
@@ -53,7 +59,7 @@ export default function CreatePost(props: Props) {
                 width='503px'
             >
                 <PostPreviewSlider
-                    media={[]}
+                    media={props.media}
                 />
             </Box>
             <Box
