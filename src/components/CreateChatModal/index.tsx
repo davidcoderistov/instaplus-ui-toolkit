@@ -18,6 +18,7 @@ interface User {
 }
 
 interface Props {
+    open: boolean
     users: User[]
     usersLoading: boolean
     isCreatingChat: boolean
@@ -25,6 +26,8 @@ interface Props {
     onSearch(searchQuery: string): void
 
     onCreateChat(userIds: string[]): void
+
+    onCloseModal(): void
 }
 
 export default function CreateChatModal(props: Props) {
@@ -73,7 +76,7 @@ export default function CreateChatModal(props: Props) {
 
     return (
         <Dialog
-            open={true}
+            open={props.open}
             fullWidth
             PaperProps={{
                 sx: {
@@ -83,7 +86,7 @@ export default function CreateChatModal(props: Props) {
                     height: '550px',
                 },
             }}
-            onClose={console.log}
+            onClose={props.onCloseModal}
         >
             <Box
                 component='div'
@@ -128,7 +131,7 @@ export default function CreateChatModal(props: Props) {
                 <IconButton
                     aria-label='close'
                     size='large'
-                    onClick={console.log}
+                    onClick={props.onCloseModal}
                 >
                     <Close sx={{ color: '#FFFFFF' }} />
                 </IconButton>
