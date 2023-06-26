@@ -4,7 +4,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 
 interface ButtonProps {
     variant: 'primary' | 'secondary'
-    text: string
+    text: string | React.ReactNode
     minWidth?: number
     fullWidth?: boolean
     startIcon?: React.ReactNode
@@ -21,6 +21,7 @@ export default function Button(props: ButtonProps) {
 
     return (
         <LoadingButton
+            {...typeof props.text !== 'string' && { component: 'label' }}
             variant={props.contained ? 'contained' : 'text'}
             sx={props.contained ? {
                 textTransform: 'none',
