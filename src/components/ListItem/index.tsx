@@ -5,6 +5,7 @@ interface Props {
     children: any
     gutters?: boolean
     clickable?: boolean
+    dark?: boolean
     onClick?: () => void
 }
 
@@ -58,7 +59,7 @@ export default function ListItem(props: Props) {
                 ...props.clickable && {
                     cursor: 'pointer',
                     '&:hover': {
-                        backgroundColor: '#121212',
+                        backgroundColor: props.dark ? '#3C3C3C' : '#121212',
                     },
                 },
             }}
