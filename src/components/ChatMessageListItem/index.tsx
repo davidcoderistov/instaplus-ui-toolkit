@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useMediaQuery } from '@mui/material'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
@@ -7,6 +7,7 @@ import { getChatMembers } from '../../utils'
 
 
 interface StaticProps {
+    id: string | number
     loading?: never
     photoUrls: string[]
     usernames: string[]
@@ -16,10 +17,11 @@ interface StaticProps {
     seen: boolean
     selected: boolean
 
-    onClick(): void
+    onClick(id: string | number): void
 }
 
 interface LoadingProps {
+    id?: never
     loading: true
     photoUrls?: never
     usernames?: never
@@ -35,7 +37,7 @@ interface LoadingProps {
 type Props = StaticProps | LoadingProps
 
 
-export default function ChatMessageListItem(props: Props) {
+const ChatMessageListItem = React.memo((props: Props) => {
 
     const mw900 = useMediaQuery('(min-width:900px)')
 
@@ -45,6 +47,10 @@ export default function ChatMessageListItem(props: Props) {
         }
         return getChatMembers(props.usernames, props.membersCount, 2)
     }, [props.loading, props.usernames, props.membersCount])
+
+    const handleClickItem = useCallback(() => {
+        props.onClick(props.id)
+    }, [props.id, props.onClick])
 
     return (
         <Box
@@ -66,7 +72,7 @@ export default function ChatMessageListItem(props: Props) {
                     ...!props.loading && !props.selected && { backgroundColor: '#121212' },
                 },
             }}
-            onClick={props.onClick}
+            onClick={handleClickItem}
         >
             <Box
                 component='div'
@@ -334,4 +340,6 @@ export default function ChatMessageListItem(props: Props) {
             )}
         </Box>
     )
-}
+})
+
+export default ChatMessageListItem
