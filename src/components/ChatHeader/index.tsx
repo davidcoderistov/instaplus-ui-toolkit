@@ -240,6 +240,7 @@ export default function ChatHeader(props: Props) {
                                         maxWidth='100%'
                                         marginLeft='0!important'
                                         marginTop='0!important'
+                                        color='#F5F5F5'
                                         sx={{
                                             overflowY: 'visible',
                                             wordWrap: 'break-word',
