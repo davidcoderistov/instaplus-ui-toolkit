@@ -25,7 +25,7 @@ const ForwardedChatMessageBubble = forwardRef((props, ref) => (
     <ChatMessageBubble {...props} emojiRef={ref} />
 ))
 
-export default function ChatMessage(props: Props) {
+const ChatMessage = React.memo((props: Props) => {
 
     const showMessageTitle = useMemo(() =>
             !((props.lhs && props.type === 'group' && (props.position === 'start' || props.position === 'solo')) || props.message.reply),
@@ -113,4 +113,6 @@ export default function ChatMessage(props: Props) {
             </Box>
         </Box>
     )
-}
+})
+
+export default ChatMessage
