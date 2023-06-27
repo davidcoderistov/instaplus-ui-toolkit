@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useMediaQuery } from '@mui/material'
 import Box from '@mui/material/Box'
 import ChatMessageListItem from '../ChatMessageListItem'
@@ -43,6 +44,10 @@ type Props = StaticProps | LoadingProps
 export default function ChatMessageList(props: Props) {
 
     const mw900 = useMediaQuery('(min-width:900px)')
+
+    const handleClick = useCallback((id: string | number) => {
+        props.onClickChatMessage?.(id)
+    }, [props.onClickChatMessage])
 
     return (
         <Box
@@ -415,6 +420,7 @@ export default function ChatMessageList(props: Props) {
                                                     {props.chatMessages.map(chatMessage => (
                                                         <ChatMessageListItem
                                                             key={chatMessage.id}
+                                                            id={chatMessage.id}
                                                             photoUrls={chatMessage.photoUrls}
                                                             usernames={chatMessage.usernames}
                                                             membersCount={chatMessage.membersCount}
@@ -422,7 +428,7 @@ export default function ChatMessageList(props: Props) {
                                                             timestamp={chatMessage.timestamp}
                                                             seen={chatMessage.seen}
                                                             selected={chatMessage.selected}
-                                                            onClick={() => props.onClickChatMessage?.(chatMessage.id)} />
+                                                            onClick={handleClick} />
                                                     ))}
                                                 </Box>
                                             </Box>
