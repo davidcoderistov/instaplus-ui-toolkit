@@ -1,5 +1,5 @@
-import React from 'react'
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 
@@ -9,7 +9,7 @@ interface Props {
     user: {
         id: string | number
         username: string
-        photoUrl: string
+        photoUrl?: string | null
     }
     onUnfollowUser: (id: string | number) => void
     onCloseModal: () => void
@@ -79,18 +79,22 @@ export default function UnfollowUserModal(props: Props) {
                                     position='relative'
                                     display='block'
                                 >
-                                    <img
-                                        alt={`${props.user.username} profile picture`}
-                                        style={{
-                                            fontSize: '100%',
-                                            width: '100%',
-                                            height: '100%',
-                                            verticalAlign: 'baseline',
-                                            padding: '0',
-                                            margin: '0',
-                                            border: '0',
-                                        }}
-                                        src={props.user.photoUrl} />
+                                    {props.user.photoUrl ? (
+                                        <img
+                                            alt={`${props.user.username} profile picture`}
+                                            style={{
+                                                fontSize: '100%',
+                                                width: '100%',
+                                                height: '100%',
+                                                verticalAlign: 'baseline',
+                                                padding: '0',
+                                                margin: '0',
+                                                border: '0',
+                                            }}
+                                            src={props.user.photoUrl} />
+                                    ) : (
+                                        <Avatar sx={{ height: 90, width: 90 }} />
+                                    )}
                                 </Box>
                             </Box>
                             <Box
