@@ -56,9 +56,10 @@ export default function ChatDescription(props: Props) {
                         display='block'
                     >
                         <ChatAvatar
+                            multiple={props.usernames.length > 1}
                             photoUrls={props.photoUrls}
                             containerSize={96}
-                            avatarSize={props.photoUrls.length > 1 ? 72 : 96} />
+                            avatarSize={props.usernames.length > 1 ? 72 : 96} />
                     </Box>
                     <Box
                         component='div'
