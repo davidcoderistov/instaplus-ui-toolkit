@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import MediaGallery from '../MediaGallery'
 import Button from '../Button'
 import Skeleton from '@mui/material/Skeleton'
@@ -14,7 +15,7 @@ interface StaticProps {
         username: string
         firstName: string
         lastName: string
-        photoUrl: string
+        photoUrl?: string | null
         following: boolean
         followingLoading: boolean
     }
@@ -126,7 +127,7 @@ export default function ProfileCard(props: Props) {
                                     width={56}
                                     height={56}
                                     sx={{ backgroundColor: '#202020' }} />
-                            ) : (
+                            ) : props.user.photoUrl ? (
                                 <img
                                     alt='Picture'
                                     style={{
@@ -143,6 +144,8 @@ export default function ProfileCard(props: Props) {
                                     }}
                                     src={props.user.photoUrl}
                                 />
+                            ) : (
+                                <Avatar sx={{ height: 56, width: 56 }} />
                             )}
                         </Box>
                     </Box>
