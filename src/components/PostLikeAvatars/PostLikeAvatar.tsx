@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 
 
 interface Props {
     dense?: boolean
     gutters?: boolean
     username: string
-    photoUrl: string
+    photoUrl?: string | null
 }
 
 export default function PostLikeAvatar(props: Props) {
@@ -47,18 +48,22 @@ export default function PostLikeAvatar(props: Props) {
                 position='relative'
                 display='block'
             >
-                <img
-                    alt={`${props.username} profile picture`}
-                    style={{
-                        fontSize: '100%',
-                        width: '100%',
-                        height: '100%',
-                        verticalAlign: 'baseline',
-                        padding: '0',
-                        margin: '0',
-                        border: '0',
-                    }}
-                    src={props.photoUrl} />
+                {props.photoUrl ? (
+                    <img
+                        alt={`${props.username} profile picture`}
+                        style={{
+                            fontSize: '100%',
+                            width: '100%',
+                            height: '100%',
+                            verticalAlign: 'baseline',
+                            padding: '0',
+                            margin: '0',
+                            border: '0',
+                        }}
+                        src={props.photoUrl} />
+                ) : (
+                    <Avatar sx={{ height: size, width: size }} />
+                )}
             </Box>
         </Box>
     )
