@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import SuggestedUserListItem from '../SuggestedUserListItem'
 
@@ -8,7 +9,7 @@ interface User {
     username: string
     firstName: string
     lastName: string
-    photoUrl: string
+    photoUrl?: string | null
     following: boolean
     followingLoading: boolean
     followedByUsernames: string[]
@@ -21,7 +22,7 @@ interface Props {
         username: string
         firstName: string
         lastName: string
-        photoUrl: string
+        photoUrl?: string | null
     }
     users: User[]
     isInitialLoading: boolean
@@ -231,20 +232,24 @@ export default function TopFiveSuggestedUsers(props: Props) {
                                                             outlineStyle: 'none',
                                                         }}
                                                     >
-                                                        <img
-                                                            alt={`${props.authUser.username} profile picture`}
-                                                            style={{
-                                                                fontSize: '100%',
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                verticalAlign: 'baseline',
-                                                                padding: '0',
-                                                                margin: '0',
-                                                                border: '0',
-                                                                overflowClipMargin: 'content-box',
-                                                                overflow: 'clip',
-                                                            }}
-                                                            src={props.authUser.photoUrl} />
+                                                        {props.authUser.photoUrl ? (
+                                                            <img
+                                                                alt={`${props.authUser.username} profile picture`}
+                                                                style={{
+                                                                    fontSize: '100%',
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    verticalAlign: 'baseline',
+                                                                    padding: '0',
+                                                                    margin: '0',
+                                                                    border: '0',
+                                                                    overflowClipMargin: 'content-box',
+                                                                    overflow: 'clip',
+                                                                }}
+                                                                src={props.authUser.photoUrl} />
+                                                        ) : (
+                                                            <Avatar sx={{ height: 44, width: 44 }} />
+                                                        )}
                                                     </Box>
                                                 </Box>
                                             </Box>
