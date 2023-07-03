@@ -119,9 +119,10 @@ export default function ChatHeader(props: Props) {
                             onClick={props.onClickChatMembers}
                         >
                             <ChatAvatar
+                                multiple={props.usernames.length > 1}
                                 photoUrls={props.photoUrls}
                                 containerSize={44}
-                                avatarSize={props.photoUrls.length > 1 ? 32 : 44}
+                                avatarSize={props.usernames.length > 1 ? 32 : 44}
                                 dense />
                         </Box>
                     </Box>
