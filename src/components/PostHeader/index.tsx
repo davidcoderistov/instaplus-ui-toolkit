@@ -5,6 +5,7 @@ import Button from '../Button'
 import PostSettingsModal from '../PostSettingsModal'
 import UnfollowUserModal from '../UnfollowUserModal'
 import { getTimeElapsed } from '../../utils'
+import Avatar from '@mui/material/Avatar'
 
 
 interface StaticProps {
@@ -13,7 +14,7 @@ interface StaticProps {
     user: {
         id: string | number
         username: string
-        photoUrl: string
+        photoUrl?: string | null
         following: boolean
         followingLoading: boolean
     }
@@ -250,7 +251,7 @@ export default function PostHeader(props: Props) {
                                             width={32}
                                             height={32}
                                             sx={{ backgroundColor: '#202020' }} />
-                                    ) : (
+                                    ) : props.user.photoUrl ? (
                                         <img
                                             alt={`${props.user.username} profile picture`}
                                             style={{
@@ -263,6 +264,8 @@ export default function PostHeader(props: Props) {
                                                 border: '0',
                                             }}
                                             src={props.user.photoUrl} />
+                                    ) : (
+                                        <Avatar sx={{ height: 32, width: 32 }} />
                                     )}
                                 </Box>
                             </Box>
