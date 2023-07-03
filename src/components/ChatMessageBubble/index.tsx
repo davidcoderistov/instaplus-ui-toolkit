@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback, MutableRefObject } from 'react'
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import ChatMessagePhoto from '../ChatMessagePhoto'
 import { Message } from '../../types/Message'
 
@@ -202,18 +203,22 @@ export default function ChatMessageBubble(props: Props) {
                                         flexDirection='inherit'
                                         flexShrink='inherit'
                                     >
-                                        <img style={{
-                                            borderRadius: '50%',
-                                            objectFit: 'cover',
-                                            width: '100%',
-                                            height: '100%',
-                                            display: 'inline-block',
-                                            border: '0',
-                                            overflowClipMargin: 'content-box',
-                                            overflow: 'clip',
-                                        }}
-                                             src={props.message.creator.photoUrl}
-                                             alt={props.message.creator.username} />
+                                        {props.message.creator.photoUrl ? (
+                                            <img style={{
+                                                borderRadius: '50%',
+                                                objectFit: 'cover',
+                                                width: '100%',
+                                                height: '100%',
+                                                display: 'inline-block',
+                                                border: '0',
+                                                overflowClipMargin: 'content-box',
+                                                overflow: 'clip',
+                                            }}
+                                                 src={props.message.creator.photoUrl}
+                                                 alt={props.message.creator.username} />
+                                        ) : (
+                                            <Avatar sx={{ height: 28, width: 28 }} />
+                                        )}
                                     </Box>
                                 </Box>
                             ) : (

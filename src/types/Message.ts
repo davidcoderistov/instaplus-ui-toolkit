@@ -3,7 +3,7 @@ interface BaseMessage {
     creator: {
         id: string | number
         username: string
-        photoUrl: string
+        photoUrl?: string | null
     }
     text: string | null
     photoUrl: string | null
