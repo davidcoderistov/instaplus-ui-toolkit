@@ -19,7 +19,6 @@ interface FormData {
     firstName: string
     lastName: string
     username: string
-    email: string
     password: string
 }
 
@@ -38,7 +37,6 @@ const validationSchema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Last name is required'),
     username: yup.string().required('Username is required'),
-    email: yup.string().required('Email address is required').email('Invalid email address'),
     password: yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
 })
 
@@ -108,17 +106,6 @@ export default function SignUp(props: Props) {
                                 id='username'
                                 label='Username'
                                 autoComplete='username' />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                {...register('email')}
-                                error={Boolean(errors.email)}
-                                helperText={errors.email?.message as string ?? ''}
-                                required
-                                fullWidth
-                                id='email'
-                                label='Email Address'
-                                autoComplete='email' />
                         </Grid>
                         <Grid item xs={12}>
                             <PasswordInput
