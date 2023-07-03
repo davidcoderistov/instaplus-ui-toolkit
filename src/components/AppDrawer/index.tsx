@@ -44,6 +44,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 interface Props {
+    username: string
+    photoUrl?: string | null
     isSearchDrawerOpen: boolean
     isNotificationsDrawerOpen: boolean
     isCreatingNewPost: boolean
@@ -460,8 +462,16 @@ export default function AppDrawer(props: Props) {
                             name='Profile'
                             isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
-                            icon={<AppDrawerAvatar />}
-                            activeIcon={<AppDrawerAvatar isActive />} />
+                            icon={
+                                <AppDrawerAvatar
+                                    username={props.username}
+                                    photoUrl={props.photoUrl} />
+                            }
+                            activeIcon={
+                                <AppDrawerAvatar
+                                    isActive
+                                    username={props.username}
+                                    photoUrl={props.photoUrl} />} />
                     )}
                 </StyledLink>
             </Box>

@@ -1,13 +1,16 @@
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 
 
 interface Props {
     isActive?: boolean
+    username: string
+    photoUrl?: string | null
 }
 
 export default function AppDrawerAvatar(props: Props) {
 
-    return (
+    return props.photoUrl ? (
         <Box
             component='span'
             height={props.isActive ? '28px' : '24px'}
@@ -30,7 +33,7 @@ export default function AppDrawerAvatar(props: Props) {
             }}
         >
             <img
-                alt={`Isabella profile picture`}
+                alt={`${props.username} profile picture`}
                 style={{
                     fontSize: '100%',
                     width: '100%',
@@ -40,7 +43,9 @@ export default function AppDrawerAvatar(props: Props) {
                     margin: '0',
                     border: '0',
                 }}
-                src='https://res.cloudinary.com/dd3isrbpv/image/upload/v1680258928/storage/avatars/1679067426167-IsabellaPhillips_bxquac.png' />
+                src={props.photoUrl} />
         </Box>
+    ) : (
+        <Avatar sx={{ height: 24, width: 24, ...props.isActive && { border: '2px solid #DBDBDB' } }} />
     )
 }
