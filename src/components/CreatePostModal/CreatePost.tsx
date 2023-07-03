@@ -16,7 +16,7 @@ interface Props {
     media: Media[]
     user: {
         username: string
-        photoUrl: string
+        photoUrl?: string | null
     }
     isSharing: boolean
 
