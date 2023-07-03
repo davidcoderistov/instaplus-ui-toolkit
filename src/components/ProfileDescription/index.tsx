@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import Skeleton from '@mui/material/Skeleton'
 import FollowingButton from '../FollowingButton'
 import Button from '../Button'
@@ -13,7 +14,7 @@ interface Props {
         firstName: string
         lastName: string
         username: string
-        photoUrl: string
+        photoUrl?: string | null
         description: string | null
         following: boolean
         followingLoading: boolean
@@ -108,7 +109,7 @@ export default function ProfileDescription(props: Props) {
                                 width={150}
                                 height={150}
                                 sx={{ backgroundColor: '#202020' }} />
-                        ) : (
+                        ) : props.user.photoUrl ? (
                             <img
                                 alt={`${props.user.username} profile picture`}
                                 style={{
@@ -121,6 +122,8 @@ export default function ProfileDescription(props: Props) {
                                     border: '0',
                                 }}
                                 src={props.user.photoUrl} />
+                        ) : (
+                            <Avatar sx={{ height: 150, width: 150 }} />
                         )}
                     </Box>
                 </Box>
