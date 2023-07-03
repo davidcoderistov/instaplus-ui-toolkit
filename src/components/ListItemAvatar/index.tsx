@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 
 
 interface Props {
@@ -19,6 +20,8 @@ export default function ListItemAvatar(props: Props) {
             props.onClick()
         }
     }, [props.loading, props.onClick])
+
+    const multiple = props.usernames.length > 1
 
     return (
         <Box
@@ -85,11 +88,11 @@ export default function ListItemAvatar(props: Props) {
                         position='relative'
                         display='block'
                     >
-                        {(props.loading || props.hashtag || (props.photoUrls.length > 0 && props.usernames.length > 0)) && (
+                        {(props.loading || props.hashtag || props.usernames.length > 0) && (
                             <Box
                                 component='div'
-                                width={props.photoUrls.length > 1 ? '30px' : '44px'}
-                                height={props.photoUrls.length > 1 ? '30px' : '44px'}
+                                width={multiple ? '30px' : '44px'}
+                                height={multiple ? '30px' : '44px'}
                                 borderRadius='50%'
                                 paddingLeft='0'
                                 paddingTop='0'
@@ -144,7 +147,7 @@ export default function ListItemAvatar(props: Props) {
                                               strokeLinejoin='round'
                                               strokeWidth='2' x1='10.64' x2='7' y1='2' y2='22' />
                                     </svg>
-                                ) : (
+                                ) : props.photoUrls.length > 0 ? (
                                     <img
                                         alt={`${props.usernames[0]} profile picture`}
                                         style={{
@@ -157,10 +160,12 @@ export default function ListItemAvatar(props: Props) {
                                             border: '0',
                                         }}
                                         src={props.photoUrls[0]} />
+                                ) : (
+                                    <Avatar sx={{ height: multiple ? 30 : 44, width: multiple ? 30 : 44 }} />
                                 )}
                             </Box>
                         )}
-                        {(props.photoUrls.length > 1 && props.usernames.length > 1) && (
+                        {multiple && (
                             <Box
                                 component='div'
                                 padding='1px'
@@ -191,18 +196,22 @@ export default function ListItemAvatar(props: Props) {
                                         overflowY: 'hidden',
                                     }}
                                 >
-                                    <img
-                                        alt={`${props.usernames[1]} profile picture`}
-                                        style={{
-                                            height: '100%',
-                                            width: '100%',
-                                            border: '0',
-                                            overflowClipMargin: 'content-box',
-                                            overflow: 'clip',
-                                        }}
-                                        height='30'
-                                        src={props.photoUrls[1]}
-                                        width='30' />
+                                    {props.photoUrls.length > 1 ? (
+                                        <img
+                                            alt={`${props.usernames[1]} profile picture`}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                border: '0',
+                                                overflowClipMargin: 'content-box',
+                                                overflow: 'clip',
+                                            }}
+                                            height='30'
+                                            src={props.photoUrls[1]}
+                                            width='30' />
+                                    ) : (
+                                        <Avatar sx={{ height: 30, width: 30 }} />
+                                    )}
                                 </Box>
                             </Box>
                         )}
