@@ -8,7 +8,7 @@ import { formatNumber } from '../../utils'
 interface Creator {
     id: string | number
     username: string
-    photoUrl: string
+    photoUrl?: string | null
 }
 
 interface Comment {

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
 import Skeleton from '@mui/material/Skeleton'
 import { getTimeElapsed, formatNumber } from '../../utils'
 
@@ -6,7 +7,7 @@ import { getTimeElapsed, formatNumber } from '../../utils'
 interface Creator {
     id: string | number
     username: string
-    photoUrl: string
+    photoUrl?: string | null
 }
 
 interface Comment {
@@ -187,7 +188,7 @@ export default function PostBaseComment(props: Props) {
                                                 width={32}
                                                 height={32}
                                                 sx={{ backgroundColor: '#202020' }} />
-                                        ) : (
+                                        ) : props.comment.creator.photoUrl ? (
                                             <img
                                                 alt={`${props.comment.creator.username} profile picture`}
                                                 style={{
@@ -200,6 +201,8 @@ export default function PostBaseComment(props: Props) {
                                                     border: '0',
                                                 }}
                                                 src={props.comment.creator.photoUrl} />
+                                        ) : (
+                                            <Avatar sx={{ height: 32, width: 32 }} />
                                         )}
                                     </Box>
                                 </Box>
