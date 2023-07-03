@@ -9,6 +9,7 @@ import { getChatMembers } from '../../utils'
 interface StaticProps {
     id: string | number
     loading?: never
+    multiple?: boolean
     photoUrls: string[]
     usernames: string[]
     membersCount: number
@@ -23,6 +24,7 @@ interface StaticProps {
 interface LoadingProps {
     id?: never
     loading: true
+    multiple?: never
     photoUrls?: never
     usernames?: never
     membersCount?: never
@@ -84,9 +86,10 @@ const ChatMessageListItem = React.memo((props: Props) => {
                         loading />
                 ) : (
                     <ChatAvatar
+                        multiple={props.multiple}
                         photoUrls={props.photoUrls}
                         containerSize={56}
-                        avatarSize={props.photoUrls.length > 1 ? 40 : 56}
+                        avatarSize={props.multiple ? 40 : 56}
                     />
                 )}
             </Box>

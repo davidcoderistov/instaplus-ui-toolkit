@@ -385,7 +385,7 @@ export default function ChatMessageList(props: Props) {
                                                 {[...Array(8).keys()].map(index => (
                                                     <ChatMessageListItem
                                                         key={index}
-                                                        loading={true} />
+                                                        loading />
                                                 ))}
                                             </Box>
                                         </Box>
@@ -403,8 +403,8 @@ export default function ChatMessageList(props: Props) {
                                                     display='block'
                                                     position='relative'
                                                 >
-                                                    <ChatMessageListItem loading={true} />
-                                                    <ChatMessageListItem loading={true} />
+                                                    <ChatMessageListItem loading />
+                                                    <ChatMessageListItem loading />
                                                 </Box>
                                             </Box>}
                                             dataLength={props.chatMessages.length}>
@@ -421,6 +421,7 @@ export default function ChatMessageList(props: Props) {
                                                         <ChatMessageListItem
                                                             key={chatMessage.id}
                                                             id={chatMessage.id}
+                                                            multiple={chatMessage.usernames.length > 1}
                                                             photoUrls={chatMessage.photoUrls}
                                                             usernames={chatMessage.usernames}
                                                             membersCount={chatMessage.membersCount}
