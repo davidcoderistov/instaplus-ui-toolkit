@@ -155,7 +155,7 @@ export default function ChatDescription(props: Props) {
                                 <Box
                                     component='span'
                                 >
-                                    {props.creator} &middot; Socialley
+                                    {props.creator} &middot; InstaPlus
                                 </Box>
                             )}
                         </Box>
