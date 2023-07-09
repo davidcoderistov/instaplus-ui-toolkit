@@ -11,7 +11,11 @@ interface StaticProps {
     id: string | number
     loading?: never
     chatMembers: { id: string | number, username: string, photoUrl: string | null }[]
-    text: string
+    text: string | null
+    photoUrl: string | null
+    videoUrl: string | null
+    creatorId: string | number
+    creatorUsername: string
     timestamp: number
     seen: boolean
     selected: boolean
@@ -25,6 +29,10 @@ interface LoadingProps {
     loading: true
     chatMembers?: never
     text?: never
+    photoUrl?: never
+    videoUrl?: never
+    creatorId?: never
+    creatorUsername?: never
     timestamp?: never
     seen?: never
     selected?: never
@@ -41,6 +49,30 @@ const ChatMessageListItem = React.memo((props: Props) => {
     const mw900 = useMediaQuery('(min-width:900px)')
 
     const [usernames, photoUrls] = useChatMembers(props.loading ? [] : props.chatMembers, props.authUserId)
+
+    const getMessageText = () => {
+        if (!props.loading) {
+            if (props.text) {
+                if (props.creatorId === props.authUserId) {
+                    return `You: ${props.text}`
+                } else if (props.chatMembers.length > 2) {
+                    return `${props.creatorUsername}: ${props.text}`
+                } else {
+                    return props.text
+                }
+            } else if (props.photoUrl) {
+                const media = props.videoUrl ? 'video' : 'photo'
+                if (props.creatorId === props.authUserId) {
+                    return `You sent a ${media}.`
+                } else if (props.chatMembers.length > 2) {
+                    return `${props.creatorUsername} sent a ${media}.`
+                } else {
+                    return `${props.creatorUsername} sent you a ${media}.`
+                }
+            }
+        }
+        return null
+    }
 
     const handleClickItem = useCallback(() => {
         if (!props.loading) {
@@ -212,7 +244,7 @@ const ChatMessageListItem = React.memo((props: Props) => {
                                             overflowY: 'hidden',
                                         }}
                                     >
-                                        {props.text}
+                                        {getMessageText()}
                                     </Box>
                                 </Box>
                                 <Box

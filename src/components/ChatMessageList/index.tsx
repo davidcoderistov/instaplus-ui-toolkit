@@ -9,7 +9,11 @@ import _range from 'lodash/range'
 export interface ChatMessage {
     id: string | number
     chatMembers: { id: string | number, username: string, photoUrl: string | null }[]
-    text: string
+    text: string | null
+    photoUrl: string | null
+    videoUrl: string | null
+    creatorId: string | number
+    creatorUsername: string
     timestamp: number
     seen: boolean
     selected: boolean
@@ -425,6 +429,10 @@ export default function ChatMessageList(props: Props) {
                                                             authUserId={props.authUserId}
                                                             chatMembers={chatMessage.chatMembers}
                                                             text={chatMessage.text}
+                                                            photoUrl={chatMessage.photoUrl}
+                                                            videoUrl={chatMessage.videoUrl}
+                                                            creatorId={chatMessage.creatorId}
+                                                            creatorUsername={chatMessage.creatorUsername}
                                                             timestamp={chatMessage.timestamp}
                                                             seen={chatMessage.seen}
                                                             selected={chatMessage.selected}
