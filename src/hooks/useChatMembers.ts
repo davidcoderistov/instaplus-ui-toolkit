@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { getChatMembers } from '../utils'
 
 
-export function useChatMembers(chatMembers: { id: string | number, username: string, photoUrl: string | null }[], authUserId: string | number) {
+export function useChatMembers(chatMembers: { id: string | number, username: string, photoUrl: string | null }[], authUserId: string | number, showCount: number) {
 
     const members = useMemo(() => {
         if (chatMembers.length > 2) {
@@ -23,7 +23,7 @@ export function useChatMembers(chatMembers: { id: string | number, username: str
         return getChatMembers(
             members.map(chatMember => chatMember.username),
             members.length,
-            2,
+            showCount,
         )
     }, [members])
 
