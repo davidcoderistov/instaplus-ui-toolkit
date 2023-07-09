@@ -1,22 +1,21 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useMediaQuery } from '@mui/material'
+import { useChatMembers } from '../../hooks'
 import Box from '@mui/material/Box'
 import Skeleton from '@mui/material/Skeleton'
 import ChatAvatar from '../ChatAvatar'
-import { getChatMembers } from '../../utils'
+import { getTimeElapsed } from '../../utils'
 
 
 interface StaticProps {
     id: string | number
     loading?: never
-    multiple?: boolean
-    photoUrls: string[]
-    usernames: string[]
-    membersCount: number
+    chatMembers: { id: string | number, username: string, photoUrl: string | null }[]
     text: string
-    timestamp: string
+    timestamp: number
     seen: boolean
     selected: boolean
+    authUserId: string | number
 
     onClick(id: string | number): void
 }
@@ -24,14 +23,12 @@ interface StaticProps {
 interface LoadingProps {
     id?: never
     loading: true
-    multiple?: never
-    photoUrls?: never
-    usernames?: never
-    membersCount?: never
+    chatMembers?: never
     text?: never
     timestamp?: never
     seen?: never
     selected?: never
+    authUserId?: never
 
     onClick?: never
 }
@@ -43,16 +40,13 @@ const ChatMessageListItem = React.memo((props: Props) => {
 
     const mw900 = useMediaQuery('(min-width:900px)')
 
-    const usernames = useMemo(() => {
-        if (props.loading) {
-            return null
-        }
-        return getChatMembers(props.usernames, props.membersCount, 2)
-    }, [props.loading, props.usernames, props.membersCount])
+    const [usernames, photoUrls] = useChatMembers(props.loading ? [] : props.chatMembers, props.authUserId)
 
     const handleClickItem = useCallback(() => {
-        props.onClick(props.id)
-    }, [props.id, props.onClick])
+        if (!props.loading) {
+            props.onClick(props.id)
+        }
+    }, [props.loading, props.id, props.onClick])
 
     return (
         <Box
@@ -86,10 +80,9 @@ const ChatMessageListItem = React.memo((props: Props) => {
                         loading />
                 ) : (
                     <ChatAvatar
-                        multiple={props.multiple}
-                        photoUrls={props.photoUrls}
+                        photoUrls={photoUrls}
                         containerSize={56}
-                        avatarSize={props.multiple ? 40 : 56}
+                        avatarSize={photoUrls.length > 1 ? 40 : 56}
                     />
                 )}
             </Box>
@@ -296,7 +289,7 @@ const ChatMessageListItem = React.memo((props: Props) => {
                                                 whiteSpace='nowrap'
                                                 display='block'
                                             >
-                                                {props.timestamp}
+                                                {getTimeElapsed(props.timestamp)}
                                             </Box>
                                         </Box>
                                     </Box>

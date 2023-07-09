@@ -3,15 +3,14 @@ import { useMediaQuery } from '@mui/material'
 import Box from '@mui/material/Box'
 import ChatMessageListItem from '../ChatMessageListItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import _range from 'lodash/range'
 
 
-interface ChatMessage {
-    id: number
-    photoUrls: string[]
-    usernames: string[]
-    membersCount: number
+export interface ChatMessage {
+    id: string | number
+    chatMembers: { id: string | number, username: string, photoUrl: string | null }[]
     text: string
-    timestamp: string
+    timestamp: number
     seen: boolean
     selected: boolean
 }
@@ -21,10 +20,11 @@ interface StaticProps {
     chatName: string
     chatMessages: ChatMessage[]
     hasMoreChatMessages: boolean
+    authUserId: string | number
 
     onCreateNewChat(): void
 
-    onClickChatMessage(id: number): void
+    onClickChatMessage(id: string | number): void
 
     onFetchMoreChatMessages(): void
 }
@@ -34,6 +34,7 @@ interface LoadingProps {
     chatName?: never
     chatMessages?: never
     hasMoreChatMessages?: never
+    authUserId?: never
     onCreateNewChat?: never
     onFetchMoreChatMessages?: never
     onClickChatMessage?: never
@@ -382,7 +383,7 @@ export default function ChatMessageList(props: Props) {
                                                 display='block'
                                                 position='relative'
                                             >
-                                                {[...Array(8).keys()].map(index => (
+                                                {_range(8).map(index => (
                                                     <ChatMessageListItem
                                                         key={index}
                                                         loading />
@@ -421,10 +422,8 @@ export default function ChatMessageList(props: Props) {
                                                         <ChatMessageListItem
                                                             key={chatMessage.id}
                                                             id={chatMessage.id}
-                                                            multiple={chatMessage.usernames.length > 1}
-                                                            photoUrls={chatMessage.photoUrls}
-                                                            usernames={chatMessage.usernames}
-                                                            membersCount={chatMessage.membersCount}
+                                                            authUserId={props.authUserId}
+                                                            chatMembers={chatMessage.chatMembers}
                                                             text={chatMessage.text}
                                                             timestamp={chatMessage.timestamp}
                                                             seen={chatMessage.seen}
