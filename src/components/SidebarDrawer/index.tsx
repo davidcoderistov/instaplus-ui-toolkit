@@ -3,11 +3,11 @@ import { styled } from '@mui/material/styles'
 
 
 const SidebarDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open, dense }) => ({
+    ({ theme, open, anchor }) => ({
         '& .MuiDrawer-paper': {
             position: 'relative',
             whiteSpace: 'nowrap',
-            width: dense ? 360 : 390,
+            width: anchor === 'right' ? 370 : 390,
             transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,
