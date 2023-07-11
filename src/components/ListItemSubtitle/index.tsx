@@ -7,6 +7,7 @@ interface Props {
     loader: React.ReactNode
     subtitle: string | null
     dense?: boolean
+    large?: boolean
 }
 
 export default function ListItemSubtitle(props: Props) {
@@ -32,6 +33,7 @@ export default function ListItemSubtitle(props: Props) {
                 overflowX: 'visible',
                 whiteSpace: 'pre-line',
                 wordBreak: 'break-word',
+                ...props.large && { paddingTop: '3px' },
             }}
         >
             <Box
