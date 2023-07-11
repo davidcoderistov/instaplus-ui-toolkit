@@ -7,7 +7,7 @@ interface Props {
     loading: boolean
     large?: boolean
     hashtag?: boolean
-    loader: React.ReactNode
+    loader: React.ReactNode | null
     photoUrls: string[]
     usernames: string[]
 

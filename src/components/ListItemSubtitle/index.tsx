@@ -4,8 +4,8 @@ import Box from '@mui/material/Box'
 
 interface Props {
     loading: boolean
-    loader: React.ReactNode
-    subtitle: string | null
+    loader: React.ReactNode | null
+    subtitle: React.ReactNode | string | null
     dense?: boolean
     large?: boolean
 }
