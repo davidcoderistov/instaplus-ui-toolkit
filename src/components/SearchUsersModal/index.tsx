@@ -20,18 +20,20 @@ interface User {
 
 interface Props {
     open: boolean
+    title: string
+    actionTitle: string
     users: User[]
     usersLoading: boolean
-    isCreatingChat: boolean
+    isTakingAction: boolean
 
     onSearch(searchQuery: string): void
 
-    onCreateChat(userIds: (string | number)[]): void
+    onTakeAction(userIds: (string | number)[]): void
 
     onCloseModal(): void
 }
 
-export default function CreateChatModal(props: Props) {
+export default function SearchUsersModal(props: Props) {
 
     const [searchQuery, setSearchQuery] = useState('')
 
@@ -72,7 +74,7 @@ export default function CreateChatModal(props: Props) {
     }, [handleRemoveUser])
 
     const handleCreateChat = () => {
-        props.onCreateChat(selectedUsers.map(user => user._id))
+        props.onTakeAction(selectedUsers.map(user => user._id))
     }
 
     return (
@@ -126,7 +128,7 @@ export default function CreateChatModal(props: Props) {
                             wordBreak: 'break-word',
                         }}
                     >
-                        New message
+                        {props.title}
                     </Box>
                 </Box>
                 <IconButton
@@ -405,15 +407,15 @@ export default function CreateChatModal(props: Props) {
                             color: '#FFFFFF',
                         },
                         '&.Mui-disabled': {
-                            color: props.isCreatingChat ? 'default' : '#4F6070',
-                            backgroundColor: props.isCreatingChat ? 'default' : '#1B4865',
+                            color: props.isTakingAction ? 'default' : '#4F6070',
+                            backgroundColor: props.isTakingAction ? 'default' : '#1B4865',
                         },
                     }}
-                    loading={props.isCreatingChat}
+                    loading={props.isTakingAction}
                     disabled={selectedUsers.length < 1}
                     onClick={handleCreateChat}
                 >
-                    Chat
+                    {props.actionTitle}
                 </LoadingButton>
             </Box>
         </Dialog>
