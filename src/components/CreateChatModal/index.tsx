@@ -7,14 +7,15 @@ import InputBase from '@mui/material/InputBase'
 import { Close } from '@mui/icons-material'
 import UserChip from './UserChip'
 import SearchableUser from './SearchableUser'
+import _range from 'lodash/range'
 
 
 interface User {
-    id: string | number
+    _id: string | number
     firstName: string
     lastName: string
     username: string
-    photoUrl: string
+    photoUrl: string | null
 }
 
 interface Props {
@@ -25,7 +26,7 @@ interface Props {
 
     onSearch(searchQuery: string): void
 
-    onCreateChat(userIds: string[]): void
+    onCreateChat(userIds: (string | number)[]): void
 
     onCloseModal(): void
 }
@@ -45,24 +46,24 @@ export default function CreateChatModal(props: Props) {
 
     const [selectedUsers, setSelectedUsers] = useState<User[]>([])
 
-    const selectedUsersById = useMemo(() => selectedUsers.reduce((accumulator, user) => ({
+    const selectedUsersById: { [key: string]: boolean } = useMemo(() => selectedUsers.reduce((accumulator, user) => ({
         ...accumulator,
-        [user.id]: true,
+        [user._id]: true,
     }), {}), [selectedUsers])
 
     const users = useMemo(() => props.users.map(user => ({
         ...user,
-        selected: Boolean(selectedUsersById[user.id]),
+        selected: Boolean(selectedUsersById[user._id]),
     })), [props.users, selectedUsersById])
 
-    const handleRemoveUser = useCallback((id: string | number) => {
-        setSelectedUsers(users => users.filter(user => user.id !== id))
+    const handleRemoveUser = useCallback((_id: string | number) => {
+        setSelectedUsers(users => users.filter(user => user._id !== _id))
     }, [])
 
     const handleAddUser = useCallback((user: User & { selected: boolean }) => {
         if (user) {
             if (user.selected) {
-                handleRemoveUser(user.id)
+                handleRemoveUser(user._id)
             } else {
                 setSelectedUsers(users => [...users, user])
                 updateSearchQuery('')
@@ -71,7 +72,7 @@ export default function CreateChatModal(props: Props) {
     }, [handleRemoveUser])
 
     const handleCreateChat = () => {
-        props.onCreateChat(selectedUsers.map(user => user.id))
+        props.onCreateChat(selectedUsers.map(user => user._id))
     }
 
     return (
@@ -233,7 +234,7 @@ export default function CreateChatModal(props: Props) {
                     >
                         {selectedUsers.map(user => (
                             <UserChip
-                                key={user.id}
+                                key={user._id}
                                 user={user}
                                 onRemoveUser={handleRemoveUser} />
                         ))}
@@ -283,14 +284,14 @@ export default function CreateChatModal(props: Props) {
                     overflowY: 'scroll',
                 }}
             >
-                {props.usersLoading ? [...Array(8).keys()].map(index => (
+                {props.usersLoading ? _range(8).map(index => (
                     <SearchableUser
                         key={index}
                         loading />
                 )) : props.users.length > 0 ? users.map(user => (
                     <SearchableUser
-                        key={user.id}
-                        id={user.id}
+                        key={user._id}
+                        _id={user._id}
                         firstName={user.firstName}
                         lastName={user.lastName}
                         username={user.username}
