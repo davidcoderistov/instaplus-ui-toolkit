@@ -8,7 +8,7 @@ interface Props {
     large?: boolean
     hashtag?: boolean
     loader: React.ReactNode | null
-    photoUrls: string[]
+    photoUrls: (string | null)[]
     usernames: string[]
 
     onClick?(): void
@@ -148,7 +148,7 @@ export default function ListItemAvatar(props: Props) {
                                               strokeLinejoin='round'
                                               strokeWidth='2' x1='10.64' x2='7' y1='2' y2='22' />
                                     </svg>
-                                ) : props.photoUrls.length > 0 ? (
+                                ) : props.photoUrls.length > 0 ? props.photoUrls[0] ? (
                                     <img
                                         alt={`${props.usernames[0]} profile picture`}
                                         style={{
@@ -166,7 +166,7 @@ export default function ListItemAvatar(props: Props) {
                                         height: multiple ? 30 : props.large ? 56 : 44,
                                         width: multiple ? 30 : props.large ? 56 : 44,
                                     }} />
-                                )}
+                                ) : null}
                             </Box>
                         )}
                         {multiple && (
@@ -200,7 +200,7 @@ export default function ListItemAvatar(props: Props) {
                                         overflowY: 'hidden',
                                     }}
                                 >
-                                    {props.photoUrls.length > 1 ? (
+                                    {props.photoUrls.length > 1 ? props.photoUrls[1] ? (
                                         <img
                                             alt={`${props.usernames[1]} profile picture`}
                                             style={{
@@ -215,7 +215,7 @@ export default function ListItemAvatar(props: Props) {
                                             width='30' />
                                     ) : (
                                         <Avatar sx={{ height: 30, width: 30 }} />
-                                    )}
+                                    ) : null}
                                 </Box>
                             </Box>
                         )}
