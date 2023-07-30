@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar'
 
 interface Props {
     loading: boolean
+    clickable?: boolean
     large?: boolean
     hashtag?: boolean
     loader: React.ReactNode | null
@@ -14,13 +15,15 @@ interface Props {
     onClick?(): void
 }
 
-export default function ListItemAvatar(props: Props) {
+export default function ListItemAvatar({ clickable = true, ...props }: Props) {
 
     const handleClick = useCallback(() => {
         if (!props.loading && !!props.onClick) {
             props.onClick()
         }
     }, [props.loading, props.onClick])
+
+    const isClickable = props.onClick ? true : clickable
 
     const multiple = props.usernames.length > 1
 
@@ -123,7 +126,7 @@ export default function ListItemAvatar(props: Props) {
                                     },
                                     touchAction: 'manipulation',
                                     overflowX: 'hidden',
-                                    cursor: props.loading || !props.onClick ? 'default' : 'pointer',
+                                    cursor: props.loading || !isClickable ? 'default' : 'pointer',
                                     outlineStyle: 'none',
                                     overflowY: 'hidden',
                                 }}
