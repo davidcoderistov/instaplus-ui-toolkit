@@ -1,11 +1,19 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import PostPreviewSlider from '../PostPreviewSlider'
 import CaptionInput from './CaptionInput'
 import LocationInput from './LocationInput'
+import Hashtag from './Hashtag'
 import Button from '../Button'
 import UserAvatar from './UserAvatar'
 
+
+interface IHashtag {
+    _id: string | number
+    name: string
+    postIds: string[]
+}
 
 interface Media {
     photoUrl: string | null
@@ -16,20 +24,33 @@ interface Props {
     media: Media[]
     user: {
         username: string
-        photoUrl?: string | null
+        photoUrl: string | null
     }
     isSharing: boolean
+    hashtags: IHashtag[]
+    hashtagsLoading: boolean
 
-    onSharePost(caption: string, location: string): void
+    onFetchHashtags(searchQuery: string): void
+
+    onSharePost(caption: string, location: string, hashtags: string[]): void
 }
 
 export default function CreatePost(props: Props) {
+
+    const [isTypingHashtag, setIsTypingHashtag] = useState(false)
 
     const caption = useRef('')
     const location = useRef('')
 
     const handleChangeCaption = (value: string) => {
+        const r = /#[^\s#]+$/
         caption.current = value
+        const hashtags = value.match(r)
+        const isTypingHashtag = Array.isArray(hashtags) && hashtags.length > 0
+        setIsTypingHashtag(isTypingHashtag)
+        if (isTypingHashtag) {
+            props.onFetchHashtags(hashtags[0].slice(1, hashtags.length))
+        }
     }
 
     const handleChangeLocation = (value: string) => {
@@ -37,7 +58,9 @@ export default function CreatePost(props: Props) {
     }
 
     const handleSharePost = () => {
-        props.onSharePost(caption.current, location.current)
+        const r = /#[^\s#]+/g
+        const hashtags = caption.current.match(r)
+        props.onSharePost(caption.current, location.current, Array.isArray(hashtags) ? hashtags : [])
     }
 
     return (
@@ -105,6 +128,42 @@ export default function CreatePost(props: Props) {
                             username={props.user.username}
                             photoUrl={props.user.photoUrl} />
                         <CaptionInput onChangeValue={handleChangeCaption} />
+                        <Box
+                            component='div'
+                            maxHeight='136px'
+                            sx={{
+                                overflowX: 'hidden',
+                                overflowY: 'auto',
+                            }}
+                            marginBottom='5px'
+                        >
+                            {isTypingHashtag && props.hashtagsLoading && (
+                                <Box
+                                    component='div'
+                                    width='100%'
+                                    height='136px'
+                                    display='flex'
+                                    flexDirection='column'
+                                    justifyContent='center'
+                                    alignItems='center'
+                                    bgcolor='#000000'
+                                >
+                                    <CircularProgress
+                                        size={30}
+                                        thickness={3}
+                                        sx={{
+                                            color: 'grey',
+                                        }} />
+                                </Box>
+                            )}
+                            {isTypingHashtag && !props.hashtagsLoading && props.hashtags.length > 0 &&
+                                props.hashtags.map(hashtag => (
+                                    <Hashtag
+                                        key={hashtag._id}
+                                        hashtag={hashtag}
+                                        onClick={console.log} />
+                                ))}
+                        </Box>
                         <LocationInput onChangeLocation={handleChangeLocation} />
                         <Box
                             component='div'
