@@ -1,10 +1,8 @@
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import Box from '@mui/material/Box'
-import CircularProgress from '@mui/material/CircularProgress'
 import PostPreviewSlider from '../PostPreviewSlider'
 import CaptionInput from './CaptionInput'
 import LocationInput from './LocationInput'
-import Hashtag from './Hashtag'
 import Button from '../Button'
 import UserAvatar from './UserAvatar'
 
@@ -37,20 +35,11 @@ interface Props {
 
 export default function CreatePost(props: Props) {
 
-    const [isTypingHashtag, setIsTypingHashtag] = useState(false)
-
     const caption = useRef('')
     const location = useRef('')
 
     const handleChangeCaption = (value: string) => {
-        const r = /#[^\s#]+$/
         caption.current = value
-        const hashtags = value.match(r)
-        const isTypingHashtag = Array.isArray(hashtags) && hashtags.length > 0
-        setIsTypingHashtag(isTypingHashtag)
-        if (isTypingHashtag) {
-            props.onFetchHashtags(hashtags[0].slice(1, hashtags.length))
-        }
     }
 
     const handleChangeLocation = (value: string) => {
@@ -127,43 +116,11 @@ export default function CreatePost(props: Props) {
                         <UserAvatar
                             username={props.user.username}
                             photoUrl={props.user.photoUrl} />
-                        <CaptionInput onChangeValue={handleChangeCaption} />
-                        <Box
-                            component='div'
-                            maxHeight='136px'
-                            sx={{
-                                overflowX: 'hidden',
-                                overflowY: 'auto',
-                            }}
-                            marginBottom='5px'
-                        >
-                            {isTypingHashtag && props.hashtagsLoading && (
-                                <Box
-                                    component='div'
-                                    width='100%'
-                                    height='136px'
-                                    display='flex'
-                                    flexDirection='column'
-                                    justifyContent='center'
-                                    alignItems='center'
-                                    bgcolor='#000000'
-                                >
-                                    <CircularProgress
-                                        size={30}
-                                        thickness={3}
-                                        sx={{
-                                            color: 'grey',
-                                        }} />
-                                </Box>
-                            )}
-                            {isTypingHashtag && !props.hashtagsLoading && props.hashtags.length > 0 &&
-                                props.hashtags.map(hashtag => (
-                                    <Hashtag
-                                        key={hashtag._id}
-                                        hashtag={hashtag}
-                                        onClick={console.log} />
-                                ))}
-                        </Box>
+                        <CaptionInput
+                            hashtags={props.hashtags}
+                            hashtagsLoading={props.hashtagsLoading}
+                            onFetchHashtags={props.onFetchHashtags}
+                            onChangeValue={handleChangeCaption} />
                         <LocationInput onChangeLocation={handleChangeLocation} />
                         <Box
                             component='div'
