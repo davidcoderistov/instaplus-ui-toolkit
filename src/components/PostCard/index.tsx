@@ -141,7 +141,7 @@ export default function PostCard(props: Props) {
                     <PostPreviewSlider
                         dense
                         loading={props.loading}
-                        media={!props.loading ? props.post.media : []}
+                        photoUrls={!props.loading ? props.post.photoUrls : []}
                     />
                 </Box>
                 <Box
