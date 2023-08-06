@@ -8,16 +8,11 @@ interface PostCreator extends PostUser {
     followingLoading: boolean
 }
 
-interface Media {
-    photoUrl: string
-    videoUrl: string | null
-}
-
 export interface Post {
     id: string | number
     description: string | null
     location: string | null
-    media: Media[]
+    photoUrls: string[]
     creator: PostCreator
     isLiked: boolean
     isSaved: boolean
