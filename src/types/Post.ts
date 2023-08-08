@@ -1,9 +1,7 @@
 import { User } from './User'
 
 
-type PostUser = Pick<User, 'id' | 'username' | 'photoUrl'>
-
-interface PostCreator extends PostUser {
+interface PostCreator extends Pick<User, 'id' | 'username' | 'photoUrl'> {
     following: boolean
     followingLoading: boolean
 }
@@ -16,11 +14,12 @@ export interface Post {
     creator: PostCreator
     isLiked: boolean
     isSaved: boolean
-    lastLikingMutualFollowers: PostUser[] | null
+    lastLikingMutualFollowers: (Pick<User, 'id' | 'username'> & { photoUrl: string })[] | null
     lastLikingUser: {
         id: string | number
         username: string
     } | null
+    commentsCount: number
     likesCount: number
     createdAt: number
 }
