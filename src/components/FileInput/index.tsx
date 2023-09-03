@@ -6,7 +6,7 @@ const allowedMimeTypes = ['image/jpeg', 'image/png']
 const allowedExtensions = ['.jpg', '.jpeg', '.png']
 
 interface Props {
-    multiple: boolean
+    multiple?: boolean
 
     onUploadFiles(files: File[]): void
 }
@@ -42,7 +42,7 @@ const FileInput = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
             ref={ref}
             type='file'
             hidden
-            multiple={props.multiple}
+            multiple={Boolean(props.multiple)}
             accept='image/jpeg, image/png'
             onChange={handleUploadFile}
         />
