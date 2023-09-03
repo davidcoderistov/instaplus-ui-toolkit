@@ -197,7 +197,6 @@ export default function EditProfile(props: Props) {
                                                 borderColor: '#00000066',
                                                 borderWidth: '0',
                                                 touchAction: 'manipulation',
-                                                cursor: 'pointer',
                                                 outlineStyle: 'none',
                                             }}
                                         >
