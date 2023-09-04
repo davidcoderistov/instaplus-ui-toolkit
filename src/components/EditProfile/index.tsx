@@ -150,7 +150,7 @@ export default function EditProfile(props: Props) {
                             >
                                 <Box
                                     component='div'
-                                    marginRight='12px'
+                                    marginRight='4px'
                                     borderRadius='0'
                                     bgcolor='transparent'
                                     flexDirection='column'
