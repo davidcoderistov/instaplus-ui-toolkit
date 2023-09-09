@@ -51,7 +51,6 @@ interface Props {
     isSearchDrawerOpen: boolean
     isNotificationsDrawerOpen: boolean
     isCreatingNewPost: boolean
-    isSettingsOpen: boolean
     unreadMessagesCount: number
 
     onOpenSearchDrawer(event: React.MouseEvent): void
