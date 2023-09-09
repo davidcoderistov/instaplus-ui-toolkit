@@ -52,6 +52,7 @@ interface Props {
     isNotificationsDrawerOpen: boolean
     isCreatingNewPost: boolean
     isSettingsOpen: boolean
+    unreadMessagesCount: number
 
     onOpenSearchDrawer(event: React.MouseEvent): void
 
@@ -304,6 +305,7 @@ export default function AppDrawer(props: Props) {
                             name='Messages'
                             isActive={isActive && isLinkOpen}
                             isCondensed={!isDrawerOpen}
+                            count={props.unreadMessagesCount}
                             icon={
                                 <AppDrawerIcon
                                     ariaLabel='Messages'
